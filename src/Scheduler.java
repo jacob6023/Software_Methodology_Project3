@@ -53,15 +53,17 @@ public class Scheduler {
         }
     }
 
-    private void scheduleAppointment(StringTokenizer token) {
-
+    private void scheduleAppointment(String command) {
+        String[] tokens = command.split(",");
     }
 
-        private void cancelAppointment(StringTokenizer token) {
+    private void cancelAppointment(String command) {
+        String[] tokens = command.split(",");
         // Implement the logic to cancel an appointment
     }
 
-    private void rescheduleAppointment(StringTokenizer token) {
+    private void rescheduleAppointment(String command) {
+        String[] tokens = command.split(",");
         // Implement the logic to reschedule an appointment
     }
 
