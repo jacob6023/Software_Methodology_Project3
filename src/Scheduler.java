@@ -1,11 +1,69 @@
 package Project_1.src;
 
-public interface Scheduler {
-    /*
-     This is the user interface class to process the command lines entered on the terminal. An instance of this  class can process a single command line or multiple command lines at a time, including the empty lines.  You will lose 10 points if it cannot process multiple command lines.
-     When your software starts running, it shall display "Scheduler is running.”. Next, it will  continuously read and process the command lines until the “Q” command is entered. If the Q command  is entered, display "Scheduler terminated", then the software stops normally. -2 points for  each violation.
-     You must define a run() method that includes a while loop to continuously read the command lines until  a “Q” command is entered. You will lose 5 points if the run() method is missing. You MUST keep this  method under 40 lines for readability, or you will lose 3 points. You can define necessary instance  variables and private helper methods to handle each command.
-    */
+import java.util.Scanner;
+import java.util.StringTokenizer;
 
+public class Scheduler {
+    private List appointments;
+    private MedicalRecord medRecord;
 
+    public Scheduler() {
+        appointments = new List();
+        medRecord = new MedicalRecord();
+    }
+
+    public void run() {
+        System.out.println("Scheduler is running.");
+        Scanner scan = new Scanner(System.in); //start scanner
+        while (true) {
+            String command = scanner.nextLine();
+            String comm = command.split(",")[0].trim(); // finds letter command and gets rid of space
+
+            switch (comm) { //runs each command separtely
+                case "S":
+                    scheduleAppointment(command);
+                    break;
+                case "C":
+                    cancelAppointment(command);
+                    break;
+                case "R":
+                    rescheduleAppointment(command);
+                    break;
+                case "PA":
+                    appointments.printByAppointment();
+                    break;
+                case "PP":
+                    appointments.printByPatient();
+                    break;
+                case "PL":
+                    appointments.printByLocation();
+                    break;
+                case "PS":
+                    printBillingStatements();
+                    break;
+                case "Q":
+                    System.out.println("Scheduler terminated.");
+                    return;
+                default:
+                    System.out.println("Invalid command.");
+            }
+        }
+    }
+
+    private void scheduleAppointment(StringTokenizer token) {
+
+    }
+
+        private void cancelAppointment(StringTokenizer token) {
+        // Implement the logic to cancel an appointment
+    }
+
+    private void rescheduleAppointment(StringTokenizer token) {
+        // Implement the logic to reschedule an appointment
+    }
+
+    private void printBillingStatements() {
+        // Traverse the medical record and calculate charges for each patient
+    }
 }
+

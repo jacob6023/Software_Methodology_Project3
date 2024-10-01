@@ -14,17 +14,19 @@ public class Patient implements Comparable<Patient>{
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
+        if (obj == null || getClass() != obj.getClass(  )) return false;
         Patient diff = (Patient) obj;
         return profile.equals(diff.profile);
     }
     @Override
-    public String toString() {
+    public String toString() { 
+        return String.format("%s %s %s %s", date, timeslot, patient.getFullName(), provider);
         //later
     }
 
     @Override
     public int compareTo(Patient other) {
+        return this.profile.compareTo(other.profile);
         //later
     }
 
@@ -38,6 +40,20 @@ public class Patient implements Comparable<Patient>{
         }
         return total;
     } //traverse the LL to compute the charge
+
+    //Adds a new visit
+    public void addVisit(Appointment appointment){
+        Visist newV = new Visit(appointment);
+        if(visits == null){
+            visits = newV;
+        } else {
+            Visit thisV = visits;
+            while ( thisV.next != null){
+                current = current.next;
+            }
+            current.next = newV;
+        }
+    }
 
 }
 
