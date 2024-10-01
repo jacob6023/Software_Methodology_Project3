@@ -20,17 +20,20 @@ public enum Timeslot {
         this.minute = minute;
     }
 
-    // Getter for hour
+    /**
+     * getters
+     * @return
+     */
     public int getHour() {
         return hour;
     }
-
-    // Getter for minute
     public int getMinute() {
         return minute;
     }
 
-    // Method to return time in a formatted string (e.g., "9:00 AM", "10:45 AM")
+    /**
+     * @return formatted string of the timeslot
+     */
     public String timeString() {
         int displayHour = (hour > 12) ? hour - 12 : (hour == 0 ? 12 : hour);
         String period = (hour >= 12) ? "PM" : "AM";
@@ -48,17 +51,27 @@ public enum Timeslot {
         return totalTime;
     }
 
-    // Method to compute the start time in minutes since midnight
+    /**
+     *
+     * @return total start time in minutes
+     */
     public int computeStartTime() {
         return this.hour * 60 + this.minute;
     }
 
-    // Method to compute the end time (start time + duration)
+    /**
+     *
+     * @return end time in minutes
+     */
     public int computeEndTime() {
         return computeStartTime() + DURATION;  // Assuming a 45-minute duration for each slot
     }
 
-    // Method to check if two timeslots overlap
+    /**
+     *
+     * @param other timeslot
+     * @return true if a timeslot will overlap
+     */
     public boolean overlapsWith(Timeslot other) {
         return this.computeStartTime() < other.computeEndTime() && this.computeEndTime() > other.computeStartTime();
     }

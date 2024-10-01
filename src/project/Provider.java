@@ -16,7 +16,11 @@ public enum Provider {
     private final Location location;
     private final Speciality speciality;
 
-    // Constructor
+    /**
+     * Constructor
+     * @param location
+     * @param speciality
+     */
     Provider(Location location, Speciality speciality) {
         this.location = location;
         this.speciality = speciality;
@@ -27,12 +31,14 @@ public enum Provider {
         return ;
     }
 
-    // Getter for location
+    /**
+     * Getters
+     * @return
+     */
     public Location getLocation() {
         return location;
     }
 
-    // Getter for speciality
     public Speciality getSpeciality() {
         return speciality;
     }

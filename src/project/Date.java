@@ -33,6 +33,11 @@ public class Date implements Comparable<Date>{
         return this.month + "/" + this.day + this.year;
     }
 
+    /**
+     *
+     * @param date the object to be compared.
+     * @return -1 if less. 0 if equal. 1 if greater
+     */
     @Override
     public int compareTo(Date date){
         if (this.year < other.year) {

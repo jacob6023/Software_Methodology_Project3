@@ -7,10 +7,6 @@ public class MedicalRecord {
     /* This is an array-based implementation of a linear data structure, “Bag,” to hold a list of patient objects.  The bag allows adding a patient object but does not allow removal.
  TODO: You must implement an add() method, or -2 points.
  TODO: You can add constructors and methods, but you CAN NOT add/change the instance variables, or -2 points for each violation */
-
-    /* This is an array-based implementation of a linear data structure, “Bag,” to hold a list of patient objects.  The bag allows adding a patient object but does not allow removal.
- TODO: You must implement an add() method, or -2 points.
- TODO: You can add constructors and methods, but you CAN NOT add/change the instance variables, or -2 points for each violation */
     public MedicalRecord() {
         int startingCap = 2;
         patients = new Patient[startingCap];
@@ -29,5 +25,19 @@ public class MedicalRecord {
         }
         patients[size++] = patient;
     }
+
+    /**
+     * getters
+     */
+    public Patient[] getPatients(){return patients;}
+    public int getSize(){return size;}
+
+    /**
+     * setters
+     */
+    public void setPatients(){this.patients = patients;}
+    public void setSize(){this.size = size;}
+
+
 
 }

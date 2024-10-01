@@ -24,7 +24,10 @@ public class Patient implements Comparable<Patient>{
     public void setProfile(Profile profile){this.profile = profile;}
     public void setVisits(Visit next){this.next = next;}
 
-    //constructor for Patients
+    /**
+     * constructor
+     * @param patient
+     */
     public Patient(Patient patient){
         this.profile = profile;
         this.next = next;

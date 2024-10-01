@@ -2,6 +2,7 @@ package Project_1.src.project;
 
 /**
  * @author Jack Crosby
+ * this enum class defines the city locations with two addition properties listed below
  */
 public enum Location {
     BRIDGEWATER("Somerset", "08807"),
@@ -11,7 +12,6 @@ public enum Location {
     MORRISTOWN("Morris County", "07960"),
     CLARK("07066", "Union County");
 
-    /* this enum class defines the city locations with two addition properties listed below */
     private final String county;
     private final String zip;
 
@@ -41,7 +41,7 @@ public enum Location {
      *
      * @param county
      * @param zip
-     * @return location based on
+     * @return location based on county and zip
      */
     public static Location getLocation(String county, String zip) {
         for (Location location : Location.values()) {
