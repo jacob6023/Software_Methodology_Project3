@@ -1,25 +1,59 @@
-package Project_1.src;
-import java.util.Calendar;
+package Project_1.src.project;
 
+/**
+ * @author Jack Crosby
+ */
 public class Date implements Comparable<Date>{
     private int year;
     private int month;
     private int day;
-    public boolean isValid(); // check if the date is a valid calender data
 
     /**
-     * TODO: instance methods and define constants. other todo's mentioned along the class
-     * TODO: isValid() to determine if the date is a calender date. have to include the leap year case described in the doc
-     * TODO: equals, toString, compareTo
+     * Use -1 instead of 0 for constants since the month and day start at 0
      */
+    public static final int INVALID_YEAR = -1;
+    public static final int INVALID_MONTH = -1;
+    public static final int INVALID_DAY = -1;
 
-    /**
-     * method description here
-     *  If the instance variables are objects, create new instances of those objects within the constructor and initialize them with the values from the argument object. This is called deep copying and ensures that changes to the copied object do not affect the original object.
-     * TODO: implement code
-     */
+    // check if the date is a valid calender data
     public boolean isValid(){
 
+    }
+
+    @Override
+    public boolean equals(Object obj){
+        if(obj instanceof Date date){
+            return this.year.equals(date.year) && this.month.equals(date.month) && this.day.equals(date.day);
+        }
+        return false;
+    }
+
+    @Override
+    public String toString(){
+        return this.month + "/" + this.day + this.year;
+    }
+
+    @Override
+    public int compareTo(Date date){
+        if (this.year < other.year) {
+            return -1;
+        } else if (this.year > other.year) {
+            return 1;
+        }
+
+        if (this.month < other.month) {
+            return -1;
+        } else if (this.month > other.month) {
+            return 1;
+        }
+
+        if (this.day < other.day) {
+            return -1;
+        } else if (this.day > other.day) {
+            return 1;
+        }
+
+        return 0;
     }
 
     /**
@@ -44,10 +78,11 @@ public class Date implements Comparable<Date>{
 
     /**
      * Default Constructor
-     * TODO: make constant value (non-magic numbers) to initialize to default values
      */
     public Date(){
-
+        this.year = INVALID_YEAR;
+        this.month =  INVALID_MONTH;
+        this.day = INVALID_DAY;
     }
 
     /**
@@ -71,9 +106,4 @@ public class Date implements Comparable<Date>{
         this.day = day;
     }
 
-
-    @Override
-    public int compareTo(Date o) {
-        return 0;
-    }
 }

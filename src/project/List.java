@@ -1,11 +1,13 @@
-package Project_1.src;
+package Project_1.src.project;
 
 public class List {
     private Appointment[] appointments;
     private int size; //num appointments in the array
 
     private int find(Appointment appointent) //helper method
+
     private void grow() //helper method to increase the capacity by 4
+
     public boolean contains(Appointment appointment)
     public void add(Appointment appointment)
     public void remove(Appointment appointment)
