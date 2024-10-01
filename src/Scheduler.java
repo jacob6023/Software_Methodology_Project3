@@ -16,9 +16,12 @@ public class Scheduler {
         System.out.println("Scheduler is running.");
         Scanner scan = new Scanner(System.in); //start scanner
         while (true) {
-            String command = scanner.nextLine();
+            String command = scan.nextLine();
+            if (command.isEmpty()) {
+                // Ignore empty lines
+                continue;
+            }
             String comm = command.split(",")[0].trim(); // finds letter command and gets rid of space
-
             switch (comm) { //runs each command separtely
                 case "S":
                     scheduleAppointment(command);

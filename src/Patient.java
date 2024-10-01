@@ -19,7 +19,7 @@ public class Patient implements Comparable<Patient>{
         return profile.equals(diff.profile);
     }
     @Override
-    public String toString() { 
+    public String toString() {
         return String.format("%s %s %s %s", date, timeslot, patient.getFullName(), provider);
         //later
     }
