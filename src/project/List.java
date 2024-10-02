@@ -10,7 +10,7 @@ public class List {
 
     private final int NOT_FOUND = -1;
 
-    private int find(Appointment appointent) { //helper method
+    private int find(Appointment appointment) { //helper method
         for (int i = 0; i < appointments.length; i++){
             if (this.appointments[i].equals(appointment)){
                 return i;
@@ -57,45 +57,7 @@ public class List {
         for (int i = 0; i < size - 1; i++) {
             int minimumIndex = i;
             for (int j = i + 1; j < size; j++) {
-                int comparison = appointments[j].getPatientProfile().compareTo(appointments[minimumIndex].getPatientProfile());
-
-                if (comparison < 0) {
-                    minimumIndex = j;
-                } else if (comparison == 0) {
-                    int dateComp = appointments[j].getDate().compareTo(appointments[minimumIndex].getDate());
-                    if (dateComp < 0) {
-                        minimumIndex = j;
-                    } else if (dateComp == 0) {
-                        int timeComp = appointments[j].getTimeslot().compareTime(appointments[minimumIndex].getTimeslot());
-                        if (timeComp < 0) {
-                            minimumIndex = j;
-                    }
-                }
-            }
-
-            if (minimumIndex != i) {
-                Appointment temp = appointments[i];
-                appointments[i] = appointments[minimumIndex];
-                appointments[minimumIndex] = temp;
-            }
-        }
-
-
-
-        //prints the sorted appointments
-        for (int i = 0; i < size; i++) {
-            System.out.println(appointments[i]);
-        }
-    }
-
-    public void printByLocation() { //ordered by county, date/timeslot
-        // Sort appointments by location, then date and time
-        for (int i = 0; i < size - 1; i++) {
-            int minimumIndex = i;
-            for (int j = i + 1; j < size; j++) {
-                String countyA = appointments[j].getLocation().getCounty();
-                String countyB = appointments[minimumIndex].getLocation().getCounty();
-                int comparison = countyA.compareTo(countyB);
+                int comparison = appointments[j].getProfile().compareTo(appointments[minimumIndex].getProfile());
 
                 if (comparison < 0) {
                     minimumIndex = j;
@@ -110,53 +72,90 @@ public class List {
                         }
                     }
                 }
+
+                if (minimumIndex != i) {
+                    Appointment temp = appointments[i];
+                    appointments[i] = appointments[minimumIndex];
+                    appointments[minimumIndex] = temp;
+                }
             }
 
-            if (minimumIndex != i) {
-                Appointment temp = appointments[i];
-                appointments[i] = appointments[minimumIndex];
-                appointments[minimumIndex] = temp;
+
+            //prints the sorted appointments
+            for (int j = 0; j < size; i++) {
+                System.out.println(appointments[j]);
             }
         }
 
-        // Print
-        for (int i = 0; i < size; i++) {
-            System.out.println(appointments[i]);
-        }
-    }
+        public void printByLocation () { //ordered by county, date/timeslot
+            // Sort appointments by location, then date and time
+            for (int i = 0; i < size - 1; i++) {
+                int minimumIndex = i;
+                for (int j = i + 1; j < size; j++) {
+                    String countyA = appointments[j].getProvider().getLocation().getCounty();
+                    String countyB = appointments[minimumIndex].getProvider().getLocation().getCounty();
+                    int comparison = countyA.compareTo(countyB);
 
-    public void printByAppointment(){ //ordered by date/timeslot, provider name
-        for (int i = 0; i < size - 1; i++) {
-            int minimumIndex = i;
-            for (int j = i + 1; j < size; j++) {
-                int dateComp = appointments[j].getDate().compareTo(appointments[minimumIndex].getDate());
-                if (dateComp < 0) {
-                    minimumIndex = j;
-                } else if (dateComp == 0) {
-                    int timeComp = appointments[j].getTimeslot().compareTime(appointments[minimumIndex].getTimeslot());
-                    if (timeComp < 0) {
+                    if (comparison < 0) {
                         minimumIndex = j;
-                    } else if (timeComp == 0) {
-                        String providerA = appointments[j].getProvider().name();
-                        String providerB = appointments[minimumIndex].getProvider().name();
-                        int providerComp = providerA.compareTo(providerB);
-                        if (providerComp < 0) {
+                    } else if (comparison == 0) {
+                        int dateComp = appointments[j].getDate().compareTo(appointments[minimumIndex].getDate());
+                        if (dateComp < 0) {
                             minimumIndex = j;
+                        } else if (dateComp == 0) {
+                            int timeComp = appointments[j].getTimeslot().compareTime(appointments[minimumIndex].getTimeslot());
+                            if (timeComp < 0) {
+                                minimumIndex = j;
+                            }
                         }
                     }
                 }
+
+                if (minimumIndex != i) {
+                    Appointment temp = appointments[i];
+                    appointments[i] = appointments[minimumIndex];
+                    appointments[minimumIndex] = temp;
+                }
             }
-            if (minimumIndex != i) {
-                Appointment temp = appointments[i];
-                appointments[i] = appointments[minimumIndex];
-                appointments[minimumIndex] = temp;
+
+            // Print
+            for (int i = 0; i < size; i++) {
+                System.out.println(appointments[i]);
             }
         }
 
-        // Print
-        for (int i = 0; i < size; i++) {
-            System.out.println(appointments[i]);
+        public void printByAppointment () { //ordered by date/timeslot, provider name
+            for (int i = 0; i < size - 1; i++) {
+                int minimumIndex = i;
+                for (int j = i + 1; j < size; j++) {
+                    int dateComp = appointments[j].getDate().compareTo(appointments[minimumIndex].getDate());
+                    if (dateComp < 0) {
+                        minimumIndex = j;
+                    } else if (dateComp == 0) {
+                        int timeComp = appointments[j].getTimeslot().compareTime(appointments[minimumIndex].getTimeslot());
+                        if (timeComp < 0) {
+                            minimumIndex = j;
+                        } else if (timeComp == 0) {
+                            String providerA = appointments[j].getProvider().name();
+                            String providerB = appointments[minimumIndex].getProvider().name();
+                            int providerComp = providerA.compareTo(providerB);
+                            if (providerComp < 0) {
+                                minimumIndex = j;
+                            }
+                        }
+                    }
+                }
+                if (minimumIndex != i) {
+                    Appointment temp = appointments[i];
+                    appointments[i] = appointments[minimumIndex];
+                    appointments[minimumIndex] = temp;
+                }
+            }
+
+            // Print
+            for (int i = 0; i < size; i++) {
+                System.out.println(appointments[i]);
+            }
         }
+
     }
-
-}
