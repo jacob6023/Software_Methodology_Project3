@@ -33,13 +33,13 @@ public class Scheduler {
                     rescheduleAppointment(command);
                     break;
                 case "PA":
-                    appointments.printByAppointment();
+                    List.printByAppointment();
                     break;
                 case "PP":
-                    appointments.printByPatient();
+                    List.printByPatient();
                     break;
                 case "PL":
-                    appointments.printByLocation();
+                    List.printByLocation();
                     break;
                 case "PS":
                     printBillingStatements();
@@ -55,20 +55,76 @@ public class Scheduler {
 
     private void scheduleAppointment(String command) {
         String[] tokens = command.split(",");
+
+        Date appointmentDate = new Date(tokens[1].trim());
+        Timeslot timeslot = Timeslot.valueOf("SLOT" + tokens[2].trim());
+        String patientFirstName = tokens[3].trim();
+        String patientLastName = tokens[4].trim();
+        Date patientDOB = new Date(tokens[5].trim());
+        String providerLastName = tokens[6].trim();
+
+        if (!appointmentDate.isValid()){
+            System.out.println("Invalid appointment date");
+            return;
+        }
+
+        if (timeslot != "SLOT1" && timeslot != "SLOT2"  && timeslot != "SLOT3" && timeslot != "SLOT4" && timeslot != "SLOT5" && timeslot != "SLOT6") {
+            System.out.println("Invalid timeslot.");
+            return;
+        }
+
+        Profile patientProfile = new Profile( patientFirstName, patientLastName,patientDOB);
+
+        Appointment newAppointment = new Appointment(appointmentDate, timeslot, patientProfile, provider);
+        List.add(newAppointment);
+
     }
 
     private void cancelAppointment(String command) {
         String[] tokens = command.split(",");
-        // Implement the logic to cancel an appointment
+        //cancels an appointment
+        Date appointmentDate = new Date(tokens[1].trim());
+        Timeslot timeslot = Timeslot.valueOf("SLOT" + tokens[2].trim());
+        String patientFirstName = tokens[3].trim();
+        String patientLastName = tokens[4].trim();
+        Date patientDOB = new Date(tokens[5].trim());
+        String providerLastName = tokens[6].trim();
+
+        if (!appointmentDate.isValid()){
+            System.out.println("Invalid appointment date");
+            return;
+        }
+
+        if (timeslot != "SLOT1" && timeslot != "SLOT2"  && timeslot != "SLOT3" && timeslot != "SLOT4" && timeslot != "SLOT5" && timeslot != "SLOT6") {
+            System.out.println("Invalid timeslot.");
+            return;
+        }
+
+        Profile patientProfile = new Profile( patientFirstName, patientLastName,patientDOB);
+
+        Appointment newAppointment = new Appointment(appointmentDate, timeslot, patientProfile, provider);
+        List.remove(newAppointment);
     }
 
     private void rescheduleAppointment(String command) {
         String[] tokens = command.split(",");
-        // Implement the logic to reschedule an appointment
+
+        Date appointmentDate = new Date(tokens[1].trim());
+        Timeslot timeslot = Timeslot.valueOf("SLOT" + tokens[2].trim());
+        String patientFirstName = tokens[3].trim();
+        String patientLastName = tokens[4].trim();
+        Date patientDOB = new Date(tokens[5].trim());
+        String providerLastName = tokens[6].trim();
+
+        Profile patientProfile = new Profile( patientFirstName, patientLastName,patientDOB);
+
+        Appointment newAppointment = new Appointment(appointmentDate, timeslot, patientProfile, provider);
+        List.find(newAppointment);
     }
 
     private void printBillingStatements() {
         // Traverse the medical record and calculate charges for each patient
+
     }
 }
 
