@@ -33,6 +33,9 @@ public class Patient implements Comparable<Patient>{
         this.next = next;
     }
 
+    /**
+     * Default Constructor
+     */
     public Patient(){
         this.profile = null;
         this.visits = null;
@@ -41,8 +44,8 @@ public class Patient implements Comparable<Patient>{
     //override for equals, toString, and compareTo
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof Visit next){
-            return this.next.equals(next);
+        if (obj instanceof Patient patient){
+            return this.profile.equals(patient.profile);
         }
         return false;
     }

@@ -15,12 +15,17 @@ public enum Location {
     private final String county;
     private final String zip;
 
+    @Override
+    public String toString(){
+        return county + " " + zip;
+    }
+
     /**
-     * setters
+     * Constructor
      * @param county
      * @param zip
      */
-    private Location(String county, String zip){
+    Location(String county, String zip){
         this.county = county;
         this.zip = zip;
     }
@@ -32,23 +37,8 @@ public enum Location {
     public String getCounty() {
         return county;
     }
-
     public String getZip() {
         return zip;
     }
 
-    /**
-     *
-     * @param county
-     * @param zip
-     * @return location based on county and zip
-     */
-    public static Location getLocation(String county, String zip) {
-        for (Location location : Location.values()) {
-            if (location.county.equalsIgnoreCase(county) && location.zip.equals(zip)) {
-                return location;
-            }
-        }
-        return null;
-    }
 }

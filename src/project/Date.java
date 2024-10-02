@@ -15,22 +15,37 @@ public class Date implements Comparable<Date>{
     public static final int INVALID_MONTH = -1;
     public static final int INVALID_DAY = -1;
 
-    // check if the date is a valid calender data
+    /**
+     * TODO: dealing with public boolean isValid();
+     * TODO: need a testbed Main() for isValid()
+     * TODO: need to make a class for isValid()?
+     */
+
+    /**
+     * check if the date is a valid calender data
+     * TODO
+     * @return
+     */
     public boolean isValid(){
 
     }
 
+    /**
+     * Compare if same date
+     * @param obj
+     * @return true if same date, false otherwise
+     */
     @Override
     public boolean equals(Object obj){
         if(obj instanceof Date date){
-            return this.year.equals(date.year) && this.month.equals(date.month) && this.day.equals(date.day);
+            return this.year == date.year && this.month == date.month && this.day == date.day;
         }
         return false;
     }
 
     @Override
     public String toString(){
-        return this.month + "/" + this.day + this.year;
+        return String.format("%02d/%02d/%d", this.month, this.day, this.year);
     }
 
     /**
@@ -40,24 +55,23 @@ public class Date implements Comparable<Date>{
      */
     @Override
     public int compareTo(Date date){
-        if (this.year < other.year) {
+        if (this.year < date.year) {
             return -1;
-        } else if (this.year > other.year) {
+        } else if (this.year > date.year) {
             return 1;
         }
 
-        if (this.month < other.month) {
+        if (this.month < date.month) {
             return -1;
-        } else if (this.month > other.month) {
+        } else if (this.month > date.month) {
             return 1;
         }
 
-        if (this.day < other.day) {
+        if (this.day < date.day) {
             return -1;
-        } else if (this.day > other.day) {
+        } else if (this.day > date.day) {
             return 1;
         }
-
         return 0;
     }
 
@@ -74,12 +88,6 @@ public class Date implements Comparable<Date>{
     public void setYear(int year){this.year = year;}
     public void setMonth(int month){this.month = month;}
     public void setDay(int day){this.day = day;}
-
-    /**
-     * TODO: dealing with public boolean isValid();
-     * TODO: need a testbed Main() for isValid()
-     * TODO: need to make a class for isValid()?
-     */
 
     /**
      * Default Constructor
@@ -102,7 +110,7 @@ public class Date implements Comparable<Date>{
     }
 
     /**
-     * Argument Constructor
+     * Parameter Constructor
      * dealing with the boolean isValid()? CHECK
      */
     public Date(int year, int month, int day){

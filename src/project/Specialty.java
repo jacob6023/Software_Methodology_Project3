@@ -10,6 +10,11 @@ public enum Specialty {
 
     private final int charge;
 
+    @Override
+    public String toString(){
+        return String.valueOf(this.charge);
+    }
+
     /**
      * Constructor
      * @param charge

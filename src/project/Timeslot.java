@@ -13,8 +13,39 @@ public enum Timeslot {
 
     private final int hour;
     private final int minute;
-    private static final int DURATION = 45; //will use to determine if there is no overlap
 
+    /**
+     * @return formatted string of the timeslot
+     */
+    @Override
+    public String toString() {
+        int displayHour = (hour > 12) ? hour - 12 : (hour == 0 ? 12 : hour);
+        String period = (hour >= 12) ? "PM" : "AM";
+        return String.format("%02d:%02d %s", displayHour, minute, period);
+    }
+
+    /**
+     * Helper method to compute total minutes to use in compareTo
+     * @return
+     */
+    private int toTotalMinutes() {
+        return this.hour * 60 + this.minute;
+    }
+
+    /**
+     * compare timeslots based on total minutes
+     * @param timeslot the object to be compared.
+     * @return < 0 if before, > 0 is after, 0 if equal
+     */
+    public int compareTime(Timeslot timeslot) {
+        return Integer.compare(this.toTotalMinutes(), timeslot.toTotalMinutes());
+    }
+
+    /**
+     * constructor
+     * @param hour
+     * @param minute
+     */
     Timeslot(int hour, int minute) {
         this.hour = hour;
         this.minute = minute;
@@ -24,57 +55,8 @@ public enum Timeslot {
      * getters
      * @return
      */
-    public int getHour() {
-        return hour;
-    }
-    public int getMinute() {
-        return minute;
-    }
-
-    /**
-     * @return formatted string of the timeslot
-     */
-    public String timeString() {
-        int displayHour = (hour > 12) ? hour - 12 : (hour == 0 ? 12 : hour);
-        String period = (hour >= 12) ? "PM" : "AM";
-        return String.format("%02d:%02d %s", displayHour, minute, period);
-    }
-
-    /**
-     * @param timeslot
-     * @return the total time so we can compare in Appointment
-     */
-    public int computeTime(Timeslot timeslot) {
-        // Convert the time to minutes since midnight for comparison
-        int totalTime;
-        totalTime = this.hour * 60 + this.minute;
-        return totalTime;
-    }
-
-    /**
-     *
-     * @return total start time in minutes
-     */
-    public int computeStartTime() {
-        return this.hour * 60 + this.minute;
-    }
-
-    /**
-     *
-     * @return end time in minutes
-     */
-    public int computeEndTime() {
-        return computeStartTime() + DURATION;  // Assuming a 45-minute duration for each slot
-    }
-
-    /**
-     *
-     * @param other timeslot
-     * @return true if a timeslot will overlap
-     */
-    public boolean overlapsWith(Timeslot other) {
-        return this.computeStartTime() < other.computeEndTime() && this.computeEndTime() > other.computeStartTime();
-    }
+    public int getHour() {return hour;}
+    public int getMinute() {return minute;}
 
 }
 
