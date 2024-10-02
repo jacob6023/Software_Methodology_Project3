@@ -4,26 +4,26 @@ public class MedicalRecord {
     private Patient[] patients;
     private int size; //number of patient objects in the array
 
-    /* This is an array-based implementation of a linear data structure, “Bag,” to hold a list of patient objects.  The bag allows adding a patient object but does not allow removal.
- TODO: You must implement an add() method, or -2 points.
- TODO: You can add constructors and methods, but you CAN NOT add/change the instance variables, or -2 points for each violation */
-    public MedicalRecord() {
-        int startingCap = 2;
-        patients = new Patient[startingCap];
-        size = 0;
+    /**
+     * Helper method that creates new array of double size and puts old array into
+     */
+    private void enlarge() {
+        Patient[] newPatientsArray = new Patient[patients.length * 2];
+        System.arraycopy(patients, 0, newPatientsArray, 0, patients.length);
+        patients = newPatientsArray;
     }
 
-    private void grow(){
-        Patient[] newPatient = new Patient[patients.length+1];
-        System.arraycopy(patients, 0, newPatient, 0, patients.length);
-        patients = newPatient;
-    }
 
-    public void add(Patient patient){
-        if (size == patients.length){
-            grow();
+    public void add(Patient patient) {
+        // If the array is full, grow the array
+        if (size == patients.length) {
+            enlarge();
         }
         patients[size++] = patient;
+    }
+
+    public void add(){
+
     }
 
     /**
@@ -37,6 +37,24 @@ public class MedicalRecord {
      */
     public void setPatients(){this.patients = patients;}
     public void setSize(){this.size = size;}
+
+    public MedicalRecord(Patient[] patients, int size){
+        this.patients = patients;
+        this.size = size;
+    }
+
+    /**
+     * set medical record to size 10 if not specified
+     */
+    public MedicalRecord(){
+        this.patients = new Patient[10];
+        this.size = 0;
+    }
+
+    public MedicalRecord(MedicalRecord medicalRecord){
+        this.patients = medicalRecord.patients;
+        this.size = medicalRecord.size;
+    }
 
 
 
