@@ -8,28 +8,77 @@ public class Date implements Comparable<Date>{
     private int month;
     private int day;
 
-    /**
-     * Use -1 instead of 0 for constants since the month and day start at 0
-     */
+   // use -1 to assign for default constructor
     public static final int INVALID_YEAR = -1;
     public static final int INVALID_MONTH = -1;
     public static final int INVALID_DAY = -1;
 
-    /**
-     * TODO: dealing with public boolean isValid();
-     * TODO: need a testbed Main() for isValid()
-     * TODO: need to make a class for isValid()?
-     */
+    // Constants to avoid magic numbers
+    public static final int JANUARY = 1;
+    public static final int FEBRUARY = 2;
+    public static final int MARCH = 3;
+    public static final int APRIL = 4;
+    public static final int MAY = 5;
+    public static final int JUNE = 6;
+    public static final int JULY = 7;
+    public static final int AUGUST = 8;
+    public static final int SEPTEMBER = 9;
+    public static final int OCTOBER = 10;
+    public static final int NOVEMBER = 11;
+    public static final int DECEMBER = 12;
+
+    public static final int MIN_YEAR = 1; // Example for a minimum valid year
+
+    // Constants for leap year rules
+    public static final int QUADRENNIAL = 4;
+    public static final int CENTENNIAL = 100;
+    public static final int QUATERCENTENNIAL = 400;
+
+    // index 0 is 0 so we can have the constant variables to equal the actual order of months instead of month - 1
+    public static final int[] DAYS_IN_MONTH = {
+            0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
+    };
 
     /**
-     * check if the date is a valid calender data
-     * TODO
-     * @return
+     * Helper method for isValid()
+     * @return true if leap year
      */
-    public boolean isValid(){
-
+    private boolean isLeapYear() {
+        if (year % QUATERCENTENNIAL == 0) {
+            return true;
+        } else if (year % CENTENNIAL == 0) {
+            return false;
+        } else if (year % QUADRENNIAL == 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
+    /**
+     * Determine if the date is a calendar date
+     * @return True if calendar date
+     */
+    public boolean isValid() {
+        if (year < MIN_YEAR) {
+            return false;
+        }
+
+        if (month < JANUARY || month > DECEMBER) {
+            return false;
+        }
+
+        int maxDaysInMonth = DAYS_IN_MONTH[month];
+        if (month == FEBRUARY && isLeapYear()) {
+            maxDaysInMonth = 29; // Adjust for leap year
+        }
+
+        if (day < 1 || day > maxDaysInMonth) {
+            return false;
+        }
+
+        return true;
+    }
     /**
      * Compare if same date
      * @param obj
@@ -43,6 +92,10 @@ public class Date implements Comparable<Date>{
         return false;
     }
 
+    /**
+     * make the date a String
+     * @return date in String
+     */
     @Override
     public String toString(){
         return String.format("%02d/%02d/%d", this.month, this.day, this.year);
@@ -117,6 +170,34 @@ public class Date implements Comparable<Date>{
         this.year = year;
         this.month = month;
         this.day = day;
+    }
+
+    public static void main(String[] args) {
+        // Test cases for valid dates
+        Date validDate1 = new Date(2024, FEBRUARY, 29); // Leap year
+        Date validDate2 = new Date(2023, JULY, 15); // Regular valid date
+        Date validDate3 = new Date(2000, DECEMBER, 31); // Leap year
+        Date validDate4 = new Date(1999, NOVEMBER, 30); // Non-leap year, valid date
+
+        // Test cases for invalid dates
+        Date invalidDate1 = new Date(2023, FEBRUARY, 29); // Non-leap year
+        Date invalidDate2 = new Date(2023, APRIL, 31); // April has only 30 days
+        Date invalidDate3 = new Date(-1, JANUARY, 10); // Invalid year
+        Date invalidDate4 = new Date(2024, 13, 1); // Invalid month
+        Date invalidDate5 = new Date(2023, SEPTEMBER, 0); // Invalid day (0 day)
+
+        // Display results of the valid date checks
+        System.out.println(validDate1 + " is valid: " + validDate1.isValid());
+        System.out.println(validDate2 + " is valid: " + validDate2.isValid());
+        System.out.println(validDate3 + " is valid: " + validDate3.isValid());
+        System.out.println(validDate4 + " is valid: " + validDate4.isValid());
+
+        // Display results of the invalid date checks
+        System.out.println(invalidDate1 + " is invalid: " + invalidDate1.isValid());
+        System.out.println(invalidDate2 + " is invalid: " + invalidDate2.isValid());
+        System.out.println(invalidDate3 + " is invalid: " + invalidDate3.isValid());
+        System.out.println(invalidDate4 + " is invalid: " + invalidDate4.isValid());
+        System.out.println(invalidDate5 + " is invalid: " + invalidDate5.isValid());
     }
 
 }
