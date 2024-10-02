@@ -1,41 +1,131 @@
+/**
+ * @author Vikram kadyan
+ */
 package Project_1.src.project;
 
 public class List {
     private Appointment[] appointments;
     private int size; //num appointments in the array
 
-    private int find(Appointment appointent) //helper method
 
-    private void grow() //helper method to increase the capacity by 4
+    private final int NOT_FOUND = -1;
 
-    public boolean contains(Appointment appointment)
-    public void add(Appointment appointment)
-    public void remove(Appointment appointment)
-    public void printByPatient() //ordered by patient profile, date/timeslot
-    public void printByLocation() //ordered by county, data/timeslot
+    private int find(Appointment appointent) { //helper method
+        for (int i = 0; i < appointments.length; i++){
+            if (this.appointments[i].equals(appointment)){
+                return i;
+            }
+        }
+        return NOT_FOUND;
+    }
+
+    private void grow() { //helper method to increase the capacity by 4
+        int capInc = 4;
+        Appointment [] temp = new Appointment[this.appointments.length + capInc];
+        for (int i = 0; i < size; i++) {
+            temp[i] = appointments[i];
+        }
+        this.appointments = temp;
+    }
+
+    public boolean contains(Appointment appointment){
+        return find(appointment) != NOT_FOUND;
+    }
+
+
+    public void add(Appointment appointment){
+        if (size == appointments.length) {
+            grow();
+        }
+        appointments[size] = appointment;
+        this.size++;
+    }
+
+    public void remove(Appointment appointment){
+        int index = this.find(appointment);
+        if (index != NOT_FOUND) {
+            for (int i = index; i < size; i++) {
+                this.appointments[i] = this.appointments[i+1];
+            }
+        this.size--;
+        }
+    }
+
+
+    public void printByPatient() { //ordered by patient profile, date/timeslot
+        //sorts by last name, first name, dob, then appointment date and time
+        for (int i = 0; i < size - 1; i++) {
+            int minimumIndex = i;
+            for (int j = i + 1; j < size; j++) {
+                int comparison = appointments[j].getPatientProfile().compareTo(appointments[minimumIndex].getPatientProfile());
+
+                if (comparison < 0) {
+                    minimumIndex = j;
+                } else if (comparison == 0) {
+                    int dateComp = appointments[j].getDate().compareTo(appointments[minimumIndex].getDate());
+                    if (dateComp < 0) {
+                        minimumIndex = j;
+                    } else if (dateComp == 0) {
+                        int timeComp = appointments[j].getTimeslot().compareTime(appointments[minimumIndex].getTimeslot());
+                        if (timeComp < 0) {
+                            minimumIndex = j;
+                    }
+                }
+            }
+
+            if (minimumIndex != i) {
+                Appointment temp = appointments[i];
+                appointments[i] = appointments[minimumIndex];
+                appointments[minimumIndex] = temp;
+            }
+        }
+
+
+
+        //prints the sorted appointments
+        for (int i = 0; i < size; i++) {
+            System.out.println(appointments[i]);
+        }
+    }
+
+    public void printByLocation() { //ordered by county, date/timeslot
+        // Sort appointments by location, then date and time
+        for (int i = 0; i < size - 1; i++) {
+            int minimumIndex = i;
+            for (int j = i + 1; j < size; j++) {
+                String countyA = appointments[j].getLocation().getCounty();
+                String countyB = appointments[minimumIndex].getLocation().getCounty();
+                int comparison = countyA.compareTo(countyB);
+
+                if (comparison < 0) {
+                    minimumIndex = j;
+                } else if (comparison == 0) {
+                    int dateComp = appointments[j].getDate().compareTo(appointments[minimumIndex].getDate());
+                    if (dateComp < 0) {
+                        minimumIndex = j;
+                    } else if (dateComp == 0) {
+                        int timeComp = appointments[j].getTimeslot().compareTime(appointments[minimumIndex].getTimeslot());
+                        if (timeComp < 0) {
+                            minimumIndex = j;
+                        }
+                    }
+                }
+            }
+
+            if (minimumIndex != i) {
+                Appointment temp = appointments[i];
+                appointments[i] = appointments[minimumIndex];
+                appointments[minimumIndex] = temp;
+            }
+        }
+
+        // Print
+        for (int i = 0; i < size; i++) {
+            System.out.println(appointments[i]);
+        }
+    }
+
     public void printByAppointment() //ordered by date/timeslot, provider name
-
-    /* This is an array-based implementation of a linear data structure “List” to hold the list of appointment  objects.
-    A new appointment is always added to the end of the array. An instance of this class is a growable  list with an initial array capacity of 4,
-    and it automatically increases the capacity by 4 whenever it is full.  The list does not decrease in capacity.
-    */
-
-    /* You can add necessary constants, constructors, and methods. However, you CANNOT change or add  instance variables. -2 points for each violation.
- You MUST implement and use the methods listed above; you CANNOT change the signatures of the  methods. -2 points for each violation.
- You CAN use System.out ONLY in the three print() methods listed above.
- The find() method searches for an appointment in the list and returns the index if it is found; it returns NOT_FOUND if it is not in the list. Define a constant value -1 for NOT_FOUND, or -2 point.   You must use an “in-place” sorting algorithm to implement the sorting, i.e., the order of the objects in the  array will be rearranged after the sorting without using an additional array. You CANNOT use  Arrays.sort() or System.arraycopy() or any other Java library classes or utilities for sorting. You must  write the code yourself to sort it. You will lose 10 points for the violation.
-    */
-
-    /* The charge() method traverses the linked list “visits” and returns the charge of the patient, -3 points if  this method is missing. */
-
-    /**
-     * TODO: charge(), equals(), toString(), compareTo()
-     */
-
-
-
-
-
 
 
 }
