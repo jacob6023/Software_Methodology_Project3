@@ -8,16 +8,10 @@ public class Visit {
      * This class defines a node in a singly linked list that maintains the list of visits. You can add  constructors and methods, but you CANNOT add/change the instance variables, or -2 points for each violation.
      */
 
-    /**
-     * check if we are at the end of the list
-     */
-    public boolean atEnd(Appointment appointment, Visit next){
 
-    }
 
     /**
      * getters
-     * @param appointment
      */
     public Appointment getAppointment(){return appointment;}
     public Visit getVisit(){return next;}
@@ -33,13 +27,26 @@ public class Visit {
      * Constructors
      */
     public Visit(){
-        this.appointment = NULL;
-        this.next = NULL;
+        this.appointment = null;
+        this.next = null;
     }
 
-    public Visit(Appointment appointment){
+    /**
+     * parameter constructor
+     * @param appointment
+     * @param next
+     */
+    public Visit(Appointment appointment, Visit next){
         this.appointment = appointment;
         this.next = next;
+    }
+
+    /**
+     * copy constructor
+     */
+    public Visit(Visit copyVisit){
+        this.appointment = copyVisit.appointment;
+        this.next = copyVisit.next;
     }
 
 }

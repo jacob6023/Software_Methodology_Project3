@@ -4,12 +4,15 @@ public class Patient implements Comparable<Patient>{
     private Profile profile;
     private Visit next; //a LL of visits (completed appt. )
 
-    /**
-     * traverse the LL to compute the charge
-     * @return
-     */
+    //traverse linked list to find the total charge
     public int charge(){
-
+        int total = 0;
+        Visit currentVisit = this.next;
+        while (currentVisit != null){
+            total += currentVisit.getAppointment().getProvider().getSpecialty().getCharge();
+            currentVisit = currentVisit.getVisit();
+        }
+        return total;
     }
 
     /**
@@ -25,10 +28,10 @@ public class Patient implements Comparable<Patient>{
     public void setVisits(Visit next){this.next = next;}
 
     /**
-     * constructor
-     * @param patient
+     * parameter constructor constructor
+     * @param
      */
-    public Patient(Patient patient){
+    public Patient(Profile profile, Visit next){
         this.profile = profile;
         this.next = next;
     }
@@ -38,7 +41,17 @@ public class Patient implements Comparable<Patient>{
      */
     public Patient(){
         this.profile = null;
-        this.visits = null;
+        this.next = null;
+    }
+
+    /**
+     * Copy Constructor
+     * @param
+     * @return
+     */
+    public Patient(Patient copyPatient){
+        this.profile = copyPatient.profile;
+        this.next = copyPatient.next;
     }
 
     //override for equals, toString, and compareTo
@@ -54,21 +67,17 @@ public class Patient implements Comparable<Patient>{
         return profile.toString();
     }
 
+    /**
+     * Uses profile's compareTo
+     * @param patient the object to be compared.
+     * @return
+     */
     @Override
-    public int compareTo(Patient other) {
-        //later
+    public int compareTo(Patient patient) {
+        return this.profile.compareTo(patient.profile);
     }
 
-    //traverse linked list to find the total charge
-    public int charge(){
-        int total = 0;
-        Visist currentVisit=visits;
-        while (currentVisit!=null){
-            total += currentVisit.getAppointment().getProvider().getSpecialty().getCharge();
-            currentVisit = currentVisit.getNext();
-        }
-        return total;
-    } //traverse the LL to compute the charge
+
 
 }
 
