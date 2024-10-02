@@ -1,4 +1,5 @@
 package Project_1.src.project;
+import java.util.Calendar;
 
 /**
  * @author Jack Crosby
@@ -8,7 +9,7 @@ public class Date implements Comparable<Date>{
     private int month;
     private int day;
 
-   // use -1 to assign for default constructor
+    // use -1 to assign for default constructor
     public static final int INVALID_YEAR = -1;
     public static final int INVALID_MONTH = -1;
     public static final int INVALID_DAY = -1;
@@ -79,6 +80,49 @@ public class Date implements Comparable<Date>{
 
         return true;
     }
+
+    private Calendar toCalendar() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, this.year);
+        calendar.set(Calendar.MONTH, this.month - 1); // Calendar month is 0-based
+        calendar.set(Calendar.DAY_OF_MONTH, this.day);
+        return calendar;
+    }
+
+    // Method to check if the date is today
+    public boolean isToday() {
+        Calendar today = Calendar.getInstance();
+        Calendar date = toCalendar();
+        return today.get(Calendar.YEAR) == date.get(Calendar.YEAR) &&
+                today.get(Calendar.MONTH) == date.get(Calendar.MONTH) &&
+                today.get(Calendar.DAY_OF_MONTH) == date.get(Calendar.DAY_OF_MONTH);
+    }
+
+    // Method to check if the date is a day before today
+    public boolean isDayBeforeToday() {
+        Calendar today = Calendar.getInstance();
+        Calendar date = toCalendar();
+        today.add(Calendar.DAY_OF_YEAR, -1); // Subtract one day from today
+        return today.get(Calendar.YEAR) == date.get(Calendar.YEAR) &&
+                today.get(Calendar.MONTH) == date.get(Calendar.MONTH) &&
+                today.get(Calendar.DAY_OF_MONTH) == date.get(Calendar.DAY_OF_MONTH);
+    }
+
+    // Method to check if the date is on a Saturday or Sunday
+    public boolean isWeekend() {
+        Calendar date = toCalendar();
+        int dayOfWeek = date.get(Calendar.DAY_OF_WEEK);
+        return dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY;
+    }
+
+    // Method to check if the date is not within six months from today
+    public boolean isNotWithinSixMonthsFromToday() {
+        Calendar today = Calendar.getInstance();
+        Calendar sixMonthsFromToday = Calendar.getInstance();
+        sixMonthsFromToday.add(Calendar.MONTH, 6); // Add six months to today
+        return toCalendar().after(sixMonthsFromToday); // Check if date is after six months from today
+    }
+
     /**
      * Compare if same date
      * @param obj
