@@ -125,7 +125,38 @@ public class List {
         }
     }
 
-    public void printByAppointment() //ordered by date/timeslot, provider name
+    public void printByAppointment(){ //ordered by date/timeslot, provider name
+        for (int i = 0; i < size - 1; i++) {
+            int minimumIndex = i;
+            for (int j = i + 1; j < size; j++) {
+                int dateComp = appointments[j].getDate().compareTo(appointments[minimumIndex].getDate());
+                if (dateComp < 0) {
+                    minimumIndex = j;
+                } else if (dateComp == 0) {
+                    int timeComp = appointments[j].getTimeslot().compareTime(appointments[minimumIndex].getTimeslot());
+                    if (timeComp < 0) {
+                        minimumIndex = j;
+                    } else if (timeComp == 0) {
+                        String providerA = appointments[j].getProvider().name();
+                        String providerB = appointments[minimumIndex].getProvider().name();
+                        int providerComp = providerA.compareTo(providerB);
+                        if (providerComp < 0) {
+                            minimumIndex = j;
+                        }
+                    }
+                }
+            }
+            if (minimumIndex != i) {
+                Appointment temp = appointments[i];
+                appointments[i] = appointments[minimumIndex];
+                appointments[minimumIndex] = temp;
+            }
+        }
 
+        // Print
+        for (int i = 0; i < size; i++) {
+            System.out.println(appointments[i]);
+        }
+    }
 
 }
