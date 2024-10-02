@@ -1,4 +1,4 @@
-package Project_1.src;
+package Project_1.src.project;
 
 import java.util.Scanner;
 import java.util.StringTokenizer;

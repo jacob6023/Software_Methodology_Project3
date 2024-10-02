@@ -1,6 +1,9 @@
-package Project_1.src;
+package Project_1.src.project;
 
-public class Profile impements Comparable<Profile>{
+/**
+ * @author Jack Crosby
+ */
+public class Profile implements Comparable<Profile>{
     private String fname;
     private String lname;
     private Date dob;
@@ -10,6 +13,23 @@ public class Profile impements Comparable<Profile>{
      * TODO: You MUST design the test cases to thoroughly test the compareTo() method, or you will lose 7 points.  The method compares last name, first name, and then dob for sorting. Follow the instructions under the  “Test Design” section in the Coding Standard and include the test cases in the test specification.
      * TODO: You MUST include a testbed main() in this class or lose 8 points. You CAN use System.out in the  testbed main() to display the test results.
      */
+
+    /**
+     * String
+     * @return
+     */
+    @Override
+    public String toString(){
+        return fname + " " + lname + " " + dob.toString();
+    }
+
+    @Override
+    public boolean equals(Object obj){
+        if(obj instanceof Profile profile){
+            return this.fname.equals(profile.fname) && this.lname.equals(profile.fname) && this.dob.equals(profile.dob);
+        }
+        return false;
+    }
 
     /**
      * getter methods
@@ -29,16 +49,21 @@ public class Profile impements Comparable<Profile>{
      * Default Constructor
      */
     public Profile(){
-
+        this.fname = NULL;
+        this.lname = NULL;
+        this.dob = NULL;
     }
 
     /**
      * Copy Constructor
      */
-    public Profile(Profile profile){
-        this.profile = profile;
-    }
 
+    /**
+     * Constructor
+     * @param fname
+     * @param lname
+     * @param dob
+     */
     public Profile(String fname, String lname, Date dob){
         this.fname = fname;
         this.lname = lname;

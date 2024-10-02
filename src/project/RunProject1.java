@@ -1,4 +1,4 @@
-package Project_1.src;
+package Project_1.src.project;
 
 public class RunProject1 {
     /*  This is a driver class that runs your software. The graders will run this class to grade  your project. */
