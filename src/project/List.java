@@ -158,5 +158,21 @@ public class List {
                 System.out.println(appointments[i]);
             }
         }
+
+    //identifies the appointment to be cancelled when reschedule is called
+    public Appointment identifyAppointment(Profile patient, Provider provider, Timeslot timeslot) {
+        for (int i = 0; i < size; i++) {
+            Appointment currAppointment = appointments[i];
+
+            if (currAppointment.getProfile().equals(patient) &&
+                    currAppointment.getProvider() == provider &&
+                    currAppointment.getTimeslot() == timeslot) {
+                return currAppointment;
+            }
+        }
+        system.out.println("Original Apointment not found");
+        return null;
+    }
+
     }
 

@@ -1,5 +1,7 @@
 package Project_1.src.project;
-
+/**
+ * @author Vikram kadyan
+ */
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
@@ -81,7 +83,7 @@ public class Scheduler {
         Profile patientProfile = new Profile( patientFirstName, patientLastName,patientDOB);
 
         Appointment newAppointment = new Appointment(appointmentDate, timeslot, patientProfile, provider);
-        appointments.add(newAppointment);
+        List.add(newAppointment);
 
     }
 
@@ -109,7 +111,7 @@ public class Scheduler {
         Profile patientProfile = new Profile( patientFirstName, patientLastName,patientDOB);
 
         Appointment newAppointment = new Appointment(appointmentDate, timeslot, patientProfile, provider);
-        appointments.remove(newAppointment);
+        List.remove(newAppointment);
     }
 
     private void rescheduleAppointment(String command) {
@@ -129,14 +131,27 @@ public class Scheduler {
         Provider provider = Provider.valueOf(providerName);
 
         Profile patientProfile = new Profile( patientFirstName, patientLastName,patientDOB);
+        //find old appointment
+        Appointment oldAppointment = identifyAppointment(patientProfile, provider, timeslot);
+        //cancel old appointment
+        List.remove(oldAppointment);
 
+        //schedule new appointment
         Appointment newAppointment = new Appointment(appointmentDate, timeslot, patientProfile, provider);
-        appointments.find(newAppointment);
+        List.add(newAppointment);
     }
 
     private void printBillingStatements() {
-        // Traverse the medical record and calculate charges for each patient
 
+        //print the amount due from each customer
+        System.out.println("Billing Statements:");
+        for (int i = 0; i < medRecord.getSize(); i++){
+            Patient currentPatient = MedicalRecord.getPatients()[i];
+            int total = patient.charge();
+
+            System.out.printf("Patient: %s, [Amount Due: $%d ] %n", patient.getProfile(), total);
+        }
+    }
     }
 
     public Scheduler() {
