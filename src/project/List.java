@@ -86,8 +86,8 @@ public class List {
                 System.out.println(appointments[j]);
             }
         }
-
-        public void printByLocation () { //ordered by county, date/timeslot
+    }
+        public void printByLocation(){ //ordered by county, date/timeslot
             // Sort appointments by location, then date and time
             for (int i = 0; i < size - 1; i++) {
                 int minimumIndex = i;
@@ -124,7 +124,8 @@ public class List {
             }
         }
 
-        public void printByAppointment () { //ordered by date/timeslot, provider name
+        //ordered by date/timeslot, provider name
+        public void printByAppointment(){
             for (int i = 0; i < size - 1; i++) {
                 int minimumIndex = i;
                 for (int j = i + 1; j < size; j++) {
@@ -157,5 +158,5 @@ public class List {
                 System.out.println(appointments[i]);
             }
         }
-
     }
+

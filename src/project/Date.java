@@ -123,6 +123,24 @@ public class Date implements Comparable<Date>{
         return toCalendar().after(sixMonthsFromToday); // Check if date is after six months from today
     }
 
+    public boolean isFutureDate() {
+        Calendar today = Calendar.getInstance();
+        return this.toCalendar().after(today);
+    }
+
+    public boolean schedulableDate() {
+        return !isToday() &&
+                !isDayBeforeToday() &&
+                !isWeekend() &&
+                !isNotWithinSixMonthsFromToday();
+    }
+
+    public boolean realDOB(){
+        return !isToday() && !isFutureDate();
+    }
+
+
+
     /**
      * Compare if same date
      * @param obj
@@ -194,6 +212,14 @@ public class Date implements Comparable<Date>{
         this.month =  INVALID_MONTH;
         this.day = INVALID_DAY;
     }
+
+    public Date(String dateStr) {
+        String[] parts = dateStr.split("/");
+        this.month = Integer.parseInt(parts[0].trim());
+        this.day = Integer.parseInt(parts[1].trim());
+        this.year = Integer.parseInt(parts[2].trim());
+    }
+
 
     /**
      * Copy Constructor
