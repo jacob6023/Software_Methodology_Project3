@@ -41,6 +41,8 @@ public enum Timeslot {
         return Integer.compare(this.toTotalMinutes(), timeslot.toTotalMinutes());
     }
 
+
+
     /**
      * constructor
      * @param hour

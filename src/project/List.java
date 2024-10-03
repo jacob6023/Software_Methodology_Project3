@@ -10,6 +10,33 @@ public class List {
 
     private final int NOT_FOUND = -1;
 
+    // Method to check if an appointment with the same patient, profile, and timeslot already exists
+    public boolean appointmentExists(Profile patient, Timeslot timeslot, Date date) {
+        for (int i = 0; i < size; i++) {
+            Appointment currAppointment = appointments[i];
+            if (currAppointment.getProfile().equals(patient) &&
+                    currAppointment.getTimeslot() == timeslot &&
+                    currAppointment.getDate().equals(date)) {
+                return true; // Appointment already exists
+            }
+        }
+        return false;
+    }
+
+    // Method to check if a provider is available at a specific timeslot and date
+    public boolean isProviderAvailable(Provider provider, Timeslot timeslot, Date date) {
+        for (int i = 0; i < size; i++) {
+            Appointment currAppointment = appointments[i];
+            if (currAppointment.getProvider() == provider &&
+                    currAppointment.getTimeslot() == timeslot &&
+                    currAppointment.getDate().equals(date)) {
+                return false; // Provider is not available
+            }
+        }
+        return true; // Provider is available
+    }
+
+
     private int find(Appointment appointment) { //helper method
         for (int i = 0; i < appointments.length; i++){
             if (this.appointments[i].equals(appointment)){
@@ -160,13 +187,14 @@ public class List {
         }
 
     //identifies the appointment to be cancelled when reschedule is called
-    public Appointment identifyAppointment(Profile patient, Provider provider, Timeslot timeslot) {
-        for (int i = 0; i < size; i++) {
+    public Appointment identifyAppointment(Profile patient,  Provider provider, Timeslot timeslot, Date date) {
+        for (int i = 0; i <= size; i++) {
             Appointment currAppointment = appointments[i];
 
             if (currAppointment.getProfile().equals(patient) &&
                     currAppointment.getProvider() == provider &&
-                    currAppointment.getTimeslot() == timeslot) {
+                    currAppointment.getTimeslot() == timeslot &&
+                    currAppointment.getDate().equals(date)) { // Added Date comparison
                 return currAppointment;
             }
         }

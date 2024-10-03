@@ -148,6 +148,7 @@ public class Date implements Comparable<Date>{
      */
     @Override
     public boolean equals(Object obj){
+
         if(obj instanceof Date date){
             return this.year == date.year && this.month == date.month && this.day == date.day;
         }

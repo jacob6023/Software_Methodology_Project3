@@ -22,9 +22,6 @@ public class MedicalRecord {
         patients[size++] = patient;
     }
 
-    public void add(){
-
-    }
 
     /**
      * getters

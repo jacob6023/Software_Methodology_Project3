@@ -9,6 +9,17 @@ public class Scheduler {
     private List appointments;
     private MedicalRecord medRecord;
 
+    public Scheduler() {
+        this.appointments = new List();
+        this.medRecord = new MedicalRecord();
+    }
+
+    // Parameterized constructor
+    public Scheduler(List appointments, MedicalRecord medRecord) {
+        this.appointments = appointments;
+        this.medRecord = medRecord;
+    }
+
 
     public void run() {
         System.out.println("Scheduler is running.");
@@ -65,7 +76,16 @@ public class Scheduler {
         Date patientDOB = new Date(tokens[5].trim());
 
         String providerName = tokens[6].trim();
-        Provider provider = Provider.valueOf(providerName);
+        Provider provider;
+
+        try {
+            provider = Provider.valueOf(providerName.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid provider name: " + providerName);
+            return;
+        }
+
+
 
         //check if real date
         if (!appointmentDate.isValid() && !appointmentDate.schedulableDate()){
@@ -78,12 +98,30 @@ public class Scheduler {
             System.out.println("Invalid DOB");
         }
 
+//        Profile patientProfile = new Profile( patientFirstName, patientLastName,patientDOB);
+//        Appointment newAppointment = new Appointment(appointmentDate, timeslot, patientProfile, provider);
+//
+//
+//
+//        appointments.add(newAppointment);
+        Profile patientProfile = new Profile(patientFirstName, patientLastName, patientDOB);
 
+        // Check if an appointment already exists for this patient, date, and timeslot
+        if (appointments.appointmentExists(patientProfile, timeslot, appointmentDate)) {
+            System.out.println("Appointment already exists for this patient, date, and timeslot");
+            return;
+        }
 
-        Profile patientProfile = new Profile( patientFirstName, patientLastName,patientDOB);
+        // Check if the provider is available at the specified timeslot and date
+        if (!appointments.isProviderAvailable(provider, timeslot, appointmentDate)) {
+            System.out.println("Provider is not available at the specified timeslot");
+            return;
+        }
 
+        // Create and add the new appointment
         Appointment newAppointment = new Appointment(appointmentDate, timeslot, patientProfile, provider);
-        List.add(newAppointment);
+        appointments.add(newAppointment);
+        System.out.println("Appointment scheduled successfully");
 
     }
 
@@ -103,15 +141,21 @@ public class Scheduler {
         String providerName = tokens[6].trim();
         Provider provider = Provider.valueOf(providerName);
 
-        if (!appointmentDate.isValid()){
+        if (!appointmentDate.isValid() && !appointmentDate.schedulableDate()){
             System.out.println("Invalid appointment date");
             return;
         }
 
-        Profile patientProfile = new Profile( patientFirstName, patientLastName,patientDOB);
+        Profile patientProfile = new Profile(patientFirstName, patientLastName, patientDOB);
 
-        Appointment newAppointment = new Appointment(appointmentDate, timeslot, patientProfile, provider);
-        List.remove(newAppointment);
+        // Identify the appointment to remove instead of creating a new one
+        Appointment existingAppointment = appointments.identifyAppointment(patientProfile, provider, timeslot, appointmentDate);
+        if (existingAppointment != null) {
+            appointments.remove(existingAppointment);
+            System.out.println("Appointment cancelled successfully");
+        } else {
+            System.out.println("Appointment not found");
+        }
     }
 
     private void rescheduleAppointment(String command) {
@@ -130,39 +174,29 @@ public class Scheduler {
         String providerName = tokens[6].trim();
         Provider provider = Provider.valueOf(providerName);
 
+
         Profile patientProfile = new Profile( patientFirstName, patientLastName,patientDOB);
-        //find old appointment
-        Appointment oldAppointment = identifyAppointment(patientProfile, provider, timeslot);
-        //cancel old appointment
-        List.remove(oldAppointment);
+        Appointment oldAppointment = appointments.identifyAppointment(patientProfile, provider, timeslot, appointmentDate);
+        if(oldAppointment!= null) {
+            appointments.remove(oldAppointment);
+        }
 
         //schedule new appointment
         Appointment newAppointment = new Appointment(appointmentDate, timeslot, patientProfile, provider);
-        List.add(newAppointment);
+        appointments.add(newAppointment);
     }
 
     private void printBillingStatements() {
+        // Get the patients array from medRecord
+        Patient[] patients = medRecord.getPatients();  // Use a getter method
 
-        //print the amount due from each customer
-        System.out.println("Billing Statements:");
-        for (int i = 0; i < medRecord.getSize(); i++){
-            Patient currentPatient = MedicalRecord.getPatients()[i];
-            int total = patient.charge();
+        // Loop through the array to calculate and print billing information
+        for (int i = 0; i < medRecord.getSize(); i++) {
+            Patient currentPatient = patients[i];
+            int total = currentPatient.charge(); // Call charge() method for each patient
 
-            System.out.printf("Patient: %s, [Amount Due: $%d ] %n", patient.getProfile(), total);
+            System.out.printf("Patient: %s, [Amount Due: $%d ] %n", currentPatient.getProfile().toString(), total);
         }
-    }
-    }
-
-    public Scheduler() {
-        this.appointments = new List();
-        this.medRecord = new MedicalRecord();
-    }
-
-    // Parameterized constructor
-    public Scheduler(List appointments, MedicalRecord medRecord) {
-        this.appointments = appointments;
-        this.medRecord = medRecord;
     }
 
     // Getter for appointments
@@ -185,4 +219,6 @@ public class Scheduler {
         this.medRecord = medRecord;
     }
 }
+
+
 
