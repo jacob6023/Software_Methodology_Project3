@@ -170,7 +170,6 @@ public class List {
                 return currAppointment;
             }
         }
-        system.out.println("Original Apointment not found");
         return null;
     }
 
