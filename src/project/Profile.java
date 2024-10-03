@@ -10,12 +10,6 @@ public class Profile implements Comparable<Profile>{
     private Date dob;
 
     /**
-     * TODO: You MUST design the test cases to thoroughly test the compareTo() method, or you will lose 7 points.  The method compares last name, first name, and then dob for sorting.
-     * Follow the instructions under the  “Test Design” section in the Coding Standard and include the test cases in the test specification.
-     * TODO: You MUST include a testbed main() in this class or lose 8 points. You CAN use System.out in the  testbed main() to display the test results.
-     */
-
-    /**
      * String
      * @return
      */
