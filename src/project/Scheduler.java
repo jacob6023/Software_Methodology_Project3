@@ -98,13 +98,13 @@ public class Scheduler {
             System.out.println("Invalid DOB");
         }
 
-//        Profile patientProfile = new Profile( patientFirstName, patientLastName,patientDOB);
-//        Appointment newAppointment = new Appointment(appointmentDate, timeslot, patientProfile, provider);
+        Profile patientProfile = new Profile( patientFirstName, patientLastName,patientDOB);
+       // Appointment newAppointment = new Appointment(appointmentDate, timeslot, patientProfile, provider);
 //
 //
 //
-//        appointments.add(newAppointment);
-        Profile patientProfile = new Profile(patientFirstName, patientLastName, patientDOB);
+   //     appointments.add(newAppointment);
+    //    Profile patientProfile = new Profile(patientFirstName, patientLastName, patientDOB);
 
         // Check if an appointment already exists for this patient, date, and timeslot
         if (appointments.appointmentExists(patientProfile, timeslot, appointmentDate)) {
