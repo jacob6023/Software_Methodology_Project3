@@ -301,17 +301,18 @@ public class Scheduler {
         Date appointmentDate = new Date(tokens[1].trim()); // Getting appointment date
 
         // Handling timeslot
-        String slotNumString = tokens[2].trim();
+        String ogSlotNumString = tokens[2].trim();
+        int ogSlotNum;
         Timeslot timeslot  = null;
         try{
-            int slotNum = Integer.parseInt(slotNumString);
-            if(slotNum < 1 || slotNum > 6){
-                System.out.println(slotNumString + " is not a valid time slot.");
+            ogSlotNum = Integer.parseInt(ogSlotNumString);
+            if(ogSlotNum < 1 || ogSlotNum > 6){
+                System.out.println(ogSlotNumString + " is not a valid time slot.");
                 return;
             }
-            timeslot = Timeslot.valueOf("SLOT" + slotNum);
+            timeslot = Timeslot.valueOf("SLOT" + ogSlotNum);
         } catch (NumberFormatException e) {
-            System.out.println(slotNumString + " is not a valid time slot.");
+            System.out.println(ogSlotNumString + " is not a valid time slot.");
             return;
         }
 
@@ -345,16 +346,16 @@ public class Scheduler {
         // Getting new timeslot to reschedule
         String newSlotNumString = tokens[6].trim();
         Timeslot rescheduledTimeslot  = null;
-        int slotNum;
+        int newSlotNum;
         try{
-            slotNum = Integer.parseInt(newSlotNumString);
-            if(slotNum < 1 || slotNum > 6){
-                System.out.println(slotNumString + " is not a valid time slot.");
+            newSlotNum = Integer.parseInt(newSlotNumString);
+            if(newSlotNum < 1 || newSlotNum > 6){
+                System.out.println(newSlotNumString + " is not a valid time slot.");
                 return;
             }
-            rescheduledTimeslot = Timeslot.valueOf("SLOT" + slotNum);
+            rescheduledTimeslot = Timeslot.valueOf("SLOT" + newSlotNum);
         } catch (NumberFormatException e) {
-            System.out.println(slotNumString + " is not a valid time slot.");
+            System.out.println(newSlotNumString + " is not a valid time slot.");
             return;
         }
 
