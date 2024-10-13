@@ -1,5 +1,9 @@
 package Project_1.src.project;
 /**
+ * This is the interface used to handle appointments and medical records.
+ * Will schedule, cancel, reschedule, compute the charge a patient owes, and print out sorted lists of appointments.
+ *
+ * @author Jack Crosby
  * @author Vikram kadyan
  */
 import java.util.Scanner;
@@ -13,38 +17,52 @@ public class Scheduler {
     public List getAppointments() {return appointments;}
     public MedicalRecord getMedRecord() {return medRecord;}
 
-    // Setter for appointments
+    // Setters
     public void setAppointments(List appointments) {this.appointments = appointments;}
     public void setMedRecord(MedicalRecord medRecord) {this.medRecord = medRecord;}
 
-    // Default Constructor
+    /**
+     * Default Constructor to create scheduler with default values.
+     * Uses Appointments and MedicalRecords default constructors.
+     */
     public Scheduler() {
         this.appointments = new List();
         this.medRecord = new MedicalRecord();
     }
 
-    // Parameterized constructor
+    /**
+     * Parameterized Constructor to create the scheduler.
+     *
+     * @param appointments the appointments list/calendar list being modified according to user input.
+     * @param medRecord the medical record list being modified if user schedules an appointment and has not been canceled.
+     */
     public Scheduler(List appointments, MedicalRecord medRecord) {
         this.appointments = appointments;
         this.medRecord = medRecord;
     }
 
-    // Copy Constructor
+    /**
+     * Copy Constructor to create a new scheduler with an existing scheduler.
+     *
+     * @param scheduler the scheduler whose data is being copied into new scheduler.
+     */
     public Scheduler (Scheduler scheduler){
         this.appointments = scheduler.appointments;
         this.medRecord = scheduler.medRecord;
     }
 
+    /**
+     * The interface method that runs the whole program.
+     */
     public void run() {
         System.out.println("Scheduler is running.");
         Scanner scan = new Scanner(System.in); //start scanner
         while (true) {
             String command = scan.nextLine();
             if (command.isEmpty()) {
-                // Ignore empty lines
-                continue;
+                continue; // ignore empty lines
             }
-            String comm = command.split(",")[0].trim(); // finds letter command and gets rid of space
+            String comm = command.split(",")[0].trim(); // find letter command and get rid of space
             if (!comm.equals(comm.toUpperCase())) { // check if user entered lowercase command
                 System.out.println("Invalid command!");
                 continue;
@@ -80,12 +98,16 @@ public class Scheduler {
         }
     }
 
+    /**
+     * Schedules the appointment.
+     * Handles a variety of cases that prevent the appointment from being scheduled.
+     *
+     * @param command the schedule command.
+     */
     private void scheduleAppointment(String command) {
         String[] tokens = command.split(",");
 
-        /**
-         * Handling app date cases
-         */
+        // Appointment date handling
         String appDate = tokens[1].trim(); // <------ Using for invalid calendar dates
         String [] dateSections = appDate.split("/");
         if(dateSections.length != 3){
@@ -120,6 +142,7 @@ public class Scheduler {
             return;
         }
 
+        // Timeslot handling
         String slotNumString = tokens[2].trim();
         Timeslot timeslot  = null;
         int slotNum;
@@ -136,10 +159,7 @@ public class Scheduler {
         }
 
 
-        /**
-         * Profile info
-         * handling
-         */
+        // Profile info handling
         String patientFirstName = tokens[3].trim();
         String patientLastName = tokens[4].trim();
         String patientDOBstring = tokens[5].trim(); // <------ Using for invalid dob dates
@@ -181,7 +201,7 @@ public class Scheduler {
             }
         }
 
-        // Provider. Also checking if the provider DNE
+        // Provider handling. Also checking if the provider DNE
         String providerName = tokens[6].trim();
         Provider provider;
         try {
@@ -207,9 +227,10 @@ public class Scheduler {
         appointments.add(scheduledAppointment);
         System.out.println(scheduledAppointment.toString() + " booked.");
 
+        // Create the linked List or add to linked list if patient has already had appointment
         Visit newVisit = new Visit(scheduledAppointment, null);
         Patient patient = new Patient(patientProfile, newVisit);
-        medRecord.add(patient);
+        medRecord.add(patient); // add patient to the medical record
 
     }
 
@@ -218,20 +239,24 @@ public class Scheduler {
      * appointment calendar. Since the system checks the invalid data tokens before adding the appointment to the calendar, the
      * system does not check the invalid data tokens when canceling an appointment.
      * However, the appointment being canceled may not exist in the appointment calendar
-     * @param command
+     *
+     * @param command command to cancel the appointment
      */
     private void cancelAppointment(String command) {
         String[] tokens = command.split(",");
-        Date appointmentDate = new Date(tokens[1].trim());
+        Date appointmentDate = new Date(tokens[1].trim()); // getting appointment date
 
+        // Getting Timeslot
         int slotNum = Integer.parseInt(tokens[2].trim());
         Timeslot timeslot = Timeslot.valueOf("SLOT" + slotNum);
 
+        // Getting patient profile
         String patientFirstName = tokens[3].trim();
         String patientLastName = tokens[4].trim();
         Date patientDOB = new Date(tokens[5].trim());
         Profile patientProfile = new Profile(patientFirstName, patientLastName, patientDOB);
 
+        // Getting provider
         String providerName = tokens[6].trim().toUpperCase();
         Provider provider;
         try {
@@ -241,6 +266,7 @@ public class Scheduler {
             return;
         }
 
+        // Canceling the appointment
         boolean appointmentFound = false;
         for (int i = 0; i < appointments.getSize(); i++) {
             Appointment appointment = appointments.getAppointmentAt(i);
@@ -263,17 +289,18 @@ public class Scheduler {
     }
 
     /**
-     * reschedule an appointment to a different timeslot on the same day with the same provider
-     * the system shall use the patient's profile and appointment date to uniquely identify an appointment in the appointment calendar for rescheduling
-     * the system shall check if the specified appointment exists,
-     * AND if the new timeslot indicated at the end of the command line is valid and available from the provider in the original appointment
-     * @param command
+     * Reschedule an appointment to a different timeslot on the same day with the same provider.
+     * The system shall use the patient's profile and appointment date to uniquely identify an appointment in the appointment calendar for rescheduling.
+     * The system shall check if the specified appointment exists.
+     * If the new timeslot indicated at the end of the command line is valid and available from the provider in the original appointment.
+     *
+     * @param command the reschedule command.
      */
     private void rescheduleAppointment(String command) {
         String[] tokens = command.split(",");
+        Date appointmentDate = new Date(tokens[1].trim()); // Getting appointment date
 
-        Date appointmentDate = new Date(tokens[1].trim());
-
+        // Handling timeslot
         String slotNumString = tokens[2].trim();
         Timeslot timeslot  = null;
         try{
@@ -288,11 +315,13 @@ public class Scheduler {
             return;
         }
 
+        // Getting patient profile
         String patientFirstName = tokens[3].trim();
         String patientLastName = tokens[4].trim();
         Date patientDOB = new Date(tokens[5].trim());
         Profile patientProfile = new Profile(patientFirstName, patientLastName, patientDOB);
 
+        // Finding appointment to reschedule
         // need to get the Provider. check if appointment exists and get the provider through that
         // use patient's profile and appointment date and time to uniquely identify an appointment in the calendar for rescheduling
         Provider provider = null;
@@ -301,7 +330,7 @@ public class Scheduler {
             Appointment appointment = appointments.getAppointmentAt(i);
             boolean sameProfile = appointment.getProfile().equals(patientProfile);
             boolean sameAppointmentDate = appointment.getDate().equals(appointmentDate);
-            boolean sameTimeslot = appointment.getTimeslot().name().equalsIgnoreCase(timeslot.name()); // confirm if comparing name is right
+            boolean sameTimeslot = appointment.getTimeslot().name().equalsIgnoreCase(timeslot.name());
             if (sameProfile && sameAppointmentDate && sameTimeslot) {
                 originalAppointment = appointment;
                 provider = appointment.getProvider();
@@ -313,6 +342,7 @@ public class Scheduler {
             return;
         }
 
+        // Getting new timeslot to reschedule
         String newSlotNumString = tokens[6].trim();
         Timeslot rescheduledTimeslot  = null;
         int slotNum;
@@ -342,49 +372,7 @@ public class Scheduler {
         originalAppointment.setTimeslot(rescheduledTimeslot);
         System.out.println("Rescheduled to " + originalAppointment.toString());
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//        Appointment scheduledAppointment = new Appointment(appointmentDate, null, patientProfile, provider);
-//
-//        // Process the new timeslot the user wants to reschedule to. check if valid
-//        int rescheduledSlotNum = Integer.parseInt(tokens[6].trim());
-//        if(rescheduledSlotNum < 1 || rescheduledSlotNum > 6){
-//            System.out.println("Timeslot does not exist");
-//            return;
-//        }
-//        Timeslot rescheduledTimeslot = Timeslot.valueOf("SLOT" + rescheduledSlotNum);
-//
-//        // check if the new timeslot (rescheduled timeslot) is available (at this provider)
-//        // use provider, appointmentDate, and rescheduledTimeslot
-//        for(int i = 0; i < appointments.getSize(); i++){
-//            Appointment appointment = appointments.getAppointmentAt(i);
-//            assert provider != null;
-//            boolean sameProvider = appointment.getProvider().name().equalsIgnoreCase(provider.name());
-//            boolean sameAppointmentDate = appointment.getDate().equals(appointmentDate);
-//            if(sameProvider && sameAppointmentDate){
-//                if(appointment.getTimeslot() == null) {
-//                    scheduledAppointment.setTimeslot(rescheduledTimeslot);
-//                }else{
-//                    System.out.println("Timeslot is currently booked");
-//                }
-//            }
-//
-//        }
-
     }
-
 
 }
 

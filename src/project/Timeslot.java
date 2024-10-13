@@ -1,6 +1,8 @@
 package Project_1.src.project;
 
 /**
+ * This enum provides the timeslots available for a provider.
+ *
  * @author Jack Crosby
  */
 public enum Timeslot {
@@ -14,8 +16,26 @@ public enum Timeslot {
     private final int hour;
     private final int minute;
 
+    // Getters
+    public int getHour() {return hour;}
+    public int getMinute() {return minute;}
+
     /**
-     * @return formatted string of the timeslot
+     * Parameterized Constructor to create timeslot.
+     *
+     * @param hour the hour of the timeslot.
+     * @param minute the minute of the timeslot.
+     */
+    Timeslot(int hour, int minute) {
+        this.hour = hour;
+        this.minute = minute;
+    }
+
+    /**
+     * Output the timeslot.
+     * Does not output the timeslot name, ex. SLOT3.
+     *
+     * @return formatted string of the timeslot.
      */
     @Override
     public String toString() {
@@ -25,31 +45,23 @@ public enum Timeslot {
     }
 
     /**
-     * Helper method to compute total minutes to use in compareTo
-     * @return
+     * Helper method to compute total minutes to use in compareTo.
+     *
+     * @return the total minutes.
      */
     private int toTotalMinutes() {
         return this.hour * 60 + this.minute;
     }
 
     /**
-     * compare timeslots based on total minutes
+     * Compare timeslots based on total minutes.
+     *
      * @param timeslot the object to be compared.
-     * @return < 0 if before, > 0 is after, 0 if equal
+     * @return < 0 if before, > 0 if after, 0 if equal.
      */
     public int compareTime(Timeslot timeslot) {
         return Integer.compare(this.toTotalMinutes(), timeslot.toTotalMinutes());
     }
-
-    // Constructor
-    Timeslot(int hour, int minute) {
-        this.hour = hour;
-        this.minute = minute;
-    }
-
-    // Getters
-    public int getHour() {return hour;}
-    public int getMinute() {return minute;}
 
 }
 

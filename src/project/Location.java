@@ -1,8 +1,9 @@
 package Project_1.src.project;
 
 /**
+ * This enum class defines the city locations with properties county and zip code.
+ *
  * @author Jack Crosby
- * this enum class defines the city locations with two addition properties listed below
  */
 public enum Location {
     BRIDGEWATER("Somerset", "08807"),
@@ -12,34 +13,48 @@ public enum Location {
     MORRISTOWN("Morris County", "07960"),
     CLARK("07066", "Union County");
 
+    // Instance Variables
     private final String county;
     private final String zip;
 
+    // Getters
+    public String getCounty() {return county;}
+    public String getZip() {return zip;}
+
+    /**
+     * Enum Constructor.
+     *
+     * @param county the location's county.
+     * @param zip the location's zip code.
+     */
+    Location(String county, String zip){
+        this.county = county;
+        this.zip = zip;
+    }
+
+    /**
+     * Output the enum.
+     * When calling this, we placed Location.name() + location.toString() if wanted to print out all details.
+     *
+     * @return String formatted in values count + zip. Typically, had location.name() before calling this.
+     */
     @Override
     public String toString(){
         return county + " " + zip;
     }
 
+    /**
+     * Compare the location.
+     *
+     * @param location of another appointment.
+     * @return in declaration order: -1 if before, 0 if same, 1 if after.
+     */
     public int compareLocation(Location location){
         int countyComparison = this.county.compareTo(location.getCounty());
         if(countyComparison != 0){
             return countyComparison;
         }
         return this.zip.compareTo(location.getZip());
-    }
-
-    // Constructor
-    Location(String county, String zip){
-        this.county = county;
-        this.zip = zip;
-    }
-
-    // Getters
-    public String getCounty() {
-        return county;
-    }
-    public String getZip() {
-        return zip;
     }
 
 }

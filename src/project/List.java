@@ -1,9 +1,12 @@
-/**
- * @author Vikram kadyan
- */
 package Project_1.src.project;
 import java.util.Calendar;
 
+/**
+ * This class creates a list of appointments/calendar of appointments.
+ *
+ * @author Vikram kadyan
+ * @author Jack Crosby
+ */
 public class List {
     private Appointment[] appointments;
     private int size; //num appointments in the array
@@ -19,29 +22,40 @@ public class List {
     public void setAppointments(Appointment[] appointments){this.appointments = appointments;}
     public void setSize(int size){this.size = size;}
 
-    // Parameterized Constructor
-    // TODO: handle the size increment in the scheduler interface: initially 4
+    /**
+     * Parameterized Constructor to create the list of appointments and its size.
+     *
+     * @param appointments array of appointments.
+     * @param size size of the array.
+     */
     public List(Appointment[] appointments, int size){
         this.appointments = appointments;
         this.size = size;
     }
 
-    // Default Constructor
+    /**
+     * Default constructor to initialize an empty List of default length 4 (size !=4) with nothing in it (size = 0).
+     */
     public List(){
         this.appointments = new Appointment[4];
         this.size = 0;
     }
 
-    // Copy Constructor
+    /**
+     * Copy constructor to copy the existing List.
+     *
+     * @param copyAppointments List argument being sent to copy.
+     */
     public List(List copyAppointments){
         this.appointments = copyAppointments.getAppointments();
         this.size = copyAppointments.getSize();
     }
 
     /**
-     * Searches for an appointment in the list and returns the index, returns NOT_FOUND is appointment param appointment isn't in appointments
-     * @param appointment
-     * @return
+     * Helper method to search for an appointment in the list.
+     *
+     * @param appointment the appointment being searched for.
+     * @return NOT_FOUND if appointment isn't in appointments[].
      */
     private int find(Appointment appointment){
         for (int i = 0; i < size; i++) { // Only iterate up to size (number of valid elements)
@@ -53,8 +67,7 @@ public class List {
     }
 
     /**
-     * Helper method to increase the capacity by 4
-     * TODO: check about copying array criteria from the project documentation
+     * Helper method to increase the capacity by 4.
      */
     private void grow(){
         Appointment[] oldApps = this.appointments;
@@ -65,12 +78,20 @@ public class List {
     }
 
     /**
-     * method to determine if the appointment is in the list of appointments
+     * Method to determine if the appointment is in the list of appointments.
+     *
+     * @param appointment appointment we are determining if is in the list.
+     * @return true if list contains the argument appointment, false if not found.
      */
     public boolean contains(Appointment appointment){
         return find(appointment) != NOT_FOUND;
     }
 
+    /**
+     * Add appointment to the list.
+     *
+     * @param appointment appointment being added to the list.
+     */
     public void add(Appointment appointment){
         if (size == appointments.length) {
             grow();
@@ -81,6 +102,11 @@ public class List {
         }
     }
 
+    /**
+     * Remove appointment from the list.
+     *
+     * @param appointment appointment being removed from the list.
+     */
     public void remove(Appointment appointment){
         int appNum = find(appointment);
         if (appNum != NOT_FOUND) {
@@ -94,11 +120,12 @@ public class List {
 
     /**
      * Gets the appointment at the specified index.
-     * Use for interface when checking if the scheduling appointment's patient profile, date, and timeslot already exist
-     * Using this to iterate through the array in our interface
-     * Since appointments is a custom list class, not a built-in array, we can’t use square brackets ([]) for indexing. Provide a way to access individual appointments
+     * Use for interface when checking if the scheduling appointment's patient profile, date, and timeslot already exist.
+     * Using this to iterate through the array in our interface.
+     * Since appointments is a custom list class, not a built-in array, we can’t use square brackets ([]) for indexing. This is a way to access individual appointments
+     *
      * @param index the index of the appointment to retrieve.
-     * @return the appointment at the specified index.
+     * @return the appointment at the specified index. Index is out of bounds otherwise.
      */
     public Appointment getAppointmentAt(int index) {
         if (index < 0 || index >= size) {
@@ -108,10 +135,9 @@ public class List {
     }
 
     /**
-     * ordered by patient profile, date/timeslot
+     * Print the list ordered by patient profile, date/timeslot
      * PP command to display the list of appointments,
-     * sorted by the patient (by last name, first name, date of birth -->
-     * --> then appointment date and time
+     * sorted by the patient by last name, first name, date of birth, appointment date, appointment time.
      */
     public void printByPatient(){
         if(size == 0) System.out.println("The schedule calendar is empty.");
@@ -151,8 +177,8 @@ public class List {
     }
 
     /**
-     * ordered by county, date/timeslot
-     * PL command to display the list of appointments, sorted by the county name, then the appointment date and time.
+     * Print the list ordered by county, date/timeslot.
+     * PL command to display the list of appointments, sorted by the county name, appointment date, appointment time.
      */
     public void printByLocation(){
         if(size == 0) System.out.println("The schedule calendar is empty.");
@@ -193,8 +219,8 @@ public class List {
     }
 
     /**
-     * ordered by date/timeslot, provider name
-     * PA command to display the list of appointments, sorted by appointment date, time, then provider’s name
+     * Print the list ordered by date/timeslot, provider name.
+     * PA command to display the list of appointments, sorted by appointment date, appointment time, provider’s name.
      */
     public void printByAppointment(){
         if(size == 0) System.out.println("The schedule calendar is empty.");
@@ -232,9 +258,5 @@ public class List {
         }
     }
 
-
-
-
-
-    }
+}
 

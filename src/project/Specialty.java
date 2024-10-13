@@ -1,6 +1,8 @@
 package Project_1.src.project;
-/* this enum class defines the providers' specialties with an additional property "charge", which defines the charge per visit*/
+
 /**
+ *  This enum class defines the providers' specialties with an additional property "charge", which defines the charge per visit.
+ *
  * @author Jack Crosby
  */
 public enum Specialty {
@@ -10,24 +12,29 @@ public enum Specialty {
 
     private final int charge;
 
-    @Override
-    public String toString(){
-        return String.valueOf(this.charge);
+    // Getter
+    public int getCharge() {
+        return charge;
     }
 
     /**
-     * Constructor
-     * @param charge
+     * Parameterized Constructor to create Specialty.
+     *
+     * @param charge the charge of the enum value it's associated with.
      */
     Specialty(int charge) {
         this.charge = charge;
     }
 
     /**
-     * Getter
-     * @return
+     * Output the charge.
+     * Only outputs the charge and not the name, if wanted to do both would do Speciality.name() + Specialty.toString()
+     *
+     * @return String value of the charge associated with the enum name.
      */
-    public int getCharge() {
-        return charge;
+    @Override
+    public String toString(){
+        return String.valueOf(this.charge);
     }
+
 }

@@ -2,6 +2,8 @@ package Project_1.src.project;
 import java.util.Calendar;
 
 /**
+ * This class represents the date of either the appointment or the patient profile's date of birth.
+ *
  * @author Jack Crosby
  */
 public class Date implements Comparable<Date>{
@@ -9,12 +11,12 @@ public class Date implements Comparable<Date>{
     private int month;
     private int day;
 
-    // use -1 to assign for default constructor
+    // Constants to assign for default constructor or use for invalid date
     public static final int INVALID_YEAR = -1;
     public static final int INVALID_MONTH = -1;
     public static final int INVALID_DAY = -1;
 
-    // Constants to avoid magic numbers
+    // Constants to use for months
     public static final int JANUARY = 1;
     public static final int FEBRUARY = 2;
     public static final int MARCH = 3;
@@ -28,7 +30,7 @@ public class Date implements Comparable<Date>{
     public static final int NOVEMBER = 11;
     public static final int DECEMBER = 12;
 
-    public static final int MIN_YEAR = 1; // Example for a minimum valid year
+    public static final int MIN_YEAR = 1;
 
     // Constants for leap year rules
     public static final int QUADRENNIAL = 4;
@@ -40,9 +42,65 @@ public class Date implements Comparable<Date>{
             0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
     };
 
+    // Getters
+    public int getYear(){return year;}
+    public int getMonth(){return month;}
+    public int getDay(){return day;}
+
+    // Setters
+    public void setYear(int year){this.year = year;}
+    public void setMonth(int month){this.month = month;}
+    public void setDay(int day){this.day = day;}
+
     /**
-     * Helper method for isValid()
-     * @return true if leap year
+     * Default Constructor to set the date to invalid.
+     */
+    public Date(){
+        this.year = INVALID_YEAR;
+        this.month =  INVALID_MONTH;
+        this.day = INVALID_DAY;
+    }
+
+    /**
+     * Parameterized Constructor to handle if the argument is in a String argument instead of three integers.
+     *
+     * @param dateStr the date being sent in String data type.
+     */
+    public Date(String dateStr) {
+        String[] parts = dateStr.split("/");
+        this.month = Integer.parseInt(parts[0].trim());
+        this.day = Integer.parseInt(parts[1].trim());
+        this.year = Integer.parseInt(parts[2].trim());
+    }
+
+    /**
+     * Copy Constructor to copy the Date from an existing Date.
+     *
+     * @param copyDate the Date being passed.
+     */
+    public Date(Date copyDate){
+        this.year = copyDate.year;
+        this.month = copyDate.month;
+        this.day = copyDate.day;
+    }
+
+    /**
+     * Parameter Constructor to create a Date.
+     *
+     * @param year the year of the appointment or patient's date of birth.
+     * @param month the month of the appointment or patient's date of birth.
+     * @param day the day of the appointment or the patient's date of birth.
+     */
+    public Date(int year, int month, int day){
+        this.year = year;
+        this.month = month;
+        this.day = day;
+    }
+
+    /**
+     * Helper method for isValid() to determine if the year is a leap year.
+     *
+     * @return true if leap year.
      */
     private boolean isLeapYear() {
         if (year % QUATERCENTENNIAL == 0) {
@@ -57,8 +115,9 @@ public class Date implements Comparable<Date>{
     }
 
     /**
-     * Determine if the date is a calendar date
-     * @return True if calendar date
+     * Determine if the date is a valid calendar date.
+     *
+     * @return True if calendar date, false is not a valid calendar date.
      */
     public boolean isValid() {
         if (year < MIN_YEAR) {
@@ -77,6 +136,11 @@ public class Date implements Comparable<Date>{
         return true;
     }
 
+    /**
+     * Helper method for isToday & isDayBeforeToday & isWeekend & isFutureDate & isNotWithinSixMonths & realDOB.
+     *
+     * @return calendar to give the current date.
+     */
     private Calendar toCalendar() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, this.year);
@@ -85,7 +149,11 @@ public class Date implements Comparable<Date>{
         return calendar;
     }
 
-    // check if the date is today
+    /**
+     * Check if the date is today's actual calendar date.
+     *
+     * @return true if date is today, false otherwise.
+     */
     public boolean isToday() {
         Calendar today = Calendar.getInstance();
         Calendar date = toCalendar();
@@ -94,7 +162,11 @@ public class Date implements Comparable<Date>{
                 today.get(Calendar.DAY_OF_MONTH) == date.get(Calendar.DAY_OF_MONTH);
     }
 
-    // check if the date is a day before today
+    /**
+     * Check if the date is the day before today's actual calendar date.
+     *
+     * @return true if day before today, false otherwise.
+     */
     public boolean isDayBeforeToday() {
         Calendar today = Calendar.getInstance();
         Calendar date = toCalendar();
@@ -104,14 +176,22 @@ public class Date implements Comparable<Date>{
                 today.get(Calendar.DAY_OF_MONTH) == date.get(Calendar.DAY_OF_MONTH);
     }
 
-    // Method to check if the date is on a Saturday or Sunday
+    /**
+     * Check if date is a weekend date.
+     *
+     * @return true if date is weekend, false otherwise.
+     */
     public boolean isWeekend() {
         Calendar date = toCalendar();
         int dayOfWeek = date.get(Calendar.DAY_OF_WEEK);
         return dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY;
     }
 
-    // Method to check if the date is not within six months from today
+    /**
+     * Check is date is NOT within six months from today.
+     *
+     * @return true if not within six months from today, false otherwise.
+     */
     public boolean isNotWithinSixMonthsFromToday() {
         Calendar today = Calendar.getInstance();
         Calendar sixMonthsFromToday = Calendar.getInstance();
@@ -119,30 +199,31 @@ public class Date implements Comparable<Date>{
         return toCalendar().after(sixMonthsFromToday); // Check if date is after six months from today
     }
 
+    /**
+     * Check if date is a future date.
+     *
+     * @return true if date is a future date, false otherwise.
+     */
     private boolean isFutureDate() {
         Calendar today = Calendar.getInstance();
         return this.toCalendar().after(today);
     }
 
     /**
+     * Check if the date of birth is a real date.
      *
-     * @return True if not: today, day before today, weekend, within six months
+     * @return true if real date of birth, false otherwise.
      */
-    public boolean schedulableDate() {
-        return !isToday() &&
-                !isDayBeforeToday() &&
-                !isWeekend() &&
-                !isNotWithinSixMonthsFromToday();
-    }
-
     public boolean realDOB(){
         return !isToday() && !isFutureDate();
     }
 
     /**
-     * Compare if same date
-     * @param obj
-     * @return true if same date, false otherwise
+     * Equals method to see if instance of date is equal to the argument.
+     * See if the date is the same.
+     *
+     * @param obj the object being compared to.
+     * @return true if instance date equals the parameter object, false otherwise.
      */
     @Override
     public boolean equals(Object obj){
@@ -153,9 +234,9 @@ public class Date implements Comparable<Date>{
     }
 
     /**
-     * make the date a String
-     * @return date in String
-     * TODO: change if single digit
+     * Output date.
+     *
+     * @return date in String format mm/dd/yyyy.
      */
     @Override
     public String toString(){
@@ -163,8 +244,10 @@ public class Date implements Comparable<Date>{
     }
 
     /**
-     * @param date the object to be compared.
-     * @return -1 if less. 0 if equal. 1 if greater
+     * CompareTo for comparing instance date to argument date.
+     *
+     * @param date the date to be compared.
+     * @return -1 if date is before, 0 if same, 1 if after.
      */
     @Override
     public int compareTo(Date date){
@@ -173,13 +256,11 @@ public class Date implements Comparable<Date>{
         } else if (this.year > date.year) {
             return 1;
         }
-
         if (this.month < date.month) {
             return -1;
         } else if (this.month > date.month) {
             return 1;
         }
-
         if (this.day < date.day) {
             return -1;
         } else if (this.day > date.day) {
@@ -189,61 +270,10 @@ public class Date implements Comparable<Date>{
     }
 
     /**
-     * Getter methods
+     * Test bed to test this class.
+     *
+     * @param args the test cases inputted through command line.
      */
-    public int getYear(){return year;}
-    public int getMonth(){return month;}
-    public int getDay(){return day;}
-
-    /**
-     * Setter methods
-     */
-    public void setYear(int year){this.year = year;}
-    public void setMonth(int month){this.month = month;}
-    public void setDay(int day){this.day = day;}
-
-    /**
-     * Default Constructor
-     */
-    public Date(){
-        this.year = INVALID_YEAR;
-        this.month =  INVALID_MONTH;
-        this.day = INVALID_DAY;
-    }
-
-
-    /**
-     * Constructor to handle if the scheduler threw in a String argument instead of three integers
-     * @param dateStr
-     */
-    public Date(String dateStr) {
-        String[] parts = dateStr.split("/");
-        this.month = Integer.parseInt(parts[0].trim());
-        this.day = Integer.parseInt(parts[1].trim());
-        this.year = Integer.parseInt(parts[2].trim());
-    }
-
-    /**
-     * Copy Constructor
-     * deep copying: If the instance variables are objects, create new instances of those objects within the constructor and initialize them with the values from the argument object. This is called deep copying and ensures that changes to the copied object do not affect the original object.
-     * @param copyDate: a copy of an object already initialized
-     */
-    public Date(Date copyDate){
-        this.year = copyDate.year;
-        this.month = copyDate.month;
-        this.day = copyDate.day;
-    }
-
-    /**
-     * Parameter Constructor
-     * dealing with the boolean isValid()? CHECK
-     */
-    public Date(int year, int month, int day){
-        this.year = year;
-        this.month = month;
-        this.day = day;
-    }
-
     public static void main(String[] args) {
         // Test cases for valid dates
         Date validDate1 = new Date(2024, FEBRUARY, 29); // Leap year

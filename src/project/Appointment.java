@@ -2,6 +2,9 @@ package Project_1.src.project;
 import java.util.Calendar;
 
 /**
+ * This class represents the Appointment being scheduled and its details.
+ * Composition class of date, timeslot, profile, and provider.
+ *
  * @author Jack Crosby
  */
 public class Appointment implements Comparable<Appointment> {
@@ -10,9 +13,60 @@ public class Appointment implements Comparable<Appointment> {
     private Profile patient;
     private Provider provider;
 
+    // Getters
+    public Date getDate() {return date;}
+    public Timeslot getTimeslot() {return timeslot;}
+    public Profile getProfile() {return patient;}
+    public Provider getProvider() {return provider;}
+
+    // Setters
+    public void setDate(Date date) {this.date = date;}
+    public void setTimeslot(Timeslot timeslot) {this.timeslot = timeslot;}
+    public void setProfile(Profile patient) {this.patient = patient;}
+    public void setProvider(Provider provider) {this.provider = provider;}
+
     /**
-     * @param obj
-     * @return true if two appointments have the same date, timeslot, and patient; return false otherwise
+     * Default constructor to initialize the data to null.
+     */
+    public Appointment() {
+        this.date = null;
+        this.timeslot = null;
+        this.patient = null;
+        this.provider = null;
+    }
+
+    /**
+     * Copy Constructor to copy the data from an existing appointment object.
+     *
+     * @param copyAppointment: appointment of an object already initialized.
+     */
+    public Appointment(Appointment copyAppointment) {
+        this.date = copyAppointment.date;
+        this.timeslot = copyAppointment.timeslot;
+        this.patient = copyAppointment.patient;
+        this.provider = copyAppointment.provider;
+    }
+
+    /**
+     * Parameterized Constructor to create a new appointment.
+     *
+     * @param date the appointment date.
+     * @param timeslot the appointment timeslot.
+     * @param patient the patient scheduling the appointment.
+     * @param provider the provider the appointment is for.
+     */
+    public Appointment(Date date, Timeslot timeslot, Profile patient, Provider provider) {
+        this.date = date;
+        this.timeslot = timeslot;
+        this.patient = patient;
+        this.provider = provider;
+    }
+
+    /**
+     * Equals method to determine if instance of object appointment is equal to the argument.
+     *
+     * @param obj the object this Appointment is being compared to.
+     * @return true if two appointments have the same date, timeslot, and patient; return false otherwise.
      */
     @Override
     public boolean equals(Object obj){
@@ -23,7 +77,9 @@ public class Appointment implements Comparable<Appointment> {
     }
 
     /**
-     * @return a textual representation of an  appointment
+     * toString() method to make the appointment data into format: appointment date, appointment timeslot, patient info, provider info.
+     *
+     * @return a String representation of appointment.
      */
     @Override
     public String toString() {
@@ -31,9 +87,11 @@ public class Appointment implements Comparable<Appointment> {
     }
 
     /**
-     * Uses Object Date compareTo and Timeslot's compareTo
-     * @param app: the appointment we are comparing the object to
-     * @return 0 if same time, -1 if earlier, +1 if later date
+     * CompareTo method that compares an appointment with argument Appointment app.
+     * Uses Object Date's compareTo and Timeslot's compareTo.
+     *
+     * @param app: the appointment we are comparing the object to.
+     * @return 0 if same time, -1 if earlier, +1 if later date.
      */
     @Override
     public int compareTo(Appointment app){
@@ -53,56 +111,6 @@ public class Appointment implements Comparable<Appointment> {
         }
         return 0;
     }
-
-    // Getters
-    public Date getDate() {return date;}
-    public Timeslot getTimeslot() {return timeslot;}
-    public Profile getProfile() {return patient;}
-    public Provider getProvider() {return provider;}
-
-    // Setters
-    public void setDate(Date date) {this.date = date;}
-    public void setTimeslot(Timeslot timeslot) {this.timeslot = timeslot;}
-    public void setProfile(Profile patient) {this.patient = patient;}
-    public void setProvider(Provider provider) {this.provider = provider;}
-
-    /**
-     * Default constructor
-     * if the argument is of a type object, send it to the object's default constructor
-     * otherwise set it to a constant
-     */
-    public Appointment() {
-        this.date = null;
-        this.timeslot = null;
-        this.patient = null;
-        this.provider = null;
-    }
-
-    /**
-     * Copy Constructor
-     * @param copyAppointment: appointment of an object already initialized
-     */
-    public Appointment(Appointment copyAppointment) {
-        this.date = copyAppointment.date;
-        this.timeslot = copyAppointment.timeslot;
-        this.patient = copyAppointment.patient;
-        this.provider = copyAppointment.provider;
-    }
-
-    /**
-     * Parameterized Constructor
-     * @param date
-     * @param timeslot
-     * @param patient
-     * @param provider
-     */
-    public Appointment(Date date, Timeslot timeslot, Profile patient, Provider provider) {
-        this.date = date;
-        this.timeslot = timeslot;
-        this.patient = patient;
-        this.provider = provider;
-    }
-
 
 }
 

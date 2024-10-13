@@ -1,6 +1,8 @@
 package Project_1.src.project;
 
 /**
+ * This enum class is the provider that takes the appointment and contains enums Location and Specialty as its values.
+ *
  * @author Jack Crosby
  */
 public enum Provider {
@@ -16,20 +18,15 @@ public enum Provider {
     private final Location location;
     private final Specialty specialty;
 
-    /**
-     * Converts the location and speciality value of the enum toString
-     * @return
-     */
-    @Override
-    public String toString() {
-        return  "[" + this.name() + ", " + this.location.name() + ", " + this.location.toString() + ", " + this.specialty.name() + "]"  ;
-       // return location.toString() + specialty.name();
-    }
+    // Getters
+    public Location getLocation() {return location;}
+    public Specialty getSpecialty() {return specialty;}
 
     /**
-     * Constructor
-     * @param location
-     * @param specialty
+     * Parameterized Constructor to create the provider enum.
+     *
+     * @param location the location of the provider.
+     * @param specialty the specialty of the provider.
      */
     Provider(Location location, Specialty specialty) {
         this.location = location;
@@ -37,11 +34,16 @@ public enum Provider {
     }
 
     /**
-     * Getters
-     * @return
+     * Output the provider.
+     *
+     * @return String in format "[provider name, provider location, provider location county, provider location zip, provider speciality]".
      */
-    public Location getLocation() {return location;}
-    public Specialty getSpecialty() {return specialty;}
+    @Override
+    public String toString() {
+        return  "[" + this.name() + ", " + this.location.name() + ", " + this.location.toString() + ", " + this.specialty.name() + "]"  ;
+       // return location.toString() + specialty.name();
+    }
+
 }
 
 
