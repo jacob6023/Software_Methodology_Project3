@@ -20,20 +20,21 @@ public enum Location {
         return county + " " + zip;
     }
 
-    /**
-     * Constructor
-     * @param county
-     * @param zip
-     */
+    public int compareLocation(Location location){
+        int countyComparison = this.county.compareTo(location.getCounty());
+        if(countyComparison != 0){
+            return countyComparison;
+        }
+        return this.zip.compareTo(location.getZip());
+    }
+
+    // Constructor
     Location(String county, String zip){
         this.county = county;
         this.zip = zip;
     }
 
-    /**
-     * getters
-     * @return
-     */
+    // Getters
     public String getCounty() {
         return county;
     }

@@ -8,199 +8,233 @@ public class List {
     private Appointment[] appointments;
     private int size; //num appointments in the array
 
-
+    // Constant int to indicate if appointment has not been found
     private final int NOT_FOUND = -1;
 
-    // Method to check if an appointment with the same patient, profile, and timeslot already exists
-    public boolean appointmentExists(Profile patient, Timeslot timeslot, Date date) {
-        for (int i = 0; i < size; i++) {
-            Appointment currAppointment = appointments[i];
-            if (currAppointment.getProfile().equals(patient) &&
-                    currAppointment.getTimeslot() == timeslot &&
-                    currAppointment.getDate().equals(date)) {
-                return true; // Appointment already exists
-            }
-        }
-        return false;
+    //Getters
+    public Appointment[] getAppointments(){return appointments;}
+    public int getSize(){return size;}
+
+    //setters
+    public void setAppointments(Appointment[] appointments){this.appointments = appointments;}
+    public void setSize(int size){this.size = size;}
+
+    // Parameterized Constructor
+    // TODO: handle the size increment in the scheduler interface: initially 4
+    public List(Appointment[] appointments, int size){
+        this.appointments = appointments;
+        this.size = size;
     }
 
-    // Method to check if a provider is available at a specific timeslot and date
-    public boolean isProviderAvailable(Provider provider, Timeslot timeslot, Date date) {
-        for (int i = 0; i < size; i++) {
-            Appointment currAppointment = appointments[i];
-            if (currAppointment.getProvider() == provider &&
-                    currAppointment.getTimeslot() == timeslot &&
-                    currAppointment.getDate().equals(date)) {
-                return false; // Provider is not available
-            }
-        }
-        return true; // Provider is available
+    // Default Constructor
+    public List(){
+        this.appointments = new Appointment[4];
+        this.size = 0;
     }
 
+    // Copy Constructor
+    public List(List copyAppointments){
+        this.appointments = copyAppointments.getAppointments();
+        this.size = copyAppointments.getSize();
+    }
 
-    private int find(Appointment appointment) { //helper method
-        for (int i = 0; i < appointments.length; i++){
-            if (this.appointments[i].equals(appointment)){
+    /**
+     * Searches for an appointment in the list and returns the index, returns NOT_FOUND is appointment param appointment isn't in appointments
+     * @param appointment
+     * @return
+     */
+    private int find(Appointment appointment){
+        for (int i = 0; i < size; i++) { // Only iterate up to size (number of valid elements)
+            if (appointments[i].equals(appointment)) {
                 return i;
             }
         }
         return NOT_FOUND;
     }
 
-    private void grow() { //helper method to increase the capacity by 4
-        int capInc = 4;
-        Appointment [] temp = new Appointment[this.appointments.length + capInc];
-        for (int i = 0; i < size; i++) {
-            temp[i] = appointments[i];
+    /**
+     * Helper method to increase the capacity by 4
+     * TODO: check about copying array criteria from the project documentation
+     */
+    private void grow(){
+        Appointment[] oldApps = this.appointments;
+        this.appointments = new Appointment[appointments.length + 4];
+        for(int i = 0; i < oldApps.length; i++){
+            appointments[i] = oldApps[i];
         }
-        this.appointments = temp;
     }
 
+    /**
+     * method to determine if the appointment is in the list of appointments
+     */
     public boolean contains(Appointment appointment){
         return find(appointment) != NOT_FOUND;
     }
-
 
     public void add(Appointment appointment){
         if (size == appointments.length) {
             grow();
         }
-        appointments[size] = appointment;
-        this.size++;
+        if(find(appointment) == NOT_FOUND){
+            appointments[size] = appointment;
+            size++;
+        }
     }
 
     public void remove(Appointment appointment){
-        int index = this.find(appointment);
-        if (index != NOT_FOUND) {
-            for (int i = index; i < size; i++) {
-                this.appointments[i] = this.appointments[i+1];
+        int appNum = find(appointment);
+        if (appNum != NOT_FOUND) {
+            for (int i = appNum; i < size - 1; i++) {
+                appointments[i] = appointments[i + 1];  // Shift elements left
             }
-        this.size--;
+            appointments[size - 1] = null;
+            size--;
         }
     }
 
+    /**
+     * Gets the appointment at the specified index.
+     * Use for interface when checking if the scheduling appointment's patient profile, date, and timeslot already exist
+     * Using this to iterate through the array in our interface
+     * Since appointments is a custom list class, not a built-in array, we can’t use square brackets ([]) for indexing. Provide a way to access individual appointments
+     * @param index the index of the appointment to retrieve.
+     * @return the appointment at the specified index.
+     */
+    public Appointment getAppointmentAt(int index) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("Invalid index: " + index);
+        }
+        return appointments[index];
+    }
 
-    public void printByPatient() { //ordered by patient profile, date/timeslot
-        //sorts by last name, first name, dob, then appointment date and time
-        for (int i = 0; i < size - 1; i++) {
-            int minimumIndex = i;
-            for (int j = i + 1; j < size; j++) {
-                int comparison = appointments[j].getProfile().compareTo(appointments[minimumIndex].getProfile());
+    /**
+     * ordered by patient profile, date/timeslot
+     * PP command to display the list of appointments,
+     * sorted by the patient (by last name, first name, date of birth -->
+     * --> then appointment date and time
+     */
+    public void printByPatient(){
+        if(size == 0) System.out.println("The schedule calendar is empty.");
+        for(int i = 0; i < size - 1; i++){
+            for(int j = i + 1; j < size; j++){
+                int compareProfile = appointments[i].getProfile().compareTo(appointments[j].getProfile());
+                if(compareProfile > 0){ // < 0: alphabet comes before: a comes before b returns < 0
+                    Appointment temp = appointments[i];
+                    appointments[i] = appointments[j];
+                    appointments[j] = temp;
+                } else if(compareProfile == 0){ // same profile but could have multiple appointments
+                    int compareDate = appointments[i].getDate().compareTo(appointments[j].getDate());
+                    if(compareDate > 0){ // < 0 if the  number is smaller than compared num
+                        Appointment temp = appointments[i];
+                        appointments[i] = appointments[j];
+                        appointments[j] = temp;
+                    } else if(compareDate == 0){ // very specific case: same profile and same date
+                        int compareTime = appointments[i].getTimeslot().compareTime(appointments[j].getTimeslot());
+                        if(compareTime > 0){
+                            Appointment temp = appointments[i];
+                            appointments[i] = appointments[j];
+                            appointments[j] = temp;
+                        }
+                    }
+                }
+            }
+        }
+        if(size != 0){
+            System.out.println("** Appointments ordered by patient/date/time **");
+            for(int k = 0; k < size; k++){
+                System.out.println(appointments[k].toString());
+            }
+            System.out.println("** end of list **");
+            System.out.println();
+        }
 
-                if (comparison < 0) {
-                    minimumIndex = j;
-                } else if (comparison == 0) {
-                    int dateComp = appointments[j].getDate().compareTo(appointments[minimumIndex].getDate());
-                    if (dateComp < 0) {
-                        minimumIndex = j;
-                    } else if (dateComp == 0) {
-                        int timeComp = appointments[j].getTimeslot().compareTime(appointments[minimumIndex].getTimeslot());
-                        if (timeComp < 0) {
-                            minimumIndex = j;
+    }
+
+    /**
+     * ordered by county, date/timeslot
+     * PL command to display the list of appointments, sorted by the county name, then the appointment date and time.
+     */
+    public void printByLocation(){
+        if(size == 0) System.out.println("The schedule calendar is empty.");
+        for(int i = 0; i < size - 1; i++){
+            for(int j = i + 1; j < size; j++){
+                int compareCounty = appointments[i].getProvider().getLocation().compareTo(appointments[j].getProvider().getLocation());
+                if(compareCounty > 0){
+                    Appointment temp = appointments[i];
+                    appointments[i] = appointments[j];
+                    appointments[j] = temp;
+                }else if(compareCounty == 0){
+                    int compareDate = appointments[i].getDate().compareTo(appointments[j].getDate());
+                    if(compareDate > 0){
+                        Appointment temp = appointments[i];
+                        appointments[i] = appointments[j];
+                        appointments[j] = temp;
+                    }else if(compareDate == 0){
+                        int compareTimeslot = appointments[i].getTimeslot().compareTime(appointments[j].getTimeslot());
+                        if(compareTimeslot > 0){
+                            Appointment temp = appointments[i];
+                            appointments[i] = appointments[j];
+                            appointments[j] = temp;
                         }
                     }
                 }
 
-                if (minimumIndex != i) {
-                    Appointment temp = appointments[i];
-                    appointments[i] = appointments[minimumIndex];
-                    appointments[minimumIndex] = temp;
-                }
-            }
-
-
-            //prints the sorted appointments
-            for (int j = 0; j < size; i++) {
-                System.out.println(appointments[j]);
             }
         }
-    }
-        public void printByLocation(){ //ordered by county, date/timeslot
-            // Sort appointments by location, then date and time
-            for (int i = 0; i < size - 1; i++) {
-                int minimumIndex = i;
-                for (int j = i + 1; j < size; j++) {
-                    String countyA = appointments[j].getProvider().getLocation().getCounty();
-                    String countyB = appointments[minimumIndex].getProvider().getLocation().getCounty();
-                    int comparison = countyA.compareTo(countyB);
 
-                    if (comparison < 0) {
-                        minimumIndex = j;
-                    } else if (comparison == 0) {
-                        int dateComp = appointments[j].getDate().compareTo(appointments[minimumIndex].getDate());
-                        if (dateComp < 0) {
-                            minimumIndex = j;
-                        } else if (dateComp == 0) {
-                            int timeComp = appointments[j].getTimeslot().compareTime(appointments[minimumIndex].getTimeslot());
-                            if (timeComp < 0) {
-                                minimumIndex = j;
-                            }
+        if(size != 0){
+            System.out.println("** Appointments ordered by county/date/time **");
+            for(int k = 0; k < size; k++){
+                System.out.println(appointments[k].toString());
+            }
+            System.out.println("** end of list ** ");
+            System.out.println();
+        }
+    }
+
+    /**
+     * ordered by date/timeslot, provider name
+     * PA command to display the list of appointments, sorted by appointment date, time, then provider’s name
+     */
+    public void printByAppointment(){
+        if(size == 0) System.out.println("The schedule calendar is empty.");
+        for(int i = 0; i < size - 1; i++){
+            for(int j = i + 1; j < size; j++){
+                int compareDate = appointments[i].getDate().compareTo(appointments[j].getDate());
+                if(compareDate > 0){
+                    Appointment temp = appointments[i];
+                    appointments[i] = appointments[j];
+                    appointments[j] = temp;
+                } else if(compareDate == 0){ // if same date
+                    int compareTimeslot = appointments[i].getTimeslot().compareTime(appointments[j].getTimeslot());
+                    if(compareTimeslot > 0){
+                        Appointment temp = appointments[i];
+                        appointments[i] = appointments[j];
+                        appointments[j] = temp;
+                    } else if(compareTimeslot == 0){ // if same timeslot
+                        int compareProvider = appointments[i].getProvider().compareTo(appointments[j].getProvider());
+                        if(compareProvider > 0){ // last check to see if it's different provider
+                            Appointment temp = appointments[i];
+                            appointments[i] = appointments[j];
+                            appointments[j] = temp;
                         }
                     }
                 }
-
-                if (minimumIndex != i) {
-                    Appointment temp = appointments[i];
-                    appointments[i] = appointments[minimumIndex];
-                    appointments[minimumIndex] = temp;
-                }
-            }
-
-            // Print
-            for (int i = 0; i < size; i++) {
-                System.out.println(appointments[i]);
             }
         }
-
-        //ordered by date/timeslot, provider name
-        public void printByAppointment(){
-            for (int i = 0; i < size - 1; i++) {
-                int minimumIndex = i;
-                for (int j = i + 1; j < size; j++) {
-                    int dateComp = appointments[j].getDate().compareTo(appointments[minimumIndex].getDate());
-                    if (dateComp < 0) {
-                        minimumIndex = j;
-                    } else if (dateComp == 0) {
-                        int timeComp = appointments[j].getTimeslot().compareTime(appointments[minimumIndex].getTimeslot());
-                        if (timeComp < 0) {
-                            minimumIndex = j;
-                        } else if (timeComp == 0) {
-                            String providerA = appointments[j].getProvider().name();
-                            String providerB = appointments[minimumIndex].getProvider().name();
-                            int providerComp = providerA.compareTo(providerB);
-                            if (providerComp < 0) {
-                                minimumIndex = j;
-                            }
-                        }
-                    }
-                }
-                if (minimumIndex != i) {
-                    Appointment temp = appointments[i];
-                    appointments[i] = appointments[minimumIndex];
-                    appointments[minimumIndex] = temp;
-                }
+        if(size != 0){
+            System.out.println("** Appointments ordered by date/time/provider **");
+            for(int k = 0; k < size; k++){
+                System.out.println(appointments[k].toString());
             }
-
-            // Print
-            for (int i = 0; i < size; i++) {
-                System.out.println(appointments[i]);
-            }
+            System.out.println("** end of list **");
+            System.out.println();
         }
-
-    //identifies the appointment to be cancelled when reschedule is called
-    public Appointment identifyAppointment(Profile patient,  Provider provider, Timeslot timeslot, Date date) {
-        for (int i = 0; i <= size; i++) {
-            Appointment currAppointment = appointments[i];
-
-            if (currAppointment.getProfile().equals(patient) &&
-                    currAppointment.getProvider() == provider &&
-                    currAppointment.getTimeslot() == timeslot &&
-                    currAppointment.getDate().equals(date)) { // Added Date comparison
-                return currAppointment;
-            }
-        }
-        return null;
     }
+
+
+
+
 
     }
 

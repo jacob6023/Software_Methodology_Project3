@@ -41,22 +41,13 @@ public enum Timeslot {
         return Integer.compare(this.toTotalMinutes(), timeslot.toTotalMinutes());
     }
 
-
-
-    /**
-     * constructor
-     * @param hour
-     * @param minute
-     */
+    // Constructor
     Timeslot(int hour, int minute) {
         this.hour = hour;
         this.minute = minute;
     }
 
-    /**
-     * getters
-     * @return
-     */
+    // Getters
     public int getHour() {return hour;}
     public int getMinute() {return minute;}
 

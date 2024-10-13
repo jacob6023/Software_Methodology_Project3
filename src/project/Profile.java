@@ -21,6 +21,7 @@ public class Profile implements Comparable<Profile>{
     /**
      * compares last name as first priority, then first name, then dob (inherited by the Date class's compareTo()
      *  if profile comes before, > 0. if after, < 0, 0 if the same profile
+     *  TODO: add null check
      * @param profile the object to be compared.
      * @return
      */
@@ -30,12 +31,10 @@ public class Profile implements Comparable<Profile>{
         if (lastNameComparison != 0) {
             return lastNameComparison;
         }
-
         int firstNameComparison = this.fname.compareTo(profile.fname);
         if (firstNameComparison != 0) {
             return firstNameComparison;
         }
-
         return this.dob.compareTo(profile.dob);
     }
 
@@ -47,7 +46,9 @@ public class Profile implements Comparable<Profile>{
     @Override
     public boolean equals(Object obj){
         if(obj instanceof Profile profile){
-            return this.fname.equals(profile.fname) && this.lname.equals(profile.fname) && this.dob.equals(profile.dob);
+            return this.fname.equalsIgnoreCase(profile.fname) &&
+                    this.lname.equalsIgnoreCase(profile.lname) &&
+                    this.dob.equals(profile.dob);
         }
         return false;
     }

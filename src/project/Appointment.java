@@ -54,17 +54,13 @@ public class Appointment implements Comparable<Appointment> {
         return 0;
     }
 
-    /**
-     * getter methods
-     */
+    // Getters
     public Date getDate() {return date;}
     public Timeslot getTimeslot() {return timeslot;}
     public Profile getProfile() {return patient;}
     public Provider getProvider() {return provider;}
 
-    /**
-     * setter methods
-     */
+    // Setters
     public void setDate(Date date) {this.date = date;}
     public void setTimeslot(Timeslot timeslot) {this.timeslot = timeslot;}
     public void setProfile(Profile patient) {this.patient = patient;}

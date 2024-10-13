@@ -64,20 +64,16 @@ public class Date implements Comparable<Date>{
         if (year < MIN_YEAR) {
             return false;
         }
-
         if (month < JANUARY || month > DECEMBER) {
             return false;
         }
-
         int maxDaysInMonth = DAYS_IN_MONTH[month];
         if (month == FEBRUARY && isLeapYear()) {
             maxDaysInMonth = 29; // Adjust for leap year
         }
-
         if (day < 1 || day > maxDaysInMonth) {
             return false;
         }
-
         return true;
     }
 
@@ -89,7 +85,7 @@ public class Date implements Comparable<Date>{
         return calendar;
     }
 
-    // Method to check if the date is today
+    // check if the date is today
     public boolean isToday() {
         Calendar today = Calendar.getInstance();
         Calendar date = toCalendar();
@@ -98,7 +94,7 @@ public class Date implements Comparable<Date>{
                 today.get(Calendar.DAY_OF_MONTH) == date.get(Calendar.DAY_OF_MONTH);
     }
 
-    // Method to check if the date is a day before today
+    // check if the date is a day before today
     public boolean isDayBeforeToday() {
         Calendar today = Calendar.getInstance();
         Calendar date = toCalendar();
@@ -123,11 +119,15 @@ public class Date implements Comparable<Date>{
         return toCalendar().after(sixMonthsFromToday); // Check if date is after six months from today
     }
 
-    public boolean isFutureDate() {
+    private boolean isFutureDate() {
         Calendar today = Calendar.getInstance();
         return this.toCalendar().after(today);
     }
 
+    /**
+     *
+     * @return True if not: today, day before today, weekend, within six months
+     */
     public boolean schedulableDate() {
         return !isToday() &&
                 !isDayBeforeToday() &&
@@ -139,8 +139,6 @@ public class Date implements Comparable<Date>{
         return !isToday() && !isFutureDate();
     }
 
-
-
     /**
      * Compare if same date
      * @param obj
@@ -148,7 +146,6 @@ public class Date implements Comparable<Date>{
      */
     @Override
     public boolean equals(Object obj){
-
         if(obj instanceof Date date){
             return this.year == date.year && this.month == date.month && this.day == date.day;
         }
@@ -158,14 +155,14 @@ public class Date implements Comparable<Date>{
     /**
      * make the date a String
      * @return date in String
+     * TODO: change if single digit
      */
     @Override
     public String toString(){
-        return String.format("%02d/%02d/%d", this.month, this.day, this.year);
+        return String.format("%d/%d/%d", this.month, this.day, this.year);
     }
 
     /**
-     *
      * @param date the object to be compared.
      * @return -1 if less. 0 if equal. 1 if greater
      */
@@ -214,13 +211,17 @@ public class Date implements Comparable<Date>{
         this.day = INVALID_DAY;
     }
 
+
+    /**
+     * Constructor to handle if the scheduler threw in a String argument instead of three integers
+     * @param dateStr
+     */
     public Date(String dateStr) {
         String[] parts = dateStr.split("/");
         this.month = Integer.parseInt(parts[0].trim());
         this.day = Integer.parseInt(parts[1].trim());
         this.year = Integer.parseInt(parts[2].trim());
     }
-
 
     /**
      * Copy Constructor
