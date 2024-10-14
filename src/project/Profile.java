@@ -1,5 +1,7 @@
 package Project_1.src.project;
 
+import Project_1.src.util.Date;
+
 /**
  * This class creates the patient's profile info.
  *

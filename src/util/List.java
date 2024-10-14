@@ -1,5 +1,5 @@
-package Project_1.src.project;
-import java.util.Calendar;
+package Project_1.src.util;
+import Project_1.src.project.Appointment;
 
 /**
  * This class creates a list of appointments/calendar of appointments.

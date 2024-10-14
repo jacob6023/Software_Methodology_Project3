@@ -1,4 +1,9 @@
 package Project_1.src.project;
+import Project_1.src.util.Date;
+import Project_1.src.util.List;
+
+import java.util.Scanner;
+
 /**
  * This is the interface used to handle appointments and medical records.
  * Will schedule, cancel, reschedule, compute the charge a patient owes, and print out sorted lists of appointments.
@@ -6,8 +11,6 @@ package Project_1.src.project;
  * @author Jack Crosby
  * @author Vikram kadyan
  */
-import java.util.Scanner;
-import java.util.StringTokenizer;
 
 public class Scheduler {
     private List appointments;
@@ -68,6 +71,7 @@ public class Scheduler {
                 continue;
             }
             switch (comm) {
+                //TODO: S command n
                 case "S":
                     scheduleAppointment(command);
                     break;

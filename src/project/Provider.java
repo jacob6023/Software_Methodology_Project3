@@ -1,48 +1,101 @@
 package Project_1.src.project;
 
 /**
- * This enum class is the provider that takes the appointment and contains enums Location and Specialty as its values.
+ *
+ * TODO: This is an abstract class with an abstract method, public abstract int rate(); that returns the provider's charging rate per visit for seeing patients.
+ * This is a subclass of the Person class
+ * Extends the person class and includes instance variable Location location to keep track of the practice location
  *
  * @author Jack Crosby
  */
-public enum Provider {
-    PATEL(Location.BRIDGEWATER, Specialty.FAMILY),
-    LIM(Location.BRIDGEWATER, Specialty.PEDIATRICIAN),
-    ZIMNES(Location.CLARK, Specialty.FAMILY),
-    HARPER(Location.CLARK, Specialty.FAMILY),
-    KAUR(Location.PRINCETON, Specialty.ALLERGIST),
-    TAYLOR(Location.PISCATAWAY, Specialty.PEDIATRICIAN),
-    RAMESH(Location.MORRISTOWN, Specialty.ALLERGIST),
-    CERAVOLO(Location.EDISON, Specialty.PEDIATRICIAN);
+public abstract class Provider extends Person{
+    private Location location;
 
-    private final Location location;
-    private final Specialty specialty;
+    // Getter
+    public Location getLocation(){return location;}
 
-    // Getters
-    public Location getLocation() {return location;}
-    public Specialty getSpecialty() {return specialty;}
-
-    /**
-     * Parameterized Constructor to create the provider enum.
-     *
-     * @param location the location of the provider.
-     * @param specialty the specialty of the provider.
-     */
-    Provider(Location location, Specialty specialty) {
+    // Setter
+    public void setLocation(Location location) {
         this.location = location;
-        this.specialty = specialty;
     }
 
     /**
-     * Output the provider.
+     * Default Constructor
+     */
+    public Provider() {
+        super();
+        this.location = null;
+    }
+
+    /**
+     * Parameterized Constructor
      *
-     * @return String in format "[provider name, provider location, provider location county, provider location zip, provider speciality]".
+     * @param profile  the profile being added to the provider.
+     * @param location the location of the provider.
+     */
+    public Provider(Profile profile, Location location) {
+        super(profile);
+        this.location = location;
+    }
+
+    /**
+     * Copy Constructor
+     *
+     * @param copyProvider the Provider being copied.
+     */
+    public Provider(Provider copyProvider) {
+        super(copyProvider);
+        this.location = copyProvider.location;
+    }
+
+    /**
+     * compare just the location, since we have to display list of appointments ordered by location
+     * TODO: This implementation may suppose to be in imaging class and not here, may just call super for this one
+     *
+     * @param provider
+     * @return
+     */
+    public int compareLocation(Provider provider) {
+        return this.location.compareTo(provider.getLocation());
+    }
+
+    @Override
+    public int compareTo(Provider provider) {
+        int profileComparison = super.compareTo(provider);
+        if (profileComparison != 0) {
+            return profileComparison;
+        }
+        return this.location.compareTo(provider.location);
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if(this == object){ // both references point to the same object
+            return true;
+        }
+        if(!super.equals(object)){ // compares profile
+            return false;
+        }
+        Provider provider = (Provider) object;
+        return this.location.equals(provider.getLocation());
+    }
+
+    /**
+     * Output
+     * @return "[fname lname dob, location, county zip]
      */
     @Override
     public String toString() {
-        return  "[" + this.name() + ", " + this.location.name() + ", " + this.location.toString() + ", " + this.specialty.name() + "]"  ;
-       // return location.toString() + specialty.name();
+        return "[" + super.toString() + ", " + location.toString() + "] ";
     }
+
+    /**
+     * Abstract method that returns the provider's charging rate per visit for seeing patients.
+     * Gets either the doctor's charging rate or the technician's charging rate
+     *
+     * @return
+     */
+    public abstract int rate();
 
 }
 

@@ -1,29 +1,30 @@
 package Project_1.src.project;
-import java.util.Calendar;
+import Project_1.src.util.Date;
 
 /**
  * This class represents the Appointment being scheduled and its details.
  * Composition class of date, timeslot, profile, and provider.
+ * Parent of Imaging
  *
  * @author Jack Crosby
  */
 public class Appointment implements Comparable<Appointment> {
-    private Date date;
-    private Timeslot timeslot;
-    private Profile patient;
-    private Provider provider;
+    protected Date date;
+    protected Timeslot timeslot;
+    protected Person patient;
+    protected Person provider;
 
     // Getters
     public Date getDate() {return date;}
     public Timeslot getTimeslot() {return timeslot;}
-    public Profile getProfile() {return patient;}
-    public Provider getProvider() {return provider;}
+    public Person getPatient() {return patient;}
+    public Person getProvider() {return provider;}
 
     // Setters
     public void setDate(Date date) {this.date = date;}
     public void setTimeslot(Timeslot timeslot) {this.timeslot = timeslot;}
-    public void setProfile(Profile patient) {this.patient = patient;}
-    public void setProvider(Provider provider) {this.provider = provider;}
+    public void setPatient(Person patient) {this.patient = patient;}
+    public void setProvider(Person provider) {this.provider = provider;}
 
     /**
      * Default constructor to initialize the data to null.
@@ -55,7 +56,7 @@ public class Appointment implements Comparable<Appointment> {
      * @param patient the patient scheduling the appointment.
      * @param provider the provider the appointment is for.
      */
-    public Appointment(Date date, Timeslot timeslot, Profile patient, Provider provider) {
+    public Appointment(Date date, Timeslot timeslot, Person patient, Person provider) {
         this.date = date;
         this.timeslot = timeslot;
         this.patient = patient;
@@ -97,7 +98,6 @@ public class Appointment implements Comparable<Appointment> {
     public int compareTo(Appointment app){
         int dateComparison = this.date.compareTo(app.date);
         int timeComparison = this.timeslot.compareTime(app.timeslot);
-
         if(dateComparison > 0){
             return 1;
         }else if(dateComparison < 0){
