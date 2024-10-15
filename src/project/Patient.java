@@ -4,6 +4,7 @@ package Project_1.src.project;
  * This class uses a linked list of the amount of visits a specific patient has and computes their charge.
  * TODO: extends the Person class and includes the instance var private Visit visit; to keep track of a LL of visits.
  * This is a subclass of the Person class
+ * TODO: since Person's instance variable is proteced, we can just use .profile instead of .getProfile() since this is a subclass.
  *
  * @author Jack Crosby
  */
@@ -47,7 +48,10 @@ public class Patient extends Person{
 
     /**
      * Computes the charge by traversing the linked list Visits.
-     * TODO: may need to move this somewhere else. the function may not be here anymore
+     * instanceof: need to check if the Person instance you are working with is actually a Provider before you cast it. This way, you avoid ClassCastException errors.
+     * Once you confirm that the object is indeed a Provider, you can cast it and call the rate() method.
+     * We can do this with abstract classes, since we aren't creating an instance of the abstract class, but we are creating an instance of the subclass.
+     *polymorphism allows you to use a Provider reference (provider) to refer to any object of a subclass of Provider, such as Doctor or Technician
      *
      * @return charge of the patient.
      */
@@ -55,8 +59,9 @@ public class Patient extends Person{
         int total = 0;
         Visit currentVisit = visit;
         while (currentVisit != null){
-            if(currentVisit.getAppointment() != null && currentVisit.getAppointment().getProvider() != null && currentVisit.getAppointment().getProvider().getSpecialty() != null){
-                total += currentVisit.getAppointment().getProvider().getSpecialty().getCharge();
+            if ( (currentVisit.getAppointment() != null) && (currentVisit.getAppointment().getProvider() instanceof Provider) ) {
+                Provider provider = (Provider) currentVisit.getAppointment().getProvider(); // polymorphism.
+                total += provider.rate();
             }
             currentVisit = currentVisit.getVisit();
         }
@@ -77,15 +82,20 @@ public class Patient extends Person{
     /**
      * Print the value of charge the patient owes.
      * Calling this in medical record for the PS command.
-     * TODO: figure out dynamic binding for this. the charge method may not be here anymore
+     *
+     * TODO: amount patient owes at end of the output.txt.
      *
      * @return String of the amount the patient owes.
      */
-    //@Override
-    //public String toString() {
-    //    return String.format("%.2f", (double) charge());
-    //}
+    public String printCharge() {
+        return this.toString() + " [due: $" + String.format("%.2f", (double) charge()) + "]";
+    }
 
+    /**
+     * Output
+     * TODO: may need to print out the appointment info, since this is a LL of visits this patient has had.
+     * @return "[fname lname dob, location, county zip]
+     */
     @Override
     public String toString(){
         return super.toString();

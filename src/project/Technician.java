@@ -63,6 +63,7 @@ public class Technician extends Provider{
         return Integer.compare(ratePerVisit, technician.getRatePerVisit());
     }
 
+    @Override
     public boolean equals(Object object){
         if(this == object){
             return true;
@@ -74,6 +75,7 @@ public class Technician extends Provider{
         return this.ratePerVisit == technician.getRatePerVisit();
     }
 
+    @Override
     public String toString(){
         return super.toString() + "[rate: $" + ratePerVisit + ".00]";
     }
@@ -83,6 +85,7 @@ public class Technician extends Provider{
      *
      * @return the provider's technician charging rate per visit for seeing patients.
      */
+    @Override
     public int rate(){
         return ratePerVisit;
     }

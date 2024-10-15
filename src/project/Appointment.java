@@ -91,13 +91,13 @@ public class Appointment implements Comparable<Appointment> {
      * CompareTo method that compares an appointment with argument Appointment app.
      * Uses Object Date's compareTo and Timeslot's compareTo.
      *
-     * @param app: the appointment we are comparing the object to.
+     * @param appointment: the appointment we are comparing the object to.
      * @return 0 if same time, -1 if earlier, +1 if later date.
      */
     @Override
-    public int compareTo(Appointment app){
-        int dateComparison = this.date.compareTo(app.date);
-        int timeComparison = this.timeslot.compareTime(app.timeslot);
+    public int compareTo(Appointment appointment){
+        int dateComparison = this.date.compareTo(appointment.date);
+        int timeComparison = this.timeslot.compareTo(appointment.timeslot);
         if(dateComparison > 0){
             return 1;
         }else if(dateComparison < 0){

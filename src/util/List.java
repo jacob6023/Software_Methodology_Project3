@@ -1,65 +1,47 @@
 package Project_1.src.util;
 import Project_1.src.project.Appointment;
+import java.util.Iterator;
 
 /**
- * This class creates a list of appointments/calendar of appointments.
+ * This is a generic class for code reuse. It is a custom list class that will be used to store appointments.
+ * TODO: Always use this class whenever you want to hold a collection of objects.
+
+ * Extend this class if you need to add anything.
+ * TODO: You must use a single instance of List<Appointment> to hold a list of office and imaging appointments
+ * TODO: -> and use a single instance of List<Provider> to hold a list of all providers.
+ * ^^^^^^^^ THESE 2 INSTANCES ARE IN THE USER INTERFACE CLASS ^^^^^^^
+ * TODO: Delete Medical Record. Just do it later so you don't have a bunch of red line everywhere right now.
  *
- * @author Vikram kadyan
  * @author Jack Crosby
  */
-public class List {
-    private Appointment[] appointments;
+public class List<E> implements Iterable<E> {
+    private E[] objects;
     private int size; //num appointments in the array
 
-    // Constant int to indicate if appointment has not been found
-    private final int NOT_FOUND = -1;
-
-    //Getters
-    public Appointment[] getAppointments(){return appointments;}
-    public int getSize(){return size;}
-
-    //setters
-    public void setAppointments(Appointment[] appointments){this.appointments = appointments;}
-    public void setSize(int size){this.size = size;}
+    // Constant to indicate if appointment has not been found
+    private static final int NOT_FOUND = -1;
 
     /**
-     * Parameterized Constructor to create the list of appointments and its size.
-     *
-     * @param appointments array of appointments.
-     * @param size size of the array.
+     * Default constructor with an initial capacity/length of 4.
      */
-    public List(Appointment[] appointments, int size){
-        this.appointments = appointments;
-        this.size = size;
-    }
-
-    /**
-     * Default constructor to initialize an empty List of default length 4 (size !=4) with nothing in it (size = 0).
-     */
+    @SuppressWarnings("unchecked")
     public List(){
-        this.appointments = new Appointment[4];
+        this.objects = (E[]) new Object[4];
         this.size = 0;
-    }
-
-    /**
-     * Copy constructor to copy the existing List.
-     *
-     * @param copyAppointments List argument being sent to copy.
-     */
-    public List(List copyAppointments){
-        this.appointments = copyAppointments.getAppointments();
-        this.size = copyAppointments.getSize();
     }
 
     /**
      * Helper method to search for an appointment in the list.
      *
-     * @param appointment the appointment being searched for.
+     * @param e the appointment being searched for.
      * @return NOT_FOUND if appointment isn't in appointments[].
      */
-    private int find(Appointment appointment){
-        for (int i = 0; i < size; i++) { // Only iterate up to size (number of valid elements)
-            if (appointments[i].equals(appointment)) {
+    private int find(E e){
+        if(isEmpty()){
+            return NOT_FOUND;
+        }
+        for(int i = 0; i < size; i++){
+            if(objects[i].equals(e)) {
                 return i;
             }
         }
@@ -69,194 +51,142 @@ public class List {
     /**
      * Helper method to increase the capacity by 4.
      */
+    @SuppressWarnings({"manualArrayCopy", "unchecked"})
     private void grow(){
-        Appointment[] oldApps = this.appointments;
-        this.appointments = new Appointment[appointments.length + 4];
-        for(int i = 0; i < oldApps.length; i++){
-            appointments[i] = oldApps[i];
+        E[] temp = (E[]) new Object[objects.length + 4];
+        for(int i = 0; i < size; i++){
+            temp[i] = objects[i];
         }
+        objects = temp;
     }
 
     /**
-     * Method to determine if the appointment is in the list of appointments.
+     * Determine if the object is in the list of objects.
      *
-     * @param appointment appointment we are determining if is in the list.
+     * @param e object we are determining if is in the list.
      * @return true if list contains the argument appointment, false if not found.
      */
-    public boolean contains(Appointment appointment){
-        return find(appointment) != NOT_FOUND;
+    public boolean contains(E e){
+        return find(e) != NOT_FOUND;
     }
 
     /**
-     * Add appointment to the list.
+     * Add Object to the list.
      *
-     * @param appointment appointment being added to the list.
+     * @param e Object being added to the list.
      */
-    public void add(Appointment appointment){
-        if (size == appointments.length) {
+    public void add(E e){
+        if(isEmpty()){
             grow();
         }
-        if(find(appointment) == NOT_FOUND){
-            appointments[size] = appointment;
-            size++;
+        if(size == objects.length){
+            grow();
         }
+        objects[size] = e;
+        size++;
     }
 
     /**
      * Remove appointment from the list.
      *
-     * @param appointment appointment being removed from the list.
+     * @param e object being removed from the list.
      */
-    public void remove(Appointment appointment){
-        int appNum = find(appointment);
-        if (appNum != NOT_FOUND) {
-            for (int i = appNum; i < size - 1; i++) {
-                appointments[i] = appointments[i + 1];  // Shift elements left
-            }
-            appointments[size - 1] = null;
-            size--;
+    public void remove(E e){
+        int index = find(e);
+        if(index == NOT_FOUND){
+            return;
         }
+        for(int i = index; i < size - 1; i++){
+            objects[i] = objects[i + 1];
+        }
+        size--;
     }
 
     /**
-     * Gets the appointment at the specified index.
-     * Use for interface when checking if the scheduling appointment's patient profile, date, and timeslot already exist.
-     * Using this to iterate through the array in our interface.
-     * Since appointments is a custom list class, not a built-in array, we can’t use square brackets ([]) for indexing. This is a way to access individual appointments
+     * Determine if the object list is empty.
      *
-     * @param index the index of the appointment to retrieve.
-     * @return the appointment at the specified index. Index is out of bounds otherwise.
+     * @return true if object list is empty, false otherwise.
      */
-    public Appointment getAppointmentAt(int index) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Invalid index: " + index);
-        }
-        return appointments[index];
+    public boolean isEmpty(){
+        return size == 0;
     }
 
     /**
-     * Print the list ordered by patient profile, date/timeslot
-     * PP command to display the list of appointments,
-     * sorted by the patient by last name, first name, date of birth, appointment date, appointment time.
+     * Access size of the object list.
+     *
+     * @return size of the object list.
      */
-    public void printByPatient(){
-        if(size == 0) System.out.println("The schedule calendar is empty.");
-        for(int i = 0; i < size - 1; i++){
-            for(int j = i + 1; j < size; j++){
-                int compareProfile = appointments[i].getProfile().compareTo(appointments[j].getProfile());
-                if(compareProfile > 0){ // < 0: alphabet comes before: a comes before b returns < 0
-                    Appointment temp = appointments[i];
-                    appointments[i] = appointments[j];
-                    appointments[j] = temp;
-                } else if(compareProfile == 0){ // same profile but could have multiple appointments
-                    int compareDate = appointments[i].getDate().compareTo(appointments[j].getDate());
-                    if(compareDate > 0){ // < 0 if the  number is smaller than compared num
-                        Appointment temp = appointments[i];
-                        appointments[i] = appointments[j];
-                        appointments[j] = temp;
-                    } else if(compareDate == 0){ // very specific case: same profile and same date
-                        int compareTime = appointments[i].getTimeslot().compareTime(appointments[j].getTimeslot());
-                        if(compareTime > 0){
-                            Appointment temp = appointments[i];
-                            appointments[i] = appointments[j];
-                            appointments[j] = temp;
-                        }
-                    }
-                }
-            }
-        }
-        if(size != 0){
-            System.out.println("** Appointments ordered by patient/date/time **");
-            for(int k = 0; k < size; k++){
-                System.out.println(appointments[k].toString());
-            }
-            System.out.println("** end of list **");
-            System.out.println();
-        }
-
+    public int size(){
+        return size;
     }
 
     /**
-     * Print the list ordered by county, date/timeslot.
-     * PL command to display the list of appointments, sorted by the county name, appointment date, appointment time.
+     * Creates an iterator for the list.
+     *
+     * @return an iterator for the list.
      */
-    public void printByLocation(){
-        if(size == 0) System.out.println("The schedule calendar is empty.");
-        for(int i = 0; i < size - 1; i++){
-            for(int j = i + 1; j < size; j++){
-                int compareCounty = appointments[i].getProvider().getLocation().compareTo(appointments[j].getProvider().getLocation());
-                if(compareCounty > 0){
-                    Appointment temp = appointments[i];
-                    appointments[i] = appointments[j];
-                    appointments[j] = temp;
-                }else if(compareCounty == 0){
-                    int compareDate = appointments[i].getDate().compareTo(appointments[j].getDate());
-                    if(compareDate > 0){
-                        Appointment temp = appointments[i];
-                        appointments[i] = appointments[j];
-                        appointments[j] = temp;
-                    }else if(compareDate == 0){
-                        int compareTimeslot = appointments[i].getTimeslot().compareTime(appointments[j].getTimeslot());
-                        if(compareTimeslot > 0){
-                            Appointment temp = appointments[i];
-                            appointments[i] = appointments[j];
-                            appointments[j] = temp;
-                        }
-                    }
-                }
-
-            }
-        }
-
-        if(size != 0){
-            System.out.println("** Appointments ordered by county/date/time **");
-            for(int k = 0; k < size; k++){
-                System.out.println(appointments[k].toString());
-            }
-            System.out.println("** end of list ** ");
-            System.out.println();
-        }
+    public Iterator<E> iterator(){
+        return new ListIterator<E>();
     }
 
     /**
-     * Print the list ordered by date/timeslot, provider name.
-     * PA command to display the list of appointments, sorted by appointment date, appointment time, provider’s name.
+     * Return the object at the index.
+     *
+     * @param index the index of the object.
+     * @return the object at the at index.
      */
-    public void printByAppointment(){
-        if(size == 0) System.out.println("The schedule calendar is empty.");
-        for(int i = 0; i < size - 1; i++){
-            for(int j = i + 1; j < size; j++){
-                int compareDate = appointments[i].getDate().compareTo(appointments[j].getDate());
-                if(compareDate > 0){
-                    Appointment temp = appointments[i];
-                    appointments[i] = appointments[j];
-                    appointments[j] = temp;
-                } else if(compareDate == 0){ // if same date
-                    int compareTimeslot = appointments[i].getTimeslot().compareTime(appointments[j].getTimeslot());
-                    if(compareTimeslot > 0){
-                        Appointment temp = appointments[i];
-                        appointments[i] = appointments[j];
-                        appointments[j] = temp;
-                    } else if(compareTimeslot == 0){ // if same timeslot
-                        int compareProvider = appointments[i].getProvider().compareTo(appointments[j].getProvider());
-                        if(compareProvider > 0){ // last check to see if it's different provider
-                            Appointment temp = appointments[i];
-                            appointments[i] = appointments[j];
-                            appointments[j] = temp;
-                        }
-                    }
-                }
-            }
-        }
-        if(size != 0){
-            System.out.println("** Appointments ordered by date/time/provider **");
-            for(int k = 0; k < size; k++){
-                System.out.println(appointments[k].toString());
-            }
-            System.out.println("** end of list **");
-            System.out.println();
-        }
+    public E get(int index){
+        return objects[index];
     }
 
-}
+    /**
+     * Put the object e at the index.
+     *
+     * @param index the index to put the object at.
+     * @param e the object to put at the index.
+     */
+    public void set(int index, E e){
+        objects[index] = e;
+    }
 
+    /**
+     * Get the index of the object.
+     *
+     * @param e the object to find.
+     * @return index of the object or -1.
+     */
+    public int indexOf(E e){
+        return find(e);
+    }
+
+    /**
+     * We defined a generic class that holds a list of objects. We need to implement the iterator interface to iterate through the list to use for-each loop.
+     *
+     * @param <E> the type of object in the list.
+     */
+    private class ListIterator<E> implements Iterator<E>{
+
+        private int currentIndex = 0;
+
+        /**
+         * Abstract method to determine if the list has a next object.
+         *
+         * @return false if it's empty or end of list.
+         */
+        @Override
+        public boolean hasNext(){
+            return currentIndex < size;
+        }
+
+        /**
+         * Abstract method to get the next object in the list.
+         *
+         * @return the next object in the list.
+         */
+        @SuppressWarnings("unchecked")
+        @Override
+        public E next(){
+            if (!hasNext()) {
+                throw new java.util.NoSuchElementException();
+            }
+    

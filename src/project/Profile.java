@@ -1,9 +1,10 @@
 package Project_1.src.project;
-
 import Project_1.src.util.Date;
 
 /**
  * This class creates the patient's profile info.
+ * TODO: DateTest
+ * TODO: confirm is get rid of test bed
  *
  * @author Jack Crosby
  */
@@ -32,17 +33,6 @@ public class Profile implements Comparable<Profile>{
     }
 
     /**
-     * Copy Constructor to create profile and copy an existing profile data into it.
-     *
-     * @param copyProfile the profile being copied.
-     */
-    public Profile(Profile copyProfile){
-        this.fname = copyProfile.fname;
-        this.lname = copyProfile.lname;
-        this.dob = copyProfile.dob;
-    }
-
-    /**
      * Parameter Constructor to create new profile.
      *
      * @param fname patient's first name.
@@ -53,6 +43,17 @@ public class Profile implements Comparable<Profile>{
         this.fname = fname;
         this.lname = lname;
         this.dob = dob;
+    }
+
+    /**
+     * Copy Constructor to create profile and copy an existing profile data into it.
+     *
+     * @param copyProfile the profile being copied.
+     */
+    public Profile(Profile copyProfile){
+        this.fname = copyProfile.fname;
+        this.lname = copyProfile.lname;
+        this.dob = copyProfile.dob;
     }
 
     /**

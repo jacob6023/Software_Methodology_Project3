@@ -6,6 +6,9 @@ import Project_1.src.util.Date;
  * to keep track of the imaging room, X-ray, ultrasound, or CAT scan for the imaging appointment.
  * Subclass of Appointment
  *
+ * TODO: comments
+ * TODO: since appointments instance variables are protected, we can just use .date instead of .getDate() since this is a subclass. To make the code cleaner and show you understand inheritance.
+ *
  * @author Jack Crosby
  */
 public class Imaging extends Appointment{

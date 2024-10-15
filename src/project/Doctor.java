@@ -1,16 +1,16 @@
 package Project_1.src.project;
 
 /**
- * TODO: Extends the Provider class and includes two instance variables
- *
  * This is a subclass of the Provider class, and the Provider class is a subclass of the Person class.
- * TODO: determine if make the class abstract or put in method associated with abstract metho
+ * This class represents the Doctor at the provider.
+ * The Doctor class includes the instance variables Specialty specialty and String npi.
+ * The Doctor class is a subclass of Provider.
+ * TODO: abstract method extension
  * @author Jack Crosby
  */
-
 public class Doctor extends Provider{
-    private Specialty specialty; //encapsulate the rate per visit based on specialty.
-    private String npi;//National Provider Identification unique to the doctor.
+    private Specialty specialty; //encapsulate the rate per visit based on specialty. Other classes can't access specialty.
+    private String npi; //National Provider Identification unique to the doctor.
 
     // Getters
     public Specialty getSpecialty(){return specialty;}
@@ -89,11 +89,11 @@ public class Doctor extends Provider{
     }
 
     /**
-     * Encapsulate the rate per visit based on specialty.
-     * TODO: confirm this does that^^^. NO, Outputs what specialty and the NPI
+     * Concerete method that returns the provider's doctor rate per visit.
      *
-     * @return the provider's doctor rate per visit.
+     * @return the provider's doctor charging rate per visit for seeing patients.
      */
+    @Override
     public int rate(){
         return specialty.getCharge();
     }
