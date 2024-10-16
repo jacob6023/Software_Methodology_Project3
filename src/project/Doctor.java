@@ -1,11 +1,8 @@
 package Project_1.src.project;
 
 /**
- * This is a subclass of the Provider class, and the Provider class is a subclass of the Person class.
- * This class represents the Doctor at the provider.
- * The Doctor class includes the instance variables Specialty specialty and String npi.
- * The Doctor class is a subclass of Provider.
- * TODO: abstract method extension
+ * This class represents a doctor that is a provider. It extends the Provider class and has a specialty and NPI.
+ *
  * @author Jack Crosby
  */
 public class Doctor extends Provider{
@@ -13,12 +10,22 @@ public class Doctor extends Provider{
     private String npi; //National Provider Identification unique to the doctor.
 
     // Getters
-    public Specialty getSpecialty(){return specialty;}
-    public String getNPI(){return npi;}
+    public Specialty getSpecialty(){
+        return specialty;
+    }
+
+    public String getNPI(){
+        return npi;
+    }
 
     // Setters
-    public void setSpecialty(Specialty specialty){this.specialty = specialty;}
-    public void setNPI(String npi){this.npi = npi;}
+    public void setSpecialty(Specialty specialty){
+        this.specialty = specialty;
+    }
+
+    public void setNPI(String npi){
+        this.npi = npi;
+    }
 
     /**
      * Default Constructor
@@ -27,6 +34,17 @@ public class Doctor extends Provider{
         super();
         this.specialty = null;
         this.npi = null;
+    }
+
+    /**
+     * Copy Constructor to copy a doctor
+     *
+     * @param copyDoctor the doctor being copied
+     */
+    public Doctor(Doctor copyDoctor){
+        super(copyDoctor);
+        this.specialty = copyDoctor.specialty;
+        this.npi = copyDoctor.npi;
     }
 
     /**
@@ -44,27 +62,26 @@ public class Doctor extends Provider{
     }
 
     /**
-     * Copy Constructor to copy a doctor
+     * Concrete method that compares the doctor to another doctor.
      *
-     * @param copyDoctor the doctor being copied
+     * @param person the object to be compared.
+     * @return -1 if the doctor is less than the other doctor, 0 if they are equal, 1 if the doctor is greater than the other doctor.
      */
-    public Doctor(Doctor copyDoctor){
-        super(copyDoctor);
-        this.specialty = copyDoctor.specialty;
-        this.npi = copyDoctor.npi;
-    }
-
     @Override
-    public int compareTo(Doctor doctor){
+    public int compareTo(Person person){
+        if (!(person instanceof Doctor)) { // general class, if person is not a provider
+            return super.compareTo(person);
+        }
+        Doctor doctor = (Doctor) person;
         int providerComparison = super.compareTo(doctor);
-        if(providerComparison != 0){
+        if (providerComparison != 0) {
             return providerComparison;
         }
-        int specialityComparison = specialty.compareTo(doctor.getSpecialty());
-        if(specialityComparison != 0){
-            return specialityComparison;
+        int specialtyComparison = this.specialty.compareTo(doctor.specialty);
+        if (specialtyComparison != 0) {
+            return specialtyComparison;
         }
-        return this.npi.compareTo(doctor.getNPI());
+        return this.npi.compareTo(doctor.npi);
     }
 
     @Override
@@ -89,7 +106,7 @@ public class Doctor extends Provider{
     }
 
     /**
-     * Concerete method that returns the provider's doctor rate per visit.
+     * Concrete method that returns the provider's doctor rate per visit.
      *
      * @return the provider's doctor charging rate per visit for seeing patients.
      */

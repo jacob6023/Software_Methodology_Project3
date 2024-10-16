@@ -22,21 +22,10 @@ public abstract class Provider extends Person{
     /**
      * Default Constructor
      * Make protected to prevent instantiation of Provider class. Since this is only used by the subclasses.
-     * This ensures that the Provider class can't be instantiated directly and can only be extended by subclasses.
      */
     protected Provider() {
         super();
         this.location = null;
-    }
-
-    /**
-     * Parameterized Constructor
-     * @param profile the profile of the provider.
-     * @param location the location of the provider.
-     */
-    protected Provider(Profile profile, Location location) {
-        super(profile);
-        this.location = location;
     }
 
     /**
@@ -48,11 +37,22 @@ public abstract class Provider extends Person{
         this.location = copyProvider.location;
     }
 
+    /**
+     * Parameterized Constructor
+     *
+     * @param profile the profile of the provider.
+     * @param location the location of the provider.
+     */
+    protected Provider(Profile profile, Location location) {
+        super(profile);
+        this.location = location;
+    }
+
 
     /**
      * compare just the location, since we have to display list of appointments ordered by location
      * TODO: This implementation may suppose to be in imaging class and not here, may just call super for this one
-     *
+     * TODO: prolly delete
      * @param provider
      * @return
      */
@@ -61,12 +61,16 @@ public abstract class Provider extends Person{
     }
 
     @Override
-    public int compareTo(Provider provider) {
+    public int compareTo(Person person) {
+        if(!(person instanceof Provider)){
+            throw new IllegalArgumentException("Invalid comparison");
+        }
+        Provider provider = (Provider) person;
         int profileComparison = super.compareTo(provider);
-        if (profileComparison != 0) {
+        if(profileComparison != 0){
             return profileComparison;
         }
-        return this.location.compareTo(provider.location);
+        return this.location.compareTo(provider.getLocation());
     }
 
     @Override
@@ -82,8 +86,9 @@ public abstract class Provider extends Person{
     }
 
     /**
-     * Output
-     * @return "[fname lname dob, location, county zip]
+     * Display the provider's information.
+     *
+     * @return String in format "[fname lname dob, location, county zip]
      */
     @Override
     public String toString() {
@@ -91,7 +96,7 @@ public abstract class Provider extends Person{
     }
 
     /**
-     * TODO: credit amount from bottom of the output.txt
+     * TODO: credit amount from bottom of the output.txt. The charge from patient may handle that.
      */
 
     /**

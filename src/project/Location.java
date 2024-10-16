@@ -2,7 +2,6 @@ package Project_1.src.project;
 
 /**
  * This enum class defines the city locations with properties county and zip code.
- * Also assigns the radiology services to Bridgewater and Piscataway
  *
  * @author Jack Crosby
  */
@@ -59,13 +58,12 @@ public enum Location {
     }
 
     /**
-     * Determine if the location provides a Radiology imaging service
+     * Determine if the location provides a Radiology imaging service.
      *
-     * @param service the radiology enum
-     * @return true if the location provides a radiology imaging service, false otherwise
+     * @param service the radiology enum.
+     * @return true if the location provides a radiology imaging service, false otherwise.
      */
     public boolean hasRadiologyService(Radiology service) {
-        // Hardcoded logic for radiology services
         return switch (this) {
             case BRIDGEWATER, PISCATAWAY ->
                     service == Radiology.CATSCAN || service == Radiology.ULTRASOUND || service == Radiology.XRAY;

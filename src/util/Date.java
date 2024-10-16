@@ -115,6 +115,29 @@ public class Date implements Comparable<Date>{
     }
 
     /**
+     * Get the calendar date.
+     *
+     * @return calendar to give the current date.
+     */
+    private Calendar toCalendar() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, this.year);
+        calendar.set(Calendar.MONTH, this.month - 1); // Calendar month is 0-based
+        calendar.set(Calendar.DAY_OF_MONTH, this.day);
+        return calendar;
+    }
+
+    /**
+     * Check if date is a future date.
+     *
+     * @return true if date is a future date, false otherwise.
+     */
+    private boolean isFutureDate() {
+        Calendar today = Calendar.getInstance();
+        return this.toCalendar().after(today);
+    }
+
+    /**
      * Determine if the date is a valid calendar date.
      *
      * @return True if calendar date, false is not a valid calendar date.
@@ -134,19 +157,6 @@ public class Date implements Comparable<Date>{
             return false;
         }
         return true;
-    }
-
-    /**
-     * Helper method for isToday & isDayBeforeToday & isWeekend & isFutureDate & isNotWithinSixMonths & realDOB.
-     *
-     * @return calendar to give the current date.
-     */
-    private Calendar toCalendar() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR, this.year);
-        calendar.set(Calendar.MONTH, this.month - 1); // Calendar month is 0-based
-        calendar.set(Calendar.DAY_OF_MONTH, this.day);
-        return calendar;
     }
 
     /**
@@ -200,16 +210,6 @@ public class Date implements Comparable<Date>{
     }
 
     /**
-     * Check if date is a future date.
-     *
-     * @return true if date is a future date, false otherwise.
-     */
-    private boolean isFutureDate() {
-        Calendar today = Calendar.getInstance();
-        return this.toCalendar().after(today);
-    }
-
-    /**
      * Check if the date of birth is a real date.
      *
      * @return true if real date of birth, false otherwise.
@@ -219,15 +219,14 @@ public class Date implements Comparable<Date>{
     }
 
     /**
-     * Equals method to see if instance of date is equal to the argument.
-     * See if the date is the same.
+     * Determine if the date is the same.
      *
-     * @param obj the object being compared to.
+     * @param object the date being compared to.
      * @return true if instance date equals the parameter object, false otherwise.
      */
     @Override
-    public boolean equals(Object obj){
-        if(obj instanceof Date date){
+    public boolean equals(Object object){
+        if(object instanceof Date date){
             return this.year == date.year && this.month == date.month && this.day == date.day;
         }
         return false;
@@ -244,7 +243,7 @@ public class Date implements Comparable<Date>{
     }
 
     /**
-     * CompareTo for comparing instance date to argument date.
+     * Compare date.
      *
      * @param date the date to be compared.
      * @return -1 if date is before, 0 if same, 1 if after.

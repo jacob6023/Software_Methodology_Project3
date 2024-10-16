@@ -1,65 +1,116 @@
 package Project_1.src.project;
 import Project_1.src.util.Date;
 import Project_1.src.util.List;
-
+import Project_1.src.util.Sort;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.File;
 
 /**
- * This is the interface used to handle appointments and medical records.
+ * This is the user interface class to process the command lines entered on the terminal.
  * Will schedule, cancel, reschedule, compute the charge a patient owes, and print out sorted lists of appointments.
  *
  * @author Jack Crosby
- * @author Vikram kadyan
  */
 
-public class Scheduler {
-    private List appointments;
-    private MedicalRecord medRecord;
+public class ClinicManager {
+    private List<Appointment> appointments;
+    private List<Provider> providers;
+    private List<Technician> technicianRotation;
+    private int currentTechnicianIndex;
 
     // Getters
-    public List getAppointments() {return appointments;}
-    public MedicalRecord getMedRecord() {return medRecord;}
+    public List<Appointment> getAppointments() {return appointments;}
+    public List<Provider> getProviders() {return providers;}
+    public List<Technician> getTechnicianRotation() {return technicianRotation;}
+    public int getCurrentTechnicianIndex(){return currentTechnicianIndex;}
 
     // Setters
-    public void setAppointments(List appointments) {this.appointments = appointments;}
-    public void setMedRecord(MedicalRecord medRecord) {this.medRecord = medRecord;}
+    public void setAppointments(List<Appointment> appointments) {this.appointments = appointments;}
+    public void setProviders(List<Provider> providers) {this.providers = providers;}
+    public void setTechnicianRotation(List<Technician> technicianRotation) {this.technicianRotation = technicianRotation;}
+    public void setCurrentTechnicianIndex(int currentTechnicianIndex){this.currentTechnicianIndex = currentTechnicianIndex;}
 
     /**
      * Default Constructor to create scheduler with default values.
      * Uses Appointments and MedicalRecords default constructors.
      */
-    public Scheduler() {
-        this.appointments = new List();
-        this.medRecord = new MedicalRecord();
+    public ClinicManager() {
+        this.appointments = new List<>();
+        this.providers = new List<>();
+        this.technicianRotation = new List<>();
+        this.currentTechnicianIndex = 0;
     }
 
     /**
      * Parameterized Constructor to create the scheduler.
      *
      * @param appointments the appointments list/calendar list being modified according to user input.
-     * @param medRecord the medical record list being modified if user schedules an appointment and has not been canceled.
+     * @param providers the provider list being modified if user schedules an appointment and has not been canceled.
      */
-    public Scheduler(List appointments, MedicalRecord medRecord) {
+    public ClinicManager(List<Appointment> appointments, List<Provider> providers, List<Technician> technicianRotation, int currentTechnicianIndex) {
         this.appointments = appointments;
-        this.medRecord = medRecord;
+        this.providers = providers;
+        this.technicianRotation = technicianRotation;
+        this.currentTechnicianIndex = currentTechnicianIndex;
     }
 
     /**
      * Copy Constructor to create a new scheduler with an existing scheduler.
      *
-     * @param scheduler the scheduler whose data is being copied into new scheduler.
+     * @param clinicManager the ClinicManager whose data is being copied into new scheduler.
      */
-    public Scheduler (Scheduler scheduler){
-        this.appointments = scheduler.appointments;
-        this.medRecord = scheduler.medRecord;
+    public ClinicManager (ClinicManager clinicManager){
+        this.appointments = clinicManager.appointments;
+        this.providers = clinicManager.providers;
+        this.technicianRotation = clinicManager.technicianRotation;
+        this.currentTechnicianIndex = clinicManager.currentTechnicianIndex;
+    }
+
+    private boolean appointmentExists(Date date, Timeslot timeslot, Profile profile) {
+        for (int i = 0; i < appointments.size(); i++) {
+            Appointment appointment = appointments.get(i);
+            boolean sameProfile = appointment.getPatient().getProfile().equals(profile);
+            boolean sameDate = appointment.getDate().equals(date);
+            boolean sameTimeslot = appointment.getTimeslot().equals(timeslot);
+            if (sameProfile && sameDate && sameTimeslot) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
-     * The interface method that runs the whole program.
+     * Helper method to find a doctor by their NPI.
+     *
+     * @param npi the NPI of the doctor.
+     * @return the doctor if found, or null if not found.
+     */
+    private Doctor findDoctorByNPI(String npi) {
+        for (int i = 0; i < providers.size(); i++) {
+            if (providers.get(i) instanceof Doctor doctor) {
+                if (doctor.getNPI().equals(npi)) {
+                    return doctor;
+                }
+            }
+        }
+        return null;
+    }
+
+
+    /**
+     * Runs the user interface.
      */
     public void run() {
-        System.out.println("Scheduler is running.");
-        Scanner scan = new Scanner(System.in); //start scanner
+        loadProviders();
+        displayProviders();
+        displayTechnicianRotation();
+        System.out.println("Clinic Manager is running.");
+        System.out.println();
+        System.out.println();
+        Scanner scan = new Scanner(System.in);
         while (true) {
             String command = scan.nextLine();
             if (command.isEmpty()) {
@@ -71,9 +122,11 @@ public class Scheduler {
                 continue;
             }
             switch (comm) {
-                //TODO: S command n
-                case "S":
-                    scheduleAppointment(command);
+                case "D":
+                    scheduleDoctorAppointment(command);
+                    break;
+                case "T":
+                    scheduleTechnicianAppointment(command);
                     break;
                 case "C":
                     cancelAppointment(command);
@@ -94,12 +147,138 @@ public class Scheduler {
                     medRecord.printBillingStatement();
                     break;
                 case "Q":
-                    System.out.println("Scheduler terminated.");
+                    System.out.println("Clininc Manager terminated.");
                     return;
                 default:
                     System.out.println("Invalid command!");
             }
         }
+    }
+
+    public class DateUtils {
+        public static Date parseDate(String dateStr) {
+            String[] dateSections = dateStr.trim().split("/");
+            if (dateSections.length != 3) return null;
+
+            try {
+                int month = Integer.parseInt(dateSections[0]);
+                int day = Integer.parseInt(dateSections[1]);
+                int year = Integer.parseInt(dateSections[2]);
+                Date date = new Date(year, month, day);
+                return date.isValid() ? date : null;
+            } catch (NumberFormatException e) {
+                return null;
+            }
+        }
+
+        public static boolean isValidAppointmentDate(Date date) {
+            return !(date.isToday() || date.isDayBeforeToday() || date.isWeekend() || date.isNotWithinSixMonthsFromToday());
+        }
+    }
+
+    public class TimeslotUtils {
+        public static Timeslot parseTimeslot(String timeslotStr) {
+            try {
+                int slotNum = Integer.parseInt(timeslotStr.trim());
+                if (slotNum < 1 || slotNum > 6) {
+                    return null;
+                }
+                Timeslot timeslot = new Timeslot();
+                timeslot.assignSlot(slotNum);
+                return timeslot;
+            } catch (NumberFormatException e) {
+                return null;
+            }
+        }
+    }
+
+    public class ProfileUtils {
+        public static Profile createProfile(String firstName, String lastName, String dobString) {
+            Date dob = DateUtils.parseDate(dobString);
+            if (dob == null || !dob.realDOB()) {
+                return null;
+            }
+            return new Profile(firstName.trim(), lastName.trim(), dob);
+        }
+    }
+
+
+
+
+    /**
+     * It shall  automatically load the list of providers from the text file “providers.txt” in the project folder
+     */
+    public void loadProviders(){
+        File file = new File("providers.txt");
+        Scanner scanner = null;
+        try {
+            scanner = new Scanner(file);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        while (scanner.hasNextLine()) {
+            String line = scanner.nextLine();
+            String[] tokens = line.split("\\s+");
+            String command = tokens[0].trim();
+            String firstName = tokens[1].trim();
+            String lastName = tokens[2].trim();
+            String dob = tokens[3].trim();
+            String locationString = tokens[4].trim();
+            Location location = Location.valueOf(locationString.toUpperCase());
+            Date date = new Date(dob);
+            Profile profile = new Profile(firstName, lastName, date);
+            if(command.equals("D")){
+                String specialtyString = tokens[5].trim();
+                Specialty specialty = Specialty.valueOf(specialtyString.toUpperCase());
+                String npi = tokens[6].trim();
+                Doctor doctor = new Doctor(profile, location, specialty, npi);
+                providers.add(doctor);
+            }
+            if(command.equals("T")){
+                String ratePerVisitString = tokens[5].trim();
+                int ratePerVisit = Integer.parseInt(ratePerVisitString);
+                Technician technician = new Technician(profile, location, ratePerVisit);
+                providers.add(technician);
+            }
+        }
+        Sort.provider(providers);
+        System.out.println("Providers loaded to the list.");
+        scanner.close();
+
+    }
+
+    /**
+     * Display the list after it is loaded, sorted by provider profile. It also creates a rotation list of technicians for  scheduling imaging appointments
+     */
+    public void displayProviders(){
+        for (int i = 0; i < providers.size(); i++) {
+            System.out.println(providers.get(i).toString());
+        }
+        System.out.println();
+    }
+
+    // Get the next technician in the rotation
+    public Technician getNextTechnician() {
+        if (technicianRotation.isEmpty()) {
+            throw new IllegalStateException("No technicians available.");
+        }
+        Technician technician = technicianRotation.get(currentTechnicianIndex);
+        currentTechnicianIndex = (currentTechnicianIndex + 1) % technicianRotation.size(); // Rotate to next technician
+        return technician;
+    }
+
+    /**
+     * Display the rotation list of technicians for scheduling imaging appointments.
+     */
+    public void displayTechnicianRotation() {
+        System.out.println("Rotation list for the technicians.");
+        for (int i = 0; i < technicianRotation.size(); i++) {
+            System.out.print(technicianRotation.get(i).getProfile().get_fname() + technicianRotation.get(i).getProfile().get_lname() + " (" + technicianRotation.get(i).getLocation() + ")");
+            if (i < technicianRotation.size() - 1) {
+                System.out.print(" --> ");
+            }
+        }
+        System.out.println();
     }
 
     /**
@@ -108,7 +287,7 @@ public class Scheduler {
      *
      * @param command the schedule command.
      */
-    private void scheduleAppointment(String command) {
+    private void scheduleDoctorAppointment(String command) {
         String[] tokens = command.split(",");
 
         // Appointment date handling
@@ -148,7 +327,7 @@ public class Scheduler {
 
         // Timeslot handling
         String slotNumString = tokens[2].trim();
-        Timeslot timeslot  = null;
+        Timeslot timeslot = new Timeslot();
         int slotNum;
         try{
             slotNum = Integer.parseInt(slotNumString);
@@ -156,7 +335,7 @@ public class Scheduler {
                 System.out.println(slotNumString + " is not a valid time slot.");
                 return;
             }
-            timeslot = Timeslot.valueOf("SLOT" + slotNum);
+            timeslot.assignSlot(slotNum);
         } catch (NumberFormatException e) {
             System.out.println(slotNumString + " is not a valid time slot.");
             return;
@@ -194,8 +373,8 @@ public class Scheduler {
         Profile patientProfile = new Profile(patientFirstName, patientLastName, patientDOB);
 
         // check if an appointment with the same profile, date, and timeslot already exists
-        for (int i = 0; i < appointments.getSize(); i++) {
-            Appointment appointment = appointments.getAppointmentAt(i);
+        for (int i = 0; i < appointments.size(); i++) {
+            Appointment appointment = appointments.get(i);
             boolean sameProfile = appointment.getProfile().equals(patientProfile);
             boolean sameDate = appointment.getDate().equals(appointmentDate);
             boolean sameTimeslot = appointment.getTimeslot().name().equalsIgnoreCase(timeslot.name());
@@ -206,14 +385,16 @@ public class Scheduler {
         }
 
         // Provider handling. Also checking if the provider DNE
-        String providerName = tokens[6].trim();
-        Provider provider;
-        try {
-            provider = Provider.valueOf(providerName.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            System.out.println(providerName + " - provider doesn't exist.");
+        String npi = tokens[6].trim();
+        Doctor doctor = findDoctorByNPI(npi);
+        if (doctor == null) {
+            System.out.println(npi + " - provider doesn't exist.");
             return;
         }
+        // Create a new appointment
+        Appointment newAppointment = new Appointment(appointmentDate, timeslot, new Patient(patientProfile, null), doctor);
+        appointments.add(newAppointment);
+        System.out.println("Appointment successfully scheduled with doctor: " + doctor.getProfile().toString());
 
         // Check if provider is not available at the specified timeslot
         for(int j = 0; j < appointments.getSize(); j++){
@@ -234,7 +415,11 @@ public class Scheduler {
         // Create the linked List or add to linked list if patient has already had appointment
         Visit newVisit = new Visit(scheduledAppointment, null);
         Patient patient = new Patient(patientProfile, newVisit);
-        medRecord.add(patient); // add patient to the medical record
+        //appointments.add(patient); // add patient to the medical record
+
+    }
+
+    public void scheduleTechnicianAppointment(String command){
 
     }
 

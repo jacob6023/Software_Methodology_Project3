@@ -2,12 +2,6 @@ package Project_1.src.project;
 
 /**
  * This enum provides the timeslots available for a provider.
- * TODO: make as a java class
- * The system shall provide 6 slots in the morning and 6 slots in the afternoon. A total of 12 slots per weekday.
- * -> Each slot is 30 minutes
- * the first in the morning is 9:00 am
- * the first in the afternoon is 2:00 pm
- * The last appointment is 4:30 pm.
  *
  * @author Jack Crosby
  */
@@ -16,11 +10,11 @@ public class Timeslot implements Comparable<Timeslot>{
     private int minute;
 
     // Constants for default constructor
-    public static final int INVALID_HOUR = -1;
-    public static final int INVALID_MINUTE = -1;
+    private static final int DEFAULT_HOUR = -1;
+    private static final int DEFAULT_MINUTE = -1;
 
     // Constant for computing total time in minutes for afternoon appointments
-    public static final int NOON = 12;
+    private static final int NOON = 12;
 
     // Getters
     public int getHour() {return hour;}
@@ -35,8 +29,8 @@ public class Timeslot implements Comparable<Timeslot>{
      * TODO: in interface, when handling timeslot input, declare this, first and then use assignSlot method to assign the slot number.
      */
     public Timeslot(){
-        this.hour = INVALID_HOUR;
-        this.minute = INVALID_MINUTE;
+        this.hour = DEFAULT_HOUR;
+        this.minute = DEFAULT_MINUTE;
     }
 
     /**
@@ -56,18 +50,6 @@ public class Timeslot implements Comparable<Timeslot>{
     public Timeslot(Timeslot copyTimeslot){
         this.hour = copyTimeslot.hour;
         this.minute = copyTimeslot.minute;
-    }
-
-    /**
-     * Helper method to compute total minutes for slot numbers.
-     *
-     * @return the total minutes.
-     */
-    private static int hourToTotalMinutes(int hour) {
-        if(hour <= NOON){
-            return hour * 60;
-        }
-        return (hour + NOON) * 60; // afternoon in total minutes
     }
 
     /**
@@ -132,8 +114,7 @@ public class Timeslot implements Comparable<Timeslot>{
     }
 
     /**
-     * Output the timeslot.
-     * Does not output the timeslot name, ex. SLOT3.
+     * Output the timeslot in format "hh:mm AM/PM".
      *
      * @return formatted string of the timeslot.
      */
@@ -162,6 +143,12 @@ public class Timeslot implements Comparable<Timeslot>{
        return Integer.compare(this.minute, timeslot.getMinute());
    }
 
+    /**
+     * Check if two timeslots are the same.
+     *
+     * @param object
+     * @return
+     */
    @Override
    public boolean equals(Object object){
        if(object instanceof Timeslot timeslot){

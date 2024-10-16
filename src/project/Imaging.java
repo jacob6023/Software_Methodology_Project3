@@ -8,17 +8,21 @@ import Project_1.src.util.Date;
  *
  * TODO: comments
  * TODO: since appointments instance variables are protected, we can just use .date instead of .getDate() since this is a subclass. To make the code cleaner and show you understand inheritance.
- *
+ * TODO: Determine if need to add a method related to the radiology room
  * @author Jack Crosby
  */
 public class Imaging extends Appointment{
     private Radiology room;
 
     // Getter
-    public Radiology getRadiologyRoom(){return room;}
+    public Radiology getRadiologyRoom(){
+        return room;
+    }
 
     // Setter
-    public void setRadiologyRoom(Radiology room){this.room = room;}
+    public void setRadiologyRoom(Radiology room){
+        this.room = room;
+    }
 
     /**
      * Default Constructor
@@ -52,12 +56,16 @@ public class Imaging extends Appointment{
     }
 
     @Override
-    public int compareTo(Imaging imagingAppointment){
+    public int compareTo(Appointment appointment){
+        if(!(appointment instanceof Imaging)){
+            throw new IllegalArgumentException("Invalid comparison");
+        }
+        Imaging imagingAppointment = (Imaging) appointment;
         int appointmentComparison = super.compareTo(imagingAppointment);
-        if(appointmentComparison != 0){ // if appointment details besides imaging service are not the same don't continue
+        if (appointmentComparison != 0) {
             return appointmentComparison;
         }
-        return this.room.compareTo(imagingAppointment.getRadiologyRoom()); // if appointment details (besides the imaging service) are the same, this just compares if the imaging services are the same
+        return this.room.compareTo(imagingAppointment.room);
     }
 
     @Override
@@ -76,7 +84,5 @@ public class Imaging extends Appointment{
     public String toString(){
         return super.toString() + "[" + room + "]";
     }
-
-
 
 }

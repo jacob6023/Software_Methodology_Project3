@@ -1,10 +1,7 @@
 package Project_1.src.project;
 
 /**
- * TODO: Defines the profile of each instance in the software system.
- * This is the superclass of the Patient and Provider class
- *
- * EVERYTHING HERE SHOULD BE GOOD AND DONE
+ *Defines the profile of each instance in the software system.
  *
  * @author Jack Crosby
  */
@@ -12,23 +9,20 @@ public class Person implements Comparable<Person>{
     protected Profile profile;
 
     // Getter
-    public Profile getProfile(){return profile;}
+    public Profile getProfile(){
+        return profile;
+    }
 
     // Setter
-    public void setProfile(Profile profile){this.profile = profile;}
+    public void setProfile(Profile profile){
+        this.profile = profile;
+    }
 
     /**
      * Default Constructor
      */
     public Person(){
         this.profile = null;
-    }
-
-    /**
-     * Parameterized Constructor
-     */
-    public Person(Profile profile){
-        this.profile = profile;
     }
 
     /**
@@ -39,7 +33,16 @@ public class Person implements Comparable<Person>{
     }
 
     /**
-     * CompareTo
+     * Parameterized Constructor
+     */
+    public Person(Profile profile){
+        this.profile = profile;
+    }
+
+    /**
+     * Compare profile.
+     *
+     * @return 0 if equal, 1 if greater, -1 if less.
      */
     @Override
     public int compareTo(Person person){
@@ -47,7 +50,9 @@ public class Person implements Comparable<Person>{
     }
 
     /**
-     * Equals
+     * Determine if two Person objects are equal.
+     *
+     * @return true if equal, false if not.
      */
     @Override
     public boolean equals(Object object){
@@ -58,7 +63,7 @@ public class Person implements Comparable<Person>{
     }
 
     /**
-     * toString
+     * Display profile information.
      */
     @Override
     public String toString(){

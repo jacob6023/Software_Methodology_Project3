@@ -1,19 +1,10 @@
 package Project_1.src.project;
 
 /**
- * Technician class extends the Provider class, which is a subclass of Person class.
- * This is a subclass of Provider which is a subclass of Person.
- * includes the instance var private int ratePerVisit to keep track of the technician's charging rate per visit.
- * Child class whose parent is Provider and GrandParent is Person
- *
- * User enters: T, appointment date, timeslot, patient info, and room type of imaging service
- *
- * The system shall maintain a circular list of technicians who are associated with their location.
- * The system shall use the list as the rotation to assign the technician to an appointment.
+ * This class represents the Technician at the provider.
  *
  * @author Jack Crosby
  */
-
 public class Technician extends Provider{
     private int ratePerVisit;
 
@@ -35,6 +26,14 @@ public class Technician extends Provider{
     }
 
     /**
+     * Copy Constructor
+     */
+    public Technician(Technician copyTechnician){
+        super(copyTechnician);
+        this.ratePerVisit = copyTechnician.ratePerVisit;
+    }
+
+    /**
      * Parameterized Constructor that creates the Technician.
      *
      * @param profile the profile of the provider's technician.
@@ -47,22 +46,30 @@ public class Technician extends Provider{
     }
 
     /**
-     * Copy Constructor
+     * Compares the technician to another person object.
+     *
+     * @param person the object to be compared.
+     * @return the comparison of the technician to the other person object.
      */
-    public Technician(Technician copyTechnician){
-        super(copyTechnician);
-        this.ratePerVisit = copyTechnician.ratePerVisit;
-    }
-
     @Override
-    public int compareTo(Technician technician){
+    public int compareTo(Person person){
+        if(!(person instanceof Technician)){
+            return super.compareTo(person);
+        }
+        Technician technician = (Technician) person;
         int providerComparison = super.compareTo(technician);
         if(providerComparison != 0){
             return providerComparison;
         }
-        return Integer.compare(ratePerVisit, technician.getRatePerVisit());
+        return Integer.compare(this.ratePerVisit, technician.ratePerVisit);
     }
 
+    /**
+     * Compares the technician to another object to determine if they are equal.
+     *
+     * @param object the object to compare to the technician.
+     * @return true if the object is a technician and has the same rate per visit, false otherwise.
+     */
     @Override
     public boolean equals(Object object){
         if(this == object){
@@ -75,13 +82,18 @@ public class Technician extends Provider{
         return this.ratePerVisit == technician.getRatePerVisit();
     }
 
+    /**
+     * Output the technician's information.
+     *
+     * @return the string representation of the technician.
+     */
     @Override
     public String toString(){
         return super.toString() + "[rate: $" + ratePerVisit + ".00]";
     }
 
     /**
-     * returns the rate to the abstract method in provider.
+     * Technician charging rate per visit for seeing patients.
      *
      * @return the provider's technician charging rate per visit for seeing patients.
      */

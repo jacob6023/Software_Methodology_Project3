@@ -28,6 +28,15 @@ public class Patient extends Person{
     }
 
     /**
+     * Copy Constructor to copy an existing patient.
+     * @param copyPatient the patient whose data being copied.
+     */
+    public Patient(Patient copyPatient){
+        super(copyPatient);
+        this.visit = copyPatient.visit;
+    }
+
+    /**
      * Parameterized Constructor to create Patient.
      * @param profile the patient's profile.
      * @param next the node of the linked list.
@@ -35,15 +44,6 @@ public class Patient extends Person{
     public Patient(Profile profile, Visit next){
         super(profile);
         this.visit = next;
-    }
-
-    /**
-     * Copy Constructor to copy an existing patient.
-     * @param copyPatient the patient whose data being copied.
-     */
-    public Patient(Patient copyPatient){
-        super(copyPatient);
-        this.visit = copyPatient.visit;
     }
 
     /**
@@ -102,18 +102,22 @@ public class Patient extends Person{
     }
 
     /**
-     * Dynamic Binding to Person's compareTo
+     * Compares the patient to another patient.
      *
-     * @param patient the object to be compared by first name, last name, (lexicographical order) then date of birth.
+     * @param person the person to be compared
      * @return < 0 if before, 0 if same, > 0 if after.
      */
     @Override
-    public int compareTo(Patient patient) {
+    public int compareTo(Person person) {
+        if(!(person instanceof Patient)){
+            throw new IllegalArgumentException("Invalid comparison");
+        }
+        Patient patient = (Patient) person;
         int profileComparison = super.compareTo(patient);
-        if (profileComparison != 0) {
+        if(profileComparison != 0){
             return profileComparison;
         }
-        return this.visit.getAppointment().compareTo(patient.getVisit().getAppointment());
+        return this.visit.getAppointment().getPatient().compareTo(patient.getVisit().getAppointment().getPatient());
     }
 
 }

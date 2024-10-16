@@ -11,6 +11,7 @@ import java.util.Iterator;
  * TODO: -> and use a single instance of List<Provider> to hold a list of all providers.
  * ^^^^^^^^ THESE 2 INSTANCES ARE IN THE USER INTERFACE CLASS ^^^^^^^
  * TODO: Delete Medical Record. Just do it later so you don't have a bunch of red line everywhere right now.
+ * TODO: also delete MedicalRecord from the repo.
  *
  * @author Jack Crosby
  */
@@ -189,4 +190,10 @@ public class List<E> implements Iterable<E> {
             if (!hasNext()) {
                 throw new java.util.NoSuchElementException();
             }
-    
+            return (E) objects[currentIndex++];
+        }
+
+    }
+
+}
+

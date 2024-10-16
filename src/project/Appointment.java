@@ -15,16 +15,32 @@ public class Appointment implements Comparable<Appointment> {
     protected Person provider;
 
     // Getters
-    public Date getDate() {return date;}
-    public Timeslot getTimeslot() {return timeslot;}
-    public Person getPatient() {return patient;}
-    public Person getProvider() {return provider;}
+    public Date getDate() {
+        return date;
+    }
+    public Timeslot getTimeslot() {
+        return timeslot;
+    }
+    public Person getPatient() {
+        return patient;
+    }
+    public Person getProvider() {
+        return provider;
+    }
 
     // Setters
-    public void setDate(Date date) {this.date = date;}
-    public void setTimeslot(Timeslot timeslot) {this.timeslot = timeslot;}
-    public void setPatient(Person patient) {this.patient = patient;}
-    public void setProvider(Person provider) {this.provider = provider;}
+    public void setDate(Date date) {
+        this.date = date;
+    }
+    public void setTimeslot(Timeslot timeslot) {
+        this.timeslot = timeslot;
+    }
+    public void setPatient(Person patient) {
+        this.patient = patient;
+    }
+    public void setProvider(Person provider) {
+        this.provider = provider;
+    }
 
     /**
      * Default constructor to initialize the data to null.
