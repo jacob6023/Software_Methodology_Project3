@@ -18,8 +18,13 @@ public enum Location {
     private final String zip;
 
     // Getters
-    public String getCounty() {return county;}
-    public String getZip() {return zip;}
+    public String getCounty() {
+        return county;
+    }
+
+    public String getZip() {
+        return zip;
+    }
 
     /**
      * Enum Constructor.
@@ -33,7 +38,7 @@ public enum Location {
     }
 
     /**
-     * Output locaiton in format "City, county zip".
+     * Output location in format "City, county zip".
      *
      *
      * @return String formatted in values count + zip. Typically, had location.name() before calling this.

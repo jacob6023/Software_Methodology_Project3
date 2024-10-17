@@ -4,14 +4,6 @@ import java.util.Iterator;
 
 /**
  * This is a generic class for code reuse. It is a custom list class that will be used to store appointments.
- * TODO: Always use this class whenever you want to hold a collection of objects.
-
- * Extend this class if you need to add anything.
- * TODO: You must use a single instance of List<Appointment> to hold a list of office and imaging appointments
- * TODO: -> and use a single instance of List<Provider> to hold a list of all providers.
- * ^^^^^^^^ THESE 2 INSTANCES ARE IN THE USER INTERFACE CLASS ^^^^^^^
- * TODO: Delete Medical Record. Just do it later so you don't have a bunch of red line everywhere right now.
- * TODO: also delete MedicalRecord from the repo.
  *
  * @author Jack Crosby
  */

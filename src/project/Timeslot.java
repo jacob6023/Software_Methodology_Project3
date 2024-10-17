@@ -17,12 +17,22 @@ public class Timeslot implements Comparable<Timeslot>{
     private static final int NOON = 12;
 
     // Getters
-    public int getHour() {return hour;}
-    public int getMinute() {return minute;}
+    public int getHour() {
+        return hour;
+    }
+
+    public int getMinute() {
+        return minute;
+    }
 
     // Setters
-    public void setHour(int hour){this.hour = hour;}
-    public void setMinute(int minute){this.minute = minute;}
+    public void setHour(int hour){
+        this.hour = hour;
+    }
+
+    public void setMinute(int minute){
+        this.minute = minute;
+    }
 
     /**
      * Default Constructor
@@ -50,6 +60,10 @@ public class Timeslot implements Comparable<Timeslot>{
     public Timeslot(Timeslot copyTimeslot){
         this.hour = copyTimeslot.hour;
         this.minute = copyTimeslot.minute;
+    }
+
+    public Timeslot(int slotNum){
+        assignSlot(slotNum);
     }
 
     /**

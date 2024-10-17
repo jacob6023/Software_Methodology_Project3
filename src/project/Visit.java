@@ -10,12 +10,22 @@ public class Visit {
     private Visit next; //a ref. to the next appointment object in the list
 
     // Getters
-    public Appointment getAppointment(){return appointment;}
-    public Visit getVisit(){return next;}
+    public Appointment getAppointment(){
+        return appointment;
+    }
+
+    public Visit getNextVisit(){
+        return next;
+    }
 
     // Setters
-    public void setAppointment(Appointment appointment){this.appointment = appointment;}
-    public void setVisit(Visit next){this.next = next;}
+    public void setAppointment(Appointment appointment){
+        this.appointment = appointment;
+    }
+
+    public void setNextVisit(Visit next){
+        this.next = next;
+    }
 
     /**
      * Default Constructor to create a visit with null values.
@@ -23,6 +33,16 @@ public class Visit {
     public Visit(){
         this.appointment = null;
         this.next = null;
+    }
+
+    /**
+     * Copy Constructor to create a visit with an existing visit's data.
+     *
+     * @param copyVisit the visit whose data is being copied.
+     */
+    public Visit(Visit copyVisit){
+        this.appointment = copyVisit.appointment;
+        this.next = copyVisit.next;
     }
 
     /**
@@ -36,14 +56,5 @@ public class Visit {
         this.next = next;
     }
 
-    /**
-     * Copy Constructor to create a visit with an existing visit's data.
-     *
-     * @param copyVisit the visit whose data is being copied.
-     */
-    public Visit(Visit copyVisit){
-        this.appointment = copyVisit.appointment;
-        this.next = copyVisit.next;
-    }
 
 }
