@@ -14,14 +14,30 @@ public class Profile implements Comparable<Profile>{
     private Date dob;
 
     // Getters
-    public String get_fname(){return fname;}
-    public String get_lname(){return lname;}
-    public Date get_dob(){return dob;}
+    public String get_fname(){
+        return fname;
+    }
+
+    public String get_lname(){
+        return lname;
+    }
+
+    public Date get_dob(){
+        return dob;
+    }
 
     // Setters
-    public void set_fname(String fname){this.fname = fname;}
-    public void set_lname(String lname){this.lname = lname;}
-    public void set_dob(Date dob){this.dob = dob;}
+    public void set_fname(String fname){
+        this.fname = fname;
+    }
+
+    public void set_lname(String lname){
+        this.lname = lname;
+    }
+
+    public void set_dob(Date dob){
+        this.dob = dob;
+    }
 
     /**
      * Default Constructor to create profile and set the patient's profile info to null.
@@ -69,7 +85,6 @@ public class Profile implements Comparable<Profile>{
     /**
      * In lexicographical order compares last name, then first name, then dob (through Date's compareTo).
      *
-     *  TODO: add null check
      * @param profile the profile being compared.
      * @return < 0 if profile comes before. > 0 if profile comes after. 0 if profile has same details.
      */
@@ -88,7 +103,6 @@ public class Profile implements Comparable<Profile>{
 
     /**
      * Check if two profiles are the same.
-     * Uses Date's equals() method.
      *
      * @param obj the object being compared to.
      * @return true if profiles are the same, false otherwise.

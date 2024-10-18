@@ -173,7 +173,7 @@ public class ClinicManager {
 
     // Private helper method to handle timeslot parsing and validation
     private Timeslot handleTimeslot(int slotNum) {
-        if (slotNum < 1 || slotNum > 6) {
+        if (slotNum < 1 || slotNum > 12) {
             System.out.println(slotNum + " is not a valid time slot.");
             return null;
         }
@@ -259,6 +259,16 @@ public class ClinicManager {
         return newPatient;
     }
 
+    private void reverseTechnicianRotation() {
+        int n = technicianRotation.size();
+        for (int i = 0; i < n / 2; i++) {
+            Technician temp = technicianRotation.get(i);
+            technicianRotation.set(i, technicianRotation.get(n - 1 - i));
+            technicianRotation.set(n - 1 - i, temp);
+        }
+    }
+
+
     /**
      * Runs the user interface.
      */
@@ -312,10 +322,10 @@ public class ClinicManager {
                     printImagingAppointments();
                     break;
                 case "PC":
-                      printExpectedCredit();
-                      break;
+                    printExpectedCredit();
+                    break;
                 case "Q":
-                    System.out.println("Clininc Manager terminated.");
+                    System.out.println("Clinic Manager terminated.");
                     return;
                 default:
                     System.out.println("Invalid command!");
@@ -360,7 +370,8 @@ public class ClinicManager {
                 technicianRotation.add(technician);
             }
         }
-        Sort.providers(providers, 'i');
+        Sort.providers(providers, 'c');
+        reverseTechnicianRotation();
         System.out.println("Providers loaded to the list.");
         scanner.close();
     }
@@ -377,11 +388,8 @@ public class ClinicManager {
 
     // Get the next technician in the rotation
     public Technician getNextTechnician() {
-        if (technicianRotation.isEmpty()) {
-            throw new IllegalStateException("No technicians available.");
-        }
         Technician technician = technicianRotation.get(currentTechnicianIndex);
-        currentTechnicianIndex = (currentTechnicianIndex + 1) % technicianRotation.size(); // Rotate to next technician
+        currentTechnicianIndex = (currentTechnicianIndex + 1) % technicianRotation.size(); // Increment the index and wrap around
         return technician;
     }
 
@@ -393,7 +401,7 @@ public class ClinicManager {
         for (int i = 0; i < technicianRotationLength; i++) {
             System.out.print(technicianRotation.get(i).getProfile().get_fname() + " " +
                     technicianRotation.get(i).getProfile().get_lname() +
-                    " (" + technicianRotation.get(i).getLocation() + ")");
+                    " (" + technicianRotation.get(i).getLocation().name() + ")");
             if (i < technicianRotation.size() - 1) {
                 System.out.print(" --> ");
             }
@@ -527,12 +535,9 @@ public class ClinicManager {
     }
 
     /**
-     * The system shall use the patient's profile and appointment date and time to uniquely identify an appointment in the
-     * appointment calendar. Since the system checks the invalid data tokens before adding the appointment to the calendar, the
-     * system does not check the invalid data tokens when canceling an appointment.
-     * However, the appointment being canceled may not exist in the appointment calendar
+     * Cancel an appointment.
      *
-     * @param command command to cancel the appointment
+     * @param command the cancel command.
      */
     public void cancelAppointment(String command) {
         String[] tokens = command.split(",");
@@ -568,28 +573,22 @@ public class ClinicManager {
 
     /**
      * Reschedule an appointment to a different timeslot on the same day with the same provider.
-     * The system shall use the patient's profile and appointment date to uniquely identify an appointment in the appointment calendar for rescheduling.
-     * The system shall check if the specified appointment exists.
-     * If the new timeslot indicated at the end of the command line is valid and available from the provider in the original appointment.
+     * TODO: make shorter.
      *
      * @param command the reschedule command.
      */
     public void rescheduleAppointment(String command) {
         String[] tokens = command.split(",");
         if (tokens.length < 7) {
-            System.out.println("Missing data tokens for rescheduling an appointment.");
+            System.out.println("Missing data tokens.");
             return;
         }
         Date appointmentDate = new Date(tokens[1].trim());
         int ogSlotNum = Integer.parseInt(tokens[2].trim());
         Timeslot originalTimeslot = handleTimeslot(ogSlotNum);
-        if (originalTimeslot == null) {
-            return;
-        }
+        if (originalTimeslot == null) return;
         Profile patientProfile = handlePatientProfile(tokens[3].trim(), tokens[4].trim(), tokens[5].trim());
-        if (patientProfile == null) {
-            return;
-        }
+        if (patientProfile == null) return;
         Appointment originalAppointment = null;
         Provider provider = null;
         for (int i = 0; i < appointments.size(); i++) {
@@ -609,9 +608,7 @@ public class ClinicManager {
         }
         int newSlotNum = Integer.parseInt(tokens[6].trim());
         Timeslot rescheduledTimeslot = handleTimeslot(newSlotNum);
-        if (rescheduledTimeslot == null) {
-            return;
-        }
+        if (rescheduledTimeslot == null) return;
         for (int i = 0; i < appointments.size(); i++) {
             Appointment appointment = appointments.get(i);
             boolean sameProvider = appointment.getProvider().equals(provider);
@@ -630,35 +627,45 @@ public class ClinicManager {
      * Sorted by appointment date, then appointment timeslot, then provider's name.
      */
     public void printByAppointment(){
-        if(appointments.isEmpty()) System.out.println("The schedule calendar is empty.");
+        if(appointments.isEmpty()){
+            System.out.println("The schedule calendar is empty.");
+            return;
+        }
         Sort.appointments(appointments, 'a');
+        System.out.println();
         System.out.println("** list of appointments, ordered by date/time/provider. **");
         for(int i = 0; i < appointments.size(); i++){
             System.out.println(appointments.get(i).toString());
         }
         System.out.println("** end of list **");
-        System.out.println();
     }
 
     /**
      * Sorted by patient profile (last name, first name, dob), then appointment date, then appointment timeslot.
      */
     public void printByPatient(){
-        if(appointments.isEmpty()) System.out.println("The schedule calendar is empty.");
+        if(appointments.isEmpty()){
+            System.out.println("The schedule calendar is empty.");
+            return;
+        }
         Sort.appointments(appointments, 'p');
+        System.out.println();
         System.out.println("** List of appointments, ordered by patient/date/time **");
         for(int i = 0; i < appointments.size(); i++){
             System.out.println(appointments.get(i).toString());
         }
         System.out.println("** end of list **");
-        System.out.println();
     }
 
     /**
      * Print appointments sorted by county, name, then appointment date and time.
      */
     public void printByLocation(){
-        if(providers.isEmpty()) System.out.println("The schedule calendar is empty.");
+        if(appointments.isEmpty()){
+            System.out.println("The schedule calendar is empty.");
+            return;
+        }
+        System.out.println();
         System.out.println("** List of appointments, ordered by county/date/time. **");
         Sort.providers(providers, 'l');
         Sort.appointments(appointments, 'd');
@@ -670,16 +677,19 @@ public class ClinicManager {
             }
         }
         System.out.println("** end of list **");
-        System.out.println();
     }
 
     /**
      * Display the list of office appointments, sorted by the county, then date, then time.
      */
     public void printOfficeAppointments(){
-        if(appointments.isEmpty()) System.out.println("The schedule calendar is empty.");
+        if(appointments.isEmpty()){
+            System.out.println("The schedule calendar is empty.");
+            return;
+        }
         Sort.providers(providers, 'l');
         Sort.appointments(appointments, 'd');
+        System.out.println();
         System.out.println("** List of office appointments ordered by county/date/time. **");
         for(int i = 0; i < appointments.size(); i++){
             if(appointments.get(i).getProvider() instanceof Doctor){
@@ -687,16 +697,19 @@ public class ClinicManager {
             }
         }
         System.out.println("** end of list **");
-        System.out.println();
     }
 
     /**
      * Display the list of imaging appointments, sorted by the county name, then date and time.
      */
     public void printImagingAppointments(){
-        if(appointments.isEmpty()) System.out.println("The schedule calendar is empty.");
+        if(appointments.isEmpty()){
+            System.out.println("The schedule calendar is empty.");
+            return;
+        }
         Sort.providers(providers, 'l');
-        Sort.appointments(appointments, 'p');
+        Sort.appointments(appointments, 'd');
+        System.out.println();
         System.out.println("** List of radiology appointments ordered by county/date/time. **");
         for(int i = 0; i < appointments.size(); i++){
             if(appointments.get(i) instanceof Imaging){
@@ -704,14 +717,18 @@ public class ClinicManager {
             }
         }
         System.out.println("** end of list **");
-        System.out.println();
     }
 
     /**
      * Display the expected credit amounts for the providers for seeing patients, sorted by provider profile.
      */
     public void printExpectedCredit(){
-        System.out.println("** Credit amount ordered by provider. **");
+        if(appointments.isEmpty()){
+            System.out.println("The schedule calendar is empty.");
+            return;
+        }
+        System.out.println();
+        System.out.println("** Credit amount ordered by provider");
         Sort.providers(providers, 'c');
         int credit = 0;
         for(int i = 0; i < providers.size(); i++){
@@ -720,26 +737,35 @@ public class ClinicManager {
                     credit += providers.get(i).rate();
                 }
             }
-            System.out.println("("+ i + ")" + providers.get(i).getProfile().toString() + " " + "[credit amount: $" + credit + ".00]");
+            System.out.println("("+ (i + 1) + ")" + providers.get(i).getProfile().toString() + " " + "[credit amount: $" + credit + ".00]");
         }
         System.out.println("** end of list **");
-        System.out.println();
     }
 
     /**
      * Display billing statements for all patients.
-     * Each index in the medical record holds an instance of a patient.
-     * Each patient has a linked list of visits.
      */
     public void printBillingStatement(){
+        if(appointments.isEmpty()){
+            System.out.println("The schedule calendar is empty.");
+            return;
+        }
         Sort.medicalRecord(medicalRecord);
+        System.out.println();
         System.out.println("** Billing statement ordered by patient. **");
         for(int i = 0; i < medicalRecord.size(); i++){
-            System.out.println("("+ i + ")" + medicalRecord.get(i).printCharge());
+            System.out.println("("+ (i + 1) + ")" + medicalRecord.get(i).printCharge());
         }
         System.out.println("** end of list **");
-        System.out.println();
+        emptyAppointments();
     }
+
+    public void emptyAppointments() {
+        for (int i = appointments.size() - 1; i >= 0; i--) {
+            appointments.remove(appointments.get(i));
+        }
+    }
+
 
 
 }

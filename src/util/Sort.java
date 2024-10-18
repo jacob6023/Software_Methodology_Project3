@@ -2,6 +2,8 @@ package Project_1.src.util;
 import Project_1.src.project.Appointment;
 import Project_1.src.project.Patient;
 import Project_1.src.project.Provider;
+import Project_1.src.project.Technician;
+
 import java.util.Comparator;
 
 /**
@@ -82,12 +84,8 @@ public class Sort {
             case 'i': // initial sort for rotation list
                 sort(list, Comparator.comparing(Provider::getLocation));
                 break;
-            case 'l': // Sort by location (county, zip), then last name, then first name.
-                comparator = Comparator
-                        .comparing((Provider a) -> a.getLocation().getCounty())
-                        .thenComparing(a -> a.getLocation().getZip())
-                        .thenComparing(a -> a.getProfile().get_lname())
-                        .thenComparing(a -> a.getProfile().get_fname());
+            case 'l': // Sort by location
+                comparator = Comparator.comparing((Provider a) -> a.getLocation().getCounty());
                 break;
             case 'c': // Provider profile last name, then first name.
                 comparator = Comparator
@@ -97,6 +95,14 @@ public class Sort {
             default:
                 throw new IllegalArgumentException("Unexpected value: " + key);
         }
+        sort(list, comparator);
+    }
+
+    public static void technicians(List<Technician> list) {
+        Comparator<Technician> comparator;
+        comparator = Comparator.comparing((Technician a) -> a.getLocation().name())
+                .thenComparing(a -> a.getProfile().get_lname())
+                .thenComparing(a -> a.getProfile().get_fname());
         sort(list, comparator);
     }
 
