@@ -35,12 +35,19 @@ public class Timeslot implements Comparable<Timeslot>{
     }
 
     /**
-     * Default Constructor
-     * TODO: in interface, when handling timeslot input, declare this, first and then use assignSlot method to assign the slot number.
+     * Default Constructor to create a timeslot.
      */
     public Timeslot(){
         this.hour = DEFAULT_HOUR;
         this.minute = DEFAULT_MINUTE;
+    }
+
+    /**
+     * Copy Constructor to copy a timeslot.
+     */
+    public Timeslot(Timeslot copyTimeslot){
+        this.hour = copyTimeslot.hour;
+        this.minute = copyTimeslot.minute;
     }
 
     /**
@@ -55,13 +62,10 @@ public class Timeslot implements Comparable<Timeslot>{
     }
 
     /**
-     * Copy Constructor
+     * Constructor to create timeslot based on slot number.
+     *
+     * @param slotNum the slot number to be assigned.
      */
-    public Timeslot(Timeslot copyTimeslot){
-        this.hour = copyTimeslot.hour;
-        this.minute = copyTimeslot.minute;
-    }
-
     public Timeslot(int slotNum){
         assignSlot(slotNum);
     }
@@ -157,11 +161,11 @@ public class Timeslot implements Comparable<Timeslot>{
        return Integer.compare(this.minute, timeslot.getMinute());
    }
 
-    /**
-     * Check if two timeslots are the same.
+   /**
+    * * Check if two timeslots are the same.
      *
-     * @param object
-     * @return
+     * @param object the timeslot being compared to.
+     * @return true if the timeslots are the same, false otherwise.
      */
    @Override
    public boolean equals(Object object){

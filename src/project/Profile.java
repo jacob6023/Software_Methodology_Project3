@@ -3,8 +3,6 @@ import Project_1.src.util.Date;
 
 /**
  * This class creates the patient's profile info.
- * TODO: DateTest
- * TODO: confirm is get rid of test bed
  *
  * @author Jack Crosby
  */
@@ -92,13 +90,13 @@ public class Profile implements Comparable<Profile>{
     public int compareTo(Profile profile){
         int lastNameComparison = this.lname.compareTo(profile.lname);
         if (lastNameComparison != 0) {
-            return lastNameComparison;
+            return Integer.compare(lastNameComparison, 0);
         }
         int firstNameComparison = this.fname.compareTo(profile.fname);
         if (firstNameComparison != 0) {
-            return firstNameComparison;
+            return Integer.compare(firstNameComparison, 0);
         }
-        return this.dob.compareTo(profile.dob);
+        return Integer.compare(this.dob.compareTo(profile.dob), 0);
     }
 
     /**
@@ -115,39 +113,6 @@ public class Profile implements Comparable<Profile>{
                     this.dob.equals(profile.dob);
         }
         return false;
-    }
-
-    /**
-     * Test bed to test this class.
-     *
-     * @param args the arguments from the command line.
-     */
-    public static void main(String[] args) {
-        // Create Date objects
-        Date dob1 = new Date(1990, 5, 15);
-        Date dob2 = new Date(1992, 3, 25);
-        Date dob3 = new Date(1990, 5, 15); // Same dob as dob1
-
-        // Create Profile objects
-        Profile profile1 = new Profile("Jack", "Crosby", dob1);
-        Profile profile2 = new Profile("John", "Doe", dob2);
-        Profile profile3 = new Profile("Jane", "Crosby", dob3);
-        Profile profile4 = new Profile("Jack", "Crosby", dob1); // Same as profile1
-
-        // Crosby vs. Doe
-        System.out.println("Test 1 (lname comparison): " + profile1.compareTo(profile2)); // Expected < 0
-
-        // Jack vs. Jane (first names since last names same)
-        System.out.println("Test 2 (fname comparison): " + profile1.compareTo(profile3)); // Expected < 0
-
-        // same names, different DOB
-        System.out.println("Test 3 (DOB comparison): " + profile1.compareTo(profile2)); // Expected < 0
-
-        // identical profiles
-        System.out.println("Test 4 (identical profiles): " + profile1.compareTo(profile4)); // Expected 0
-
-        // Doe vs. Crosby
-        System.out.println("Test 5 (lname comparison): " + profile2.compareTo(profile1)); // Expected > 0
     }
 
 }

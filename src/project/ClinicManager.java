@@ -125,7 +125,14 @@ public class ClinicManager {
         this.currentTechnicianIndex = clinicManager.currentTechnicianIndex;
     }
 
-    // Private helper method to check for existing appointment
+    /**
+     * Helper method to check if an appointment already exists.
+     *
+     * @param date Appointment date.
+     * @param timeslot Appointment timeslot.
+     * @param profile Patient profile.
+     * @return true if the appointment already exists, false otherwise.
+     */
     private boolean checkExistingAppointment(Date date, Timeslot timeslot, Profile profile) {
         for (int i = 0; i < appointments.size(); i++) {
             Appointment appointment = appointments.get(i);
@@ -140,7 +147,12 @@ public class ClinicManager {
         return false;
     }
 
-    // Private helper method to handle appointment date parsing and validation
+    /**
+     * Helper method to handle appointment date parsing and validation.
+     *
+     * @param dateStr the date string.
+     * @return the date if valid, or null if not valid.
+     */
     private Date handleAppointmentDate(String dateStr) {
         String[] dateSections = dateStr.split("/");
         if (dateSections.length != 3) {
@@ -171,7 +183,12 @@ public class ClinicManager {
         return appointmentDate;
     }
 
-    // Private helper method to handle timeslot parsing and validation
+    /**
+     * Helper method to handle timeslot parsing and validation.
+     *
+     * @param slotNum the timeslot number.
+     * @return the timeslot if valid, or null if not valid.
+     */
     private Timeslot handleTimeslot(int slotNum) {
         if (slotNum < 1 || slotNum > 12) {
             System.out.println(slotNum + " is not a valid time slot.");
@@ -181,7 +198,14 @@ public class ClinicManager {
         return timeslot;
     }
 
-    // Private helper method to handle patient profile creation and validation
+    /**
+     * Helper method to handle patient profile parsing and validation.
+     *
+     * @param firstName patient first name.
+     * @param lastName patient last name.
+     * @param dobStr patient date of birth.
+     * @return the patient profile if valid, or null if not valid.
+     */
     private Profile handlePatientProfile(String firstName, String lastName, String dobStr) {
         String[] dobSections = dobStr.split("/");
         if (dobSections.length != 3) {
@@ -204,6 +228,12 @@ public class ClinicManager {
         return new Profile(firstName, lastName, dob);
     }
 
+    /**
+     * Helper method to check if a string is numeric.
+     *
+     * @param str the string to check.
+     * @return true if the string is numeric, false otherwise.
+     */
     private boolean isNumeric(String str) {
         try {
             Long.parseLong(str);
@@ -230,17 +260,6 @@ public class ClinicManager {
         return null;
     }
 
-    private Radiology handleImagingService(String requestedImagingService) {
-        Radiology imagingService;
-        try {
-            imagingService = Radiology.valueOf(requestedImagingService); // Use Radiology enum to identify the imaging service
-        } catch (IllegalArgumentException e) {
-            System.out.println(requestedImagingService.toLowerCase() + " - imaging service is not provided.");
-            return null;
-        }
-        return imagingService;
-    }
-
     /**
      * Finds an existing patient in the medical record or creates a new one and adds it to the medical record.
      *
@@ -259,6 +278,9 @@ public class ClinicManager {
         return newPatient;
     }
 
+    /**
+     * Reverses the order of the technician rotation list from file.
+     */
     private void reverseTechnicianRotation() {
         int n = technicianRotation.size();
         for (int i = 0; i < n / 2; i++) {
@@ -267,7 +289,6 @@ public class ClinicManager {
             technicianRotation.set(n - 1 - i, temp);
         }
     }
-
 
     /**
      * Runs the user interface.
@@ -760,13 +781,14 @@ public class ClinicManager {
         emptyAppointments();
     }
 
+    /**
+     * Empty the appointments list.
+     */
     public void emptyAppointments() {
         for (int i = appointments.size() - 1; i >= 0; i--) {
             appointments.remove(appointments.get(i));
         }
     }
-
-
 
 }
 

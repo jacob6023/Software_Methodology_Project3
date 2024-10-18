@@ -20,7 +20,7 @@ public class Imaging extends Appointment{
     }
 
     /**
-     * Default Constructor
+     * Default Constructor.
      */
     public Imaging(){
         super();
@@ -42,7 +42,7 @@ public class Imaging extends Appointment{
     }
 
     /**
-     * Copy Constructor
+     * Copy Constructor.
      *
      * @param copyImaging the imaging object to be copied.
      */

@@ -28,7 +28,7 @@ public class Doctor extends Provider{
     }
 
     /**
-     * Default Constructor
+     * Default Constructor.
      */
     public Doctor(){
         super();
@@ -37,9 +37,9 @@ public class Doctor extends Provider{
     }
 
     /**
-     * Copy Constructor to copy a doctor
+     * Copy Constructor to copy a doctor.
      *
-     * @param copyDoctor the doctor being copied
+     * @param copyDoctor the doctor being copied/
      */
     public Doctor(Doctor copyDoctor){
         super(copyDoctor);
@@ -84,6 +84,11 @@ public class Doctor extends Provider{
         return this.npi.compareTo(doctor.npi);
     }
 
+    /**
+     * Concrete method that determines if the doctor is equal to another doctor.
+     * @param object the object to be compared.
+     * @return
+     */
     @Override
     public boolean equals(Object object){
         boolean isSpecialty;
@@ -100,6 +105,11 @@ public class Doctor extends Provider{
         return isSpecialty && isNPI;
     }
 
+    /**
+     * Display doctor.
+     *
+     * @return String of the doctor's profile, location, specialty, and NPI.
+     */
     @Override
     public String toString(){
         return super.toString() + "[" + specialty.name() + ", #" + npi + "]";

@@ -4,7 +4,6 @@ import Project_1.src.util.Date;
 /**
  * This class represents the Appointment being scheduled and its details.
  * Composition class of date, timeslot, profile, and provider.
- * Parent of Imaging
  *
  * @author Jack Crosby
  */
@@ -18,26 +17,33 @@ public class Appointment implements Comparable<Appointment> {
     public Date getDate() {
         return date;
     }
+
     public Timeslot getTimeslot() {
         return timeslot;
     }
+
     public Person getPatient() {
         return patient;
     }
+
     public Person getProvider() {
         return provider;
     }
+
 
     // Setters
     public void setDate(Date date) {
         this.date = date;
     }
+
     public void setTimeslot(Timeslot timeslot) {
         this.timeslot = timeslot;
     }
+
     public void setPatient(Person patient) {
         this.patient = patient;
     }
+
     public void setProvider(Person provider) {
         this.provider = provider;
     }

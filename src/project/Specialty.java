@@ -28,7 +28,6 @@ public enum Specialty {
 
     /**
      * Output the charge.
-     * Only outputs the charge and not the name, if wanted to do both would do Speciality.name() + Specialty.toString()
      *
      * @return String value of the charge associated with the enum name.
      */

@@ -40,8 +40,9 @@ public class Person implements Comparable<Person>{
     }
 
     /**
-     * Compare profile.
+     * Compare two Person objects.
      *
+     * @param person the object to be compared.
      * @return 0 if equal, 1 if greater, -1 if less.
      */
     @Override

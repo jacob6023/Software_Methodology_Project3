@@ -43,14 +43,30 @@ public class Date implements Comparable<Date>{
     };
 
     // Getters
-    public int getYear(){return year;}
-    public int getMonth(){return month;}
-    public int getDay(){return day;}
+    public int getYear(){
+        return year;
+    }
+
+    public int getMonth(){
+        return month;
+    }
+
+    public int getDay(){
+        return day;
+    }
 
     // Setters
-    public void setYear(int year){this.year = year;}
-    public void setMonth(int month){this.month = month;}
-    public void setDay(int day){this.day = day;}
+    public void setYear(int year){
+        this.year = year;
+    }
+
+    public void setMonth(int month){
+        this.month = month;
+    }
+
+    public void setDay(int day){
+        this.day = day;
+    }
 
     /**
      * Default Constructor to set the date to invalid.
@@ -266,39 +282,6 @@ public class Date implements Comparable<Date>{
             return 1;
         }
         return 0;
-    }
-
-    /**
-     * Test bed to test this class.
-     *
-     * @param args the test cases inputted through command line.
-     */
-    public static void main(String[] args) {
-        // Test cases for valid dates
-        Date validDate1 = new Date(2024, FEBRUARY, 29); // Leap year
-        Date validDate2 = new Date(2023, JULY, 15); // Regular valid date
-        Date validDate3 = new Date(2000, DECEMBER, 31); // Leap year
-        Date validDate4 = new Date(1999, NOVEMBER, 30); // Non-leap year, valid date
-
-        // Test cases for invalid dates
-        Date invalidDate1 = new Date(2023, FEBRUARY, 29); // Non-leap year
-        Date invalidDate2 = new Date(2023, APRIL, 31); // April has only 30 days
-        Date invalidDate3 = new Date(-1, JANUARY, 10); // Invalid year
-        Date invalidDate4 = new Date(2024, 13, 1); // Invalid month
-        Date invalidDate5 = new Date(2023, SEPTEMBER, 0); // Invalid day (0 day)
-
-        // Display results of the valid date checks
-        System.out.println(validDate1 + " is valid: " + validDate1.isValid());
-        System.out.println(validDate2 + " is valid: " + validDate2.isValid());
-        System.out.println(validDate3 + " is valid: " + validDate3.isValid());
-        System.out.println(validDate4 + " is valid: " + validDate4.isValid());
-
-        // Display results of the invalid date checks
-        System.out.println(invalidDate1 + " is invalid: " + invalidDate1.isValid());
-        System.out.println(invalidDate2 + " is invalid: " + invalidDate2.isValid());
-        System.out.println(invalidDate3 + " is invalid: " + invalidDate3.isValid());
-        System.out.println(invalidDate4 + " is invalid: " + invalidDate4.isValid());
-        System.out.println(invalidDate5 + " is invalid: " + invalidDate5.isValid());
     }
 
 }

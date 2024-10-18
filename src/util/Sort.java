@@ -3,15 +3,10 @@ import Project_1.src.project.Appointment;
 import Project_1.src.project.Patient;
 import Project_1.src.project.Provider;
 import Project_1.src.project.Technician;
-
 import java.util.Comparator;
 
 /**
  * This utility class handles the sorting.
- * You should define only static methods for sorting. For example, sort the appointments ordered by different keys.
- * Your team should make design decisions so you can reuse the code as much as possible.
- *
- * TODO: you should define only static methods for sorting.
  *
  * @author Jack Crosby
  */
@@ -20,9 +15,9 @@ public class Sort {
     /**
      * General-purpose sort method for sorting a list based on a provided comparator.
      *
-     * @param list the list to sort
-     * @param comparator the comparator used to determine the order of the list
-     * @param <E> the type of elements in the list
+     * @param list the list to sort.
+     * @param comparator the comparator used to determine the order of the list.
+     * @param <E> the type of elements in the list.
      */
     private static <E> void sort(List<E> list, Comparator<E> comparator) {
         for (int i = 0; i < list.size() - 1; i++) {
@@ -39,9 +34,8 @@ public class Sort {
     /**
      * Sort appointments based on a given key.
      * The key can be used to decide sorting by date, timeslot, patient, or provider.
-     * TODO: sorting by county
-     * @param list the list of appointments to sort
-     * @param key the key to determine the sorting criteria ('d' for date, 't' for timeslot, etc.)
+     * @param list the list of appointments to sort.
+     * @param key the key to determine the sorting criteria ('d' for date, 't' for timeslot, etc.).
      */
     public static void appointments(List<Appointment> list, char key) {
         Comparator<Appointment> comparator = null;
@@ -76,7 +70,7 @@ public class Sort {
     /**
      * Sort providers alphabetically based on their profile.
      *
-     * @param list the list of providers to sort
+     * @param list the list of providers to sort.
      */
     public static void providers(List<Provider> list, char key) {
         Comparator<Provider> comparator = null;
@@ -98,14 +92,11 @@ public class Sort {
         sort(list, comparator);
     }
 
-    public static void technicians(List<Technician> list) {
-        Comparator<Technician> comparator;
-        comparator = Comparator.comparing((Technician a) -> a.getLocation().name())
-                .thenComparing(a -> a.getProfile().get_lname())
-                .thenComparing(a -> a.getProfile().get_fname());
-        sort(list, comparator);
-    }
-
+    /**
+     * Sort medical record of patients based on their profile.
+     *
+     * @param list the list of patients to sort in the medical record.
+     */
     public static void medicalRecord(List<Patient> list) {
         Comparator<Patient> comparator = Comparator
                 .comparing((Patient a) -> a.getProfile().get_lname())

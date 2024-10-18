@@ -40,7 +40,6 @@ public enum Location {
     /**
      * Output location in format "City, county zip".
      *
-     *
      * @return String formatted in values count + zip. Typically, had location.name() before calling this.
      */
     @Override

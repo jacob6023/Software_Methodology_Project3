@@ -56,5 +56,4 @@ public class Visit {
         this.next = next;
     }
 
-
 }

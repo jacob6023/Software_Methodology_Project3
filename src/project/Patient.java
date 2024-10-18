@@ -85,9 +85,6 @@ public class Patient extends Person{
 
     /**
      * Print the value of charge the patient owes.
-     * Calling this in medical record for the PS command.
-     *
-     * TODO: amount patient owes at end of the output.txt.
      *
      * @return String of the amount the patient owes.
      */
@@ -96,9 +93,8 @@ public class Patient extends Person{
     }
 
     /**
-     * Output
-     * TODO: may need to print out the appointment info, since this is a LL of visits this patient has had.
-     * @return "[fname lname dob, location, county zip]
+     * Outputs the patient's profile.
+     * @return "[fname lname dob, location, county zip].
      */
     @Override
     public String toString(){
