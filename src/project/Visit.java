@@ -1,4 +1,4 @@
-package Project_1.src.project;
+package clinic.src.project;
 
 /**
  * This class defines a node in a singly linked list that maintains the list of visits.
@@ -6,23 +6,44 @@ package Project_1.src.project;
  * @author Jack Crosby
  */
 public class Visit {
-    private Appointment appointment; //a reference to an appointment object
-    private Visit next; //a ref. to the next appointment object in the list
+    /**
+     * The appointment where the visit took place.
+     */
+    private Appointment appointment;
 
-    // Getters
+    /**
+     * The next visit in the linked list.
+     */
+    private Visit next;
+
+    /**
+     * Getters
+     * @return the appointment or next visit.
+     */
     public Appointment getAppointment(){
         return appointment;
     }
 
+    /**
+     * Get the next visit in the linked list.
+     * @return the next visit in the linked list.
+     */
     public Visit getNextVisit(){
         return next;
     }
 
-    // Setters
+    /**
+     * Setters
+     * @param appointment the appointment to set.
+     */
     public void setAppointment(Appointment appointment){
         this.appointment = appointment;
     }
 
+    /**
+     * Set the next visit in the linked list.
+     * @param next the next visit in the linked list.
+     */
     public void setNextVisit(Visit next){
         this.next = next;
     }

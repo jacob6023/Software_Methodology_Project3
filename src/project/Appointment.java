@@ -1,5 +1,5 @@
-package Project_1.src.project;
-import Project_1.src.util.Date;
+package clinic.src.project;
+import clinic.src.project.util.Date;
 
 /**
  * This class represents the Appointment being scheduled and its details.
@@ -8,42 +8,96 @@ import Project_1.src.util.Date;
  * @author Jack Crosby
  */
 public class Appointment implements Comparable<Appointment> {
+
+    /**
+     * The date of the appointment.
+     */
     protected Date date;
+
+    /**
+     * The timeslot of the appointment.
+     */
     protected Timeslot timeslot;
+
+    /**
+     * The patient scheduling the appointment.
+     */
     protected Person patient;
+
+    /**
+     * The provider the appointment is for.
+     */
     protected Person provider;
 
-    // Getters
+    /**
+     * Getters
+     *
+     * @return the date of the appointment.
+     */
     public Date getDate() {
         return date;
     }
 
+    /**
+     * Get the timeslot of the appointment.
+     *
+     * @return the timeslot of the appointment.
+     */
     public Timeslot getTimeslot() {
         return timeslot;
     }
 
+    /**
+     * Get the patient scheduling the appointment.
+     *
+     * @return the patient scheduling the appointment.
+     */
     public Person getPatient() {
         return patient;
     }
 
+    /**
+     * Get the provider the appointment is for.
+     *
+     * @return the provider the appointment is for.
+     */
     public Person getProvider() {
         return provider;
     }
 
 
-    // Setters
+    /**
+     * Setters
+     *
+     * @param date the date to set.
+     */
     public void setDate(Date date) {
         this.date = date;
     }
 
+    /**
+     * Set the timeslot of the appointment.
+     *
+     * @param timeslot the timeslot to set.
+     */
     public void setTimeslot(Timeslot timeslot) {
         this.timeslot = timeslot;
     }
 
+    /**
+     * Set the patient scheduling the appointment.
+     *
+     * @param patient the patient to set.
+     */
     public void setPatient(Person patient) {
         this.patient = patient;
     }
 
+    /**
+     * Set the provider the appointment is for.
+     *
+     * @param provider the provider to set.
+     */
     public void setProvider(Person provider) {
         this.provider = provider;
     }

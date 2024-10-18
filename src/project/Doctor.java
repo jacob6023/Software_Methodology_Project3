@@ -1,4 +1,4 @@
-package Project_1.src.project;
+package clinic.src.project;
 
 /**
  * This class represents a doctor that is a provider. It extends the Provider class and has a specialty and NPI.
@@ -6,23 +6,48 @@ package Project_1.src.project;
  * @author Jack Crosby
  */
 public class Doctor extends Provider{
-    private Specialty specialty; //encapsulate the rate per visit based on specialty. Other classes can't access specialty.
+
+    /**
+     * The specialty of the doctor.
+     */
+    private Specialty specialty;
+
+    /**
+     * The National Provider Identification of the doctor.
+     */
     private String npi; //National Provider Identification unique to the doctor.
 
-    // Getters
+    /**
+     * Getters
+     *
+     * @return the specialty of the doctor.
+     */
     public Specialty getSpecialty(){
         return specialty;
     }
 
+    /**
+     * Get the National Provider Identification of the doctor.
+     *
+     * @return the National Provider Identification of the doctor.
+     */
     public String getNPI(){
         return npi;
     }
 
-    // Setters
+    /**
+     * Setters
+     *
+     * @param specialty the specialty to set.
+     */
     public void setSpecialty(Specialty specialty){
         this.specialty = specialty;
     }
 
+    /**
+     * Set the National Provider Identification of the doctor.
+     * @param npi the National Provider Identification to set.
+     */
     public void setNPI(String npi){
         this.npi = npi;
     }
@@ -87,7 +112,7 @@ public class Doctor extends Provider{
     /**
      * Concrete method that determines if the doctor is equal to another doctor.
      * @param object the object to be compared.
-     * @return
+     * @return true if the doctor is equal to the other doctor, false otherwise.
      */
     @Override
     public boolean equals(Object object){

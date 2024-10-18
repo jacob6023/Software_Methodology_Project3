@@ -1,80 +1,157 @@
-package Project_1.src.project;
-import Project_1.src.util.Date;
-import Project_1.src.util.List;
-import Project_1.src.util.Sort;
+package clinic.src.project;
+import clinic.src.project.util.Date;
+import clinic.src.project.util.List;
+import clinic.src.project.util.Sort;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.File;
 
 /**
  * This is the user interface class to process the command lines entered on the terminal.
- * Will schedule, cancel, reschedule, compute the charge a patient owes, and print out sorted lists of appointments.
- *
- * TODO: confirm sorting
  *
  * @author Jack Crosby
  */
 
 public class ClinicManager {
+    /**
+     * The list of appointments.
+     */
     private List<Appointment> appointments;
+
+    /**
+     * The list of providers.
+     */
     private List<Provider> providers;
-    private List<Patient> medicalRecord; // use to print billing statement
+
+    /**
+     * The list of patients.
+     */
+    private List<Patient> medicalRecord;
+
+    /**
+     * The list of technicians.
+     */
     private List<Technician> technicianRotation;
+
+    /**
+     * The list of imaging appointments.
+     */
     private List<Imaging> imagingAppointments;
+
+    /**
+     * The index of the current technician.
+     */
     private int currentTechnicianIndex;
 
+    /**
+     * The length of the technician rotation list.
+     */
     private static final int technicianRotationLength = 6;
 
-    // Getters
+    /**
+     * Getters
+     * @return the list of appointments.
+     */
     public List<Appointment> getAppointments() {
         return appointments;
     }
 
+    /**
+     * Get the list of providers.
+     *
+     * @return the list of providers.
+     */
     public List<Provider> getProviders() {
         return providers;
     }
 
+    /**
+     * Get the list of patients.
+     *
+     * @return the list of patients.
+     */
     public List<Patient> getMedicalRecord(){
         return medicalRecord;
     }
 
+    /**
+     * Get the list of technicians.
+     *
+     * @return the list of technicians.
+     */
     public List<Technician> getTechnicianRotation() {
         return technicianRotation;
     }
 
+    /**
+     * Get the list of imaging appointments.
+     *
+     * @return the list of imaging appointments.
+     */
     public List<Imaging> getImagingAppointments(){
         return imagingAppointments;
     }
 
+    /**
+     * Get the index of the current technician.
+     *
+     * @return the index of the current technician.
+     */
     public int getCurrentTechnicianIndex(){
         return currentTechnicianIndex;
     }
 
-    // Setters
+    /**
+     * Setters
+     * @param appointments the list of appointments to set.
+     */
     public void setAppointments(List<Appointment> appointments) {
         this.appointments = appointments;
     }
 
+    /**
+     * Set the list of providers.
+     *
+     * @param providers the list of providers to set.
+     */
     public void setProviders(List<Provider> providers) {
         this.providers = providers;
 
     }
 
+    /**
+     * Set the list of patients.
+     *
+     * @param patients the list of patients to set.
+     */
     public void setMedicalRecord(List<Patient> patients){
         this.medicalRecord = medicalRecord;
     }
 
+    /**
+     * Set the list of technicians.
+     *
+     * @param technicianRotation the list of technicians to set.
+     */
     public void setTechnicianRotation(List<Technician> technicianRotation) {
         this.technicianRotation = technicianRotation;
 
     }
 
+    /**
+     * Set the list of imaging appointments.
+     *
+     * @param imagingAppointments the list of imaging appointments to set.
+     */
     public void setImagingAppointments(List<Imaging> imagingAppointments){
         this.imagingAppointments = imagingAppointments;
     }
 
+    /**
+     * Set the index of the current technician.
+     *
+     * @param currentTechnicianIndex the index of the current technician.
+     */
     public void setCurrentTechnicianIndex(int currentTechnicianIndex){
         this.currentTechnicianIndex = currentTechnicianIndex;
     }
@@ -297,10 +374,8 @@ public class ClinicManager {
         loadProviders();
         displayProviders();
         displayTechnicianRotation();
-        System.out.println();
-        System.out.println("Clinic Manager is running...");
+        System.out.println("\nClinic Manager is running...\n");
         Scanner scan = new Scanner(System.in);
-        System.out.println();
         while (true) {
             String command = scan.nextLine();
             if (command.isEmpty()) {
@@ -472,7 +547,7 @@ public class ClinicManager {
 
     /**
      * Schedules an imaging appointment with a technician.
-     * TODO: make this shorter with helper methods
+     *
      * @param command the schedule command.
      */
     public void scheduleTechnicianAppointment(String command){

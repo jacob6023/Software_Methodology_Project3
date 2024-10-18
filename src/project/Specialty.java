@@ -1,4 +1,4 @@
-package Project_1.src.project;
+package clinic.src.project;
 
 /**
  *  This enum class defines the providers' specialties with an additional property "charge", which defines the charge per visit.
@@ -6,13 +6,23 @@ package Project_1.src.project;
  * @author Jack Crosby
  */
 public enum Specialty {
+    /**
+     * Enum values for the specialties of the providers.
+     */
     FAMILY(250),
     PEDIATRICIAN(300),
     ALLERGIST(350);
 
+    /**
+     * The charge associated with the enum value.
+     */
     private final int charge;
 
-    // Getter
+    /**
+     * Get the charge of the enum value.
+     *
+     * @return the charge of the enum value.
+     */
     public int getCharge() {
         return charge;
     }

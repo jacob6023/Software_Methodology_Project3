@@ -1,4 +1,4 @@
-package Project_1.src.project;
+package clinic.src.project;
 
 /**
  * This class uses a linked list of the amount of visits a specific patient has and computes their charge.
@@ -6,22 +6,43 @@ package Project_1.src.project;
  * @author Jack Crosby
  */
 public class Patient extends Person{
+    /**
+     * The patient's profile.
+     */
     private Visit visit; //a LL of visits (completed appointment). keep track of a LL of visits
 
-    // Getters. Note that since Person uses protected profile, we can just use .profile instead of .getProfile() since this is a subclass.
+    /**
+     * Getters
+     *
+     * @return the patient's profile.
+     */
     public Profile getProfile(){
         return profile;
     }
 
+    /**
+     * Get the visit of the patient.
+     *
+     * @return the visit of the patient.
+     */
     public Visit getVisit(){
         return visit;
     }
 
-    // Setters
+    /**
+     * Setters
+     *
+     * @param profile the profile to set.
+     */
     public void setProfile(Profile profile){
         this.profile = profile;
     }
 
+    /**
+     * Set the visit of the patient.
+     *
+     * @param next the visit to set.
+     */
     public void setVisit(Visit next){
         this.visit = next;
     }
@@ -105,7 +126,7 @@ public class Patient extends Person{
      * Compares the patient to another patient.
      *
      * @param person the person to be compared
-     * @return < 0 if before, 0 if same, > 0 if after.
+     * @return less than 0 if before, 0 if same, greater than 0 if after.
      */
     @Override
     public int compareTo(Person person) {

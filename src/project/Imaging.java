@@ -1,5 +1,5 @@
-package Project_1.src.project;
-import Project_1.src.util.Date;
+package clinic.src.project;
+import clinic.src.project.util.Date;
 
 /**
  * This class defines the imaging appointment with properties radiology room.
@@ -7,14 +7,25 @@ import Project_1.src.util.Date;
  * @author Jack Crosby
  */
 public class Imaging extends Appointment{
+    /**
+     * The radiology room of the imaging appointment.
+     */
     private Radiology room;
 
-    // Getter
+    /**
+     * Get the radiology room of the imaging appointment.
+     *
+     * @return the radiology room of the imaging appointment.
+     */
     public Radiology getRadiologyRoom(){
         return room;
     }
 
-    // Setter
+    /**
+     * Set the radiology room of the imaging appointment.
+     *
+     * @param room the radiology room to set.
+     */
     public void setRadiologyRoom(Radiology room){
         this.room = room;
     }

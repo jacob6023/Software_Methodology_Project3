@@ -1,4 +1,4 @@
-package Project_1.src.project;
+package clinic.src.project;
 
 /**
  * This enum provides the timeslots available for a provider.
@@ -6,30 +6,59 @@ package Project_1.src.project;
  * @author Jack Crosby
  */
 public class Timeslot implements Comparable<Timeslot>{
+    /**
+     * The hour and minute of the timeslot.
+     */
     private int hour;
+
+    /**
+     * The minute of the timeslot.
+     */
     private int minute;
 
-    // Constants for default constructor
+    /**
+     * Default values for the timeslot.
+     */
     private static final int DEFAULT_HOUR = -1;
+
+    /**
+     * Default values for the timeslot.
+     */
     private static final int DEFAULT_MINUTE = -1;
 
-    // Constant for computing total time in minutes for afternoon appointments
+    /**
+     * The hour of noon.
+     */
     private static final int NOON = 12;
 
-    // Getters
+    /**
+     * Getters
+     * @return the hour and minute of the timeslot.
+     */
     public int getHour() {
         return hour;
     }
 
+    /**
+     * Get the minute of the timeslot.
+     * @return the minute of the timeslot.
+     */
     public int getMinute() {
         return minute;
     }
 
-    // Setters
+    /**
+     * Setters
+     * @param hour the hour to set.
+     */
     public void setHour(int hour){
         this.hour = hour;
     }
 
+    /**
+     * Set the minute of the timeslot.
+     * @param minute the minute to set.
+     */
     public void setMinute(int minute){
         this.minute = minute;
     }
@@ -44,6 +73,7 @@ public class Timeslot implements Comparable<Timeslot>{
 
     /**
      * Copy Constructor to copy a timeslot.
+     * @param copyTimeslot the timeslot to be copied.
      */
     public Timeslot(Timeslot copyTimeslot){
         this.hour = copyTimeslot.hour;
@@ -150,7 +180,7 @@ public class Timeslot implements Comparable<Timeslot>{
      * Compare timeslots based on total minutes.
      *
      * @param timeslot the object to be compared.
-     * @return < 0 if before, > 0 if after, 0 if equal.
+     * @return less than 0 if before, greater than 0 if after, 0 if equal.
      */
    @Override
     public int compareTo(Timeslot timeslot){

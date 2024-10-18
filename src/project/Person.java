@@ -1,4 +1,4 @@
-package Project_1.src.project;
+package clinic.src.project;
 
 /**
  *Defines the profile of each instance in the software system.
@@ -6,14 +6,25 @@ package Project_1.src.project;
  * @author Jack Crosby
  */
 public class Person implements Comparable<Person>{
+    /**
+     * The profile of the person.
+     */
     protected Profile profile;
 
-    // Getter
+    /**
+     * Getter
+     *
+     * @return the profile of the person.
+     */
     public Profile getProfile(){
         return profile;
     }
 
-    // Setter
+    /**
+     * Setter
+     *
+     * @param profile the profile to set.
+     */
     public void setProfile(Profile profile){
         this.profile = profile;
     }
@@ -27,6 +38,7 @@ public class Person implements Comparable<Person>{
 
     /**
      * Copy Constructor
+     * @param copyPerson the person to be copied.
      */
     public Person(Person copyPerson){
         this.profile = copyPerson.profile;
@@ -34,6 +46,7 @@ public class Person implements Comparable<Person>{
 
     /**
      * Parameterized Constructor
+     * @param profile the profile of the person.
      */
     public Person(Profile profile){
         this.profile = profile;

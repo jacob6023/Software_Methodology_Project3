@@ -1,4 +1,4 @@
-package Project_1.src.project;
+package clinic.src.project;
 
 /**
  * This enum class defines the city locations with properties county and zip code.
@@ -6,6 +6,9 @@ package Project_1.src.project;
  * @author Jack Crosby
  */
 public enum Location {
+    /**
+     * Enum values for the locations.
+     */
     BRIDGEWATER("Somerset", "08807"),
     PISCATAWAY("Middlesex", "08854"),
     EDISON("Middlesex", "08817"),
@@ -13,15 +16,30 @@ public enum Location {
     MORRISTOWN("Morris County", "07960"),
     CLARK("07066", "Union County");
 
-    // Instance Variables
+    /**
+     * The location's county.
+     */
     private final String county;
+
+    /**
+     * The location's zip code.
+     */
     private final String zip;
 
-    // Getters
+    /**
+     * Get the location's county.
+     *
+     * @return the location's county.
+     */
     public String getCounty() {
         return county;
     }
 
+    /**
+     * Get the location's zip code.
+     *
+     * @return the location's zip code.
+     */
     public String getZip() {
         return zip;
     }

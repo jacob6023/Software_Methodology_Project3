@@ -1,4 +1,4 @@
-package Project_1.src.project;
+package clinic.src.project;
 
 /**
  * This class represents the Technician at the provider.
@@ -6,19 +6,30 @@ package Project_1.src.project;
  * @author Jack Crosby
  */
 public class Technician extends Provider{
+    /**
+     * The rate per visit for the technician.
+     */
     private int ratePerVisit;
 
-    // Constant for the default constructor ratePerVisit value
+    /**
+     * Default rate per visit for the technician.
+     */
     private static final int NULL_RATE = -1;
 
-    // Getter
+    /**
+     * Getters
+     * @return the rate per visit of the provider's technician.
+     */
     public int getRatePerVisit(){return ratePerVisit;}
 
-    // Setter
+    /**
+     * Setters
+     * @param ratePerVisit the rate per visit to set.
+     */
     public void setRatePerVisit(int ratePerVisit){this.ratePerVisit = ratePerVisit;}
 
     /**
-     * Default Constructor
+     * Default Constructor to create the technician.
      */
     public Technician(){
         super();
@@ -26,7 +37,8 @@ public class Technician extends Provider{
     }
 
     /**
-     * Copy Constructor
+     * Copy Constructor to copy the technician.
+     * @param copyTechnician the technician to be copied.
      */
     public Technician(Technician copyTechnician){
         super(copyTechnician);

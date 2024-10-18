@@ -1,5 +1,5 @@
-package Project_1.src.project;
-import Project_1.src.util.Date;
+package clinic.src.project;
+import clinic.src.project.util.Date;
 
 /**
  * This class creates the patient's profile info.
@@ -7,32 +7,71 @@ import Project_1.src.util.Date;
  * @author Jack Crosby
  */
 public class Profile implements Comparable<Profile>{
+    /**
+     * The patient's first name.
+     */
     private String fname;
+
+    /**
+     * The patient's last name.
+     */
     private String lname;
+
+    /**
+     * The patient's date of birth.
+     */
     private Date dob;
 
-    // Getters
+    /**
+     * Getters
+     *
+     * @return the patient's first name.
+     */
     public String get_fname(){
         return fname;
     }
 
+    /**
+     * Get the patient's last name.
+     *
+     * @return the patient's last name.
+     */
     public String get_lname(){
         return lname;
     }
 
+    /**
+     * Get the patient's date of birth.
+     *
+     * @return the patient's date of birth.
+     */
     public Date get_dob(){
         return dob;
     }
 
-    // Setters
+    /**
+     * Setters
+     *
+     * @param fname the first name to set.
+     */
     public void set_fname(String fname){
         this.fname = fname;
     }
 
+    /**
+     * Set the last name of the patient.
+     *
+     * @param lname the last name to set.
+     */
     public void set_lname(String lname){
         this.lname = lname;
     }
 
+    /**
+     * Set the date of birth of the patient.
+     *
+     * @param dob the date of birth to set.
+     */
     public void set_dob(Date dob){
         this.dob = dob;
     }
@@ -84,7 +123,7 @@ public class Profile implements Comparable<Profile>{
      * In lexicographical order compares last name, then first name, then dob (through Date's compareTo).
      *
      * @param profile the profile being compared.
-     * @return < 0 if profile comes before. > 0 if profile comes after. 0 if profile has same details.
+     * @return less 0 if profile comes before. greater 0 if profile comes after. 0 if profile has same details.
      */
     @Override
     public int compareTo(Profile profile){

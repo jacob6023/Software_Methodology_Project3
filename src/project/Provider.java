@@ -1,4 +1,4 @@
-package Project_1.src.project;
+package clinic.src.project;
 
 /**
  * Provider class is an abstract class that represents a provider in the system.
@@ -7,12 +7,21 @@ package Project_1.src.project;
  * @author Jack Crosby
  */
 public abstract class Provider extends Person{
+    /**
+     * The location of the provider.
+     */
     private Location location;
 
-    // Getter
+    /**
+     * Getters
+     * @return the location of the provider.
+     */
     public Location getLocation(){return location;}
 
-    // Setter
+    /**
+     * Setters
+     * @param location the location to set.
+     */
     public void setLocation(Location location) {
         this.location = location;
     }
