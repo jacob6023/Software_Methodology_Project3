@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"clinic.src.project"},{"l":"clinic.src.project.util"}];updateSearchResults();
