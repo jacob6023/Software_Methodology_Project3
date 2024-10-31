@@ -14,7 +14,7 @@ public enum Location {
     EDISON("Middlesex", "08817"),
     PRINCETON("Mercer County", "08542"),
     MORRISTOWN("Morris County", "07960"),
-    CLARK("07066", "Union County");
+    CLARK("Union County ", "07066");
 
     /**
      * The location's county.

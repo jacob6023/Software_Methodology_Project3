@@ -300,10 +300,8 @@ public class Date implements Comparable<Date>{
     public boolean isDayBeforeToday() {
         Calendar today = Calendar.getInstance();
         Calendar date = toCalendar();
-        today.add(Calendar.DAY_OF_YEAR, -1); // Subtract one day from today
-        return today.get(Calendar.YEAR) == date.get(Calendar.YEAR) &&
-                today.get(Calendar.MONTH) == date.get(Calendar.MONTH) &&
-                today.get(Calendar.DAY_OF_MONTH) == date.get(Calendar.DAY_OF_MONTH);
+//        today.add(Calendar.DAY_OF_YEAR, -1);
+        return date.before(today);
     }
 
     /**

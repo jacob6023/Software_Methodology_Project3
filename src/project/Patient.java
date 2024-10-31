@@ -75,23 +75,53 @@ public class Patient extends Person{
     }
 
     /**
+     * Add a visit to the end of the visit linked list.
+     *
+     * @param newVisit the new visit to add.
+     */
+    public void addVisit(Visit newVisit) {
+        if (this.visit == null) {
+            this.visit = newVisit;
+        } else {
+            Visit current = this.visit;
+            while (current.getNextVisit() != null) {
+                current = current.getNextVisit();
+            }
+            current.setNextVisit(newVisit);
+        }
+    }
+
+    /**
      * Computes the charge by traversing the linked list Visits.
      *
      * @return charge of the patient.
      */
-    public int charge(){
+    public int charge() {
         int total = 0;
         Visit currentVisit = visit;
-        while (currentVisit != null){
-            if ( (currentVisit.getAppointment() != null) &&
-                    (currentVisit.getAppointment().getProvider() instanceof Provider) ) {
-                Provider provider = (Provider) currentVisit.getAppointment().getProvider();
-                total += provider.rate();
+        while (currentVisit != null) {
+            Appointment appointment = currentVisit.getAppointment();
+            if (appointment != null && appointment.getProvider() instanceof Provider provider) {
+                total += provider.rate(); // Add the provider's rate to the total for each visit
             }
-            currentVisit = currentVisit.getNextVisit();
+            currentVisit = currentVisit.getNextVisit(); // Move to the next visit in the linked list
         }
         return total;
     }
+
+//    public int charge(){
+//        int total = 0;
+//        Visit currentVisit = visit;
+//        while (currentVisit != null){
+//            if ( (currentVisit.getAppointment() != null) &&
+//                    (currentVisit.getAppointment().getProvider() instanceof Provider) ) {
+//                Provider provider = (Provider) currentVisit.getAppointment().getProvider();
+//                total += provider.rate();
+//            }
+//            currentVisit = currentVisit.getNextVisit();
+//        }
+//        return total;
+//    }
 
     /**
      * Determine if the patient is the same to argument patient.

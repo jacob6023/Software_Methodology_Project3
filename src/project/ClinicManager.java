@@ -3,6 +3,7 @@ import clinic.src.project.util.Date;
 import clinic.src.project.util.List;
 import clinic.src.project.util.Sort;
 import java.io.FileNotFoundException;
+import java.util.Comparator;
 import java.util.Scanner;
 import java.io.File;
 
@@ -14,27 +15,27 @@ import java.io.File;
 
 public class ClinicManager {
     /**
-     * The list of appointments.
+     * The list of appointments the clinic has.
      */
     private List<Appointment> appointments;
 
     /**
-     * The list of providers.
+     * The list of providers the clinic has.
      */
     private List<Provider> providers;
 
     /**
-     * The list of patients.
+     * The list of patients the clinic has.
      */
     private List<Patient> medicalRecord;
 
     /**
-     * The list of technicians.
+     * The list of technicians the clinic has.
      */
     private List<Technician> technicianRotation;
 
     /**
-     * The list of imaging appointments.
+     * The list of imaging appointments the clinic has.
      */
     private List<Imaging> imagingAppointments;
 
@@ -102,7 +103,8 @@ public class ClinicManager {
     }
 
     /**
-     * Setters
+     * Set the list of appointments.
+     *
      * @param appointments the list of appointments to set.
      */
     public void setAppointments(List<Appointment> appointments) {
@@ -338,7 +340,7 @@ public class ClinicManager {
     }
 
     /**
-     * Finds an existing patient in the medical record or creates a new one and adds it to the medical record.
+     * Helper Method. Finds an existing patient in the medical record or creates a new one and adds it to the medical record.
      *
      * @param profile the profile of the patient to find or create.
      * @return the existing or new patient.
@@ -356,7 +358,7 @@ public class ClinicManager {
     }
 
     /**
-     * Reverses the order of the technician rotation list from file.
+     * Helper Method. Reverses the order of the technician rotation list from file.
      */
     private void reverseTechnicianRotation() {
         int n = technicianRotation.size();
@@ -430,7 +432,7 @@ public class ClinicManager {
     }
 
     /**
-     * It shall  automatically load the list of providers from the text file “providers.txt” in the project folder
+     * Load the list of providers from the text file “providers.txt”.
      */
     public void loadProviders(){
         File file = new File("providers.txt");
@@ -482,7 +484,11 @@ public class ClinicManager {
         System.out.println();
     }
 
-    // Get the next technician in the rotation
+    /**
+     * Get the next technician in the rotation list.
+     *
+     * @return the next technician.
+     */
     public Technician getNextTechnician() {
         Technician technician = technicianRotation.get(currentTechnicianIndex);
         currentTechnicianIndex = (currentTechnicianIndex + 1) % technicianRotation.size(); // Increment the index and wrap around
@@ -540,9 +546,9 @@ public class ClinicManager {
         Appointment newAppointment = new Appointment(appointmentDate, timeslot, new Patient(patientProfile, null), doctor);
         appointments.add(newAppointment);
         System.out.println(newAppointment.toString() + " booked.");
-        Visit newVisit = new Visit(newAppointment, null);
-        Patient patient = findOrCreatePatient(patientProfile);
-        patient.setVisit(newVisit); // Document the visit in the patient's medical record
+        Visit newVisit = new Visit(newAppointment, null); // Create a visit to document the appointment and add to patient profile
+        Patient patient = findOrCreatePatient(patientProfile); // find the patient to add the visit documentation, create new one if not found
+        patient.addVisit(newVisit); // Document the visit in the patient's medical record
     }
 
     /**
@@ -588,7 +594,6 @@ public class ClinicManager {
                 boolean sameDate = existingAppointment.getDate().equals(appointmentDate);
                 boolean sameTimeslot = existingAppointment.getTimeslot().equals(timeslot);
                 boolean sameTechnician = existingAppointment.getProvider().equals(currentTechnician);
-                // If there's already an appointment for the same date, timeslot, and technician, they are not available
                 if (sameDate && sameTimeslot && sameTechnician) {
                     isAvailable = false;
                     break;
@@ -657,13 +662,13 @@ public class ClinicManager {
             boolean sameTimeslot = appointment.getTimeslot().equals(timeslot);
             if (sameProfile && sameDate && sameTimeslot) {
                 appointments.remove(appointment);
-                System.out.println(appointment.getDate().toString() + " " + appointment.getTimeslot().toString() + " " + appointment.getPatient().toString() + " has been canceled.");
+                System.out.println(appointment.getDate().toString() + " " + appointment.getTimeslot().toString() + " " + appointment.getPatient().toString() + " - appointment has been canceled.");
                 appointmentFound = true;
                 break;
             }
         }
         if (!appointmentFound) {
-            System.out.println(appointmentDate.toString() + " " + timeslot.toString() + " " + patientProfile.toString() + " does not exist.");
+            System.out.println(appointmentDate.toString() + " " + timeslot.toString() + " " + patientProfile.toString() + " - appointment does not exist.");
         }
     }
 
@@ -699,7 +704,7 @@ public class ClinicManager {
             }
         }
         if (originalAppointment == null) {
-            System.out.println(appointmentDate.toString() + " " + originalTimeslot.toString() + " " + patientProfile.toString() + " does not exist.");
+            System.out.println(appointmentDate.toString() + " " + originalTimeslot.toString() + " " + patientProfile.toString() + " - appointment does not exist.");
             return;
         }
         int newSlotNum = Integer.parseInt(tokens[6].trim());
@@ -720,7 +725,7 @@ public class ClinicManager {
     }
 
     /**
-     * Sorted by appointment date, then appointment timeslot, then provider's name.
+     * Print appointments ordered by appointment date, then appointment timeslot, then provider's name.
      */
     public void printByAppointment(){
         if(appointments.isEmpty()){
@@ -737,7 +742,7 @@ public class ClinicManager {
     }
 
     /**
-     * Sorted by patient profile (last name, first name, dob), then appointment date, then appointment timeslot.
+     * Print patients ordered by patient profile (last name, first name, dob), then appointment date, then appointment timeslot.
      */
     public void printByPatient(){
         if(appointments.isEmpty()){
@@ -754,7 +759,7 @@ public class ClinicManager {
     }
 
     /**
-     * Print appointments sorted by county, name, then appointment date and time.
+     * Print appointments ordered by county, then appointment date and time.
      */
     public void printByLocation(){
         if(appointments.isEmpty()){
@@ -764,13 +769,9 @@ public class ClinicManager {
         System.out.println();
         System.out.println("** List of appointments, ordered by county/date/time. **");
         Sort.providers(providers, 'l');
-        Sort.appointments(appointments, 'd');
-        for(int i = 0; i < providers.size(); i++){
-            for(int j = 0; j < appointments.size(); j++){
-                if(appointments.get(j).getProvider().equals(providers.get(i))){
-                    System.out.println(appointments.get(j).toString());
-                }
-            }
+        Sort.appointments(appointments, 'c');
+        for (Appointment appointment : appointments) {
+            System.out.println(appointment.toString());
         }
         System.out.println("** end of list **");
     }
@@ -784,7 +785,7 @@ public class ClinicManager {
             return;
         }
         Sort.providers(providers, 'l');
-        Sort.appointments(appointments, 'd');
+        Sort.appointments(appointments, 'c');
         System.out.println();
         System.out.println("** List of office appointments ordered by county/date/time. **");
         for(int i = 0; i < appointments.size(); i++){
@@ -795,6 +796,7 @@ public class ClinicManager {
         System.out.println("** end of list **");
     }
 
+
     /**
      * Display the list of imaging appointments, sorted by the county name, then date and time.
      */
@@ -803,8 +805,8 @@ public class ClinicManager {
             System.out.println("The schedule calendar is empty.");
             return;
         }
-        Sort.providers(providers, 'l');
-        Sort.appointments(appointments, 'd');
+       // Sort.providers(providers, 'l');
+        Sort.appointments(appointments, 'i');
         System.out.println();
         System.out.println("** List of radiology appointments ordered by county/date/time. **");
         for(int i = 0; i < appointments.size(); i++){
@@ -826,14 +828,15 @@ public class ClinicManager {
         System.out.println();
         System.out.println("** Credit amount ordered by provider");
         Sort.providers(providers, 'c');
-        int credit = 0;
         for(int i = 0; i < providers.size(); i++){
+            int credit = 0;
             for(int j = 0; j < appointments.size(); j++){
                 if(appointments.get(j).getProvider().equals(providers.get(i))){
                     credit += providers.get(i).rate();
                 }
             }
             System.out.println("("+ (i + 1) + ")" + providers.get(i).getProfile().toString() + " " + "[credit amount: $" + credit + ".00]");
+            credit = 0;
         }
         System.out.println("** end of list **");
     }
@@ -850,7 +853,8 @@ public class ClinicManager {
         System.out.println();
         System.out.println("** Billing statement ordered by patient. **");
         for(int i = 0; i < medicalRecord.size(); i++){
-            System.out.println("("+ (i + 1) + ")" + medicalRecord.get(i).printCharge());
+            int bill = medicalRecord.get(i).charge();
+            System.out.println("("+ (i + 1) + ")" + medicalRecord.get(i).getProfile().toString() + " [due: $" + bill + ".00]");
         }
         System.out.println("** end of list **");
         emptyAppointments();

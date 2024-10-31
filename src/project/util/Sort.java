@@ -1,8 +1,5 @@
 package clinic.src.project.util;
-import clinic.src.project.Appointment;
-import clinic.src.project.Patient;
-import clinic.src.project.Provider;
-
+import clinic.src.project.*;
 import java.util.Comparator;
 
 /**
@@ -58,6 +55,30 @@ public class Sort {
            case 'd': // Sort by date, then timeslot.
                 comparator = Comparator
                         .comparing(Appointment::getDate)
+                        .thenComparing(Appointment::getTimeslot);
+                break;
+            case 'c': // Sort by county, then date, then timeslot
+                comparator = Comparator
+                        .comparing( (Appointment a) ->
+                        {
+                            if (a.getProvider() instanceof Provider) {
+                                return ((Provider) a.getProvider()).getLocation().getCounty();
+                            }
+                            return "";
+                        } )
+                        .thenComparing(Appointment::getDate)
+                        .thenComparing(Appointment::getTimeslot);
+                break;
+            case 'i': // Sort imaging/radiology appointments with Piscataway first, then Bridgewater, by date and time
+                comparator = Comparator
+                        .comparing( (Appointment a) -> {
+                            if (a.getProvider() instanceof Provider) {
+                                Location location = ((Provider) a.getProvider()).getLocation();
+                                return location == Location.PISCATAWAY ? 0 : 1; // Prioritize Piscataway
+                            }
+                            return Integer.MAX_VALUE;
+                        } )
+                        .thenComparing(Appointment::getDate)
                         .thenComparing(Appointment::getTimeslot);
                 break;
 
