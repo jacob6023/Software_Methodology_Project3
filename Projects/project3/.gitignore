@@ -12,6 +12,13 @@ target/
 *.iml
 *.ipr
 
+# Example of .gitignore entries:
+*.DS_Store
+.idea/
+*.log
+.p2clone/
+
+
 ### Eclipse ###
 .apt_generated
 .classpath
