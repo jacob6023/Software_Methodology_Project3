@@ -7,7 +7,7 @@ package com.example.project3.clinic;
  */
 public class Patient extends Person{
     /**
-     * The patient's profile.
+     * A linked list of visits (completed appointments) for the patient.
      */
     private Visit visit; //a LL of visits (completed appointment). keep track of a LL of visits
 

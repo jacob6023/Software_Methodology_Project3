@@ -1,6 +1,7 @@
 package com.example.project3.clinic;
 
 import com.example.project3.util.*;
+
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.io.File;
@@ -274,6 +275,7 @@ public class ClinicManager {
         Timeslot timeslot = new Timeslot(slotNum);
         return timeslot;
     }
+
 
     /**
      * Helper method to handle patient profile parsing and validation.

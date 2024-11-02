@@ -2,13 +2,21 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project3.clinic.src.project.ui.ClinicManagerController">
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.TextArea?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project3.ClinicManagerController">
     <top>
         <HBox spacing="10" padding="10">
             <TextField fx:id="searchField" promptText="Search for appointments..."/>
@@ -19,9 +27,72 @@
         <ListView fx:id="appointmentListView" prefWidth="600" prefHeight="400"/>
     </center>
     <bottom>
-        <HBox spacing="10" padding="10">
-            <Button fx:id="addButton" text="Add Appointment" onAction="#handleAddButton"/>
-            <Button fx:id="removeButton" text="Remove Appointment" onAction="#handleRemoveButton"/>
-        </HBox>
+        <VBox spacing="10" padding="10">
+            <HBox spacing="10">
+                <Button text="Schedule" fx:id="scheduleButton" onAction="#handleScheduleButtonAction"/>
+                <Button text="Cancel" fx:id="cancelButton" onAction="#handleCancelButtonAction"/>
+                <Button text="Reschedule" fx:id="rescheduleButton" onAction="#handleRescheduleButtonAction"/>
+                <Button text="Clear" fx:id="clearButton" onAction="#handleClearButtonAction"/>
+                <Button text="Load Provider" fx:id="loadProviderButton" onAction="#handleLoadProviderButtonAction"/>
+            </HBox>
+            <HBox spacing="10">
+                <DatePicker fx:id="appointmentDatePicker" promptText="Select Appointment Date"/>
+                <TextField fx:id="firstNameField" promptText="First Name"/>
+                <TextField fx:id="lastNameField" promptText="Last Name"/>
+                <DatePicker fx:id="dobDatePicker" promptText="Date of Birth"/>
+            </HBox>
+            <HBox spacing="10">
+                <RadioButton fx:id="officeVisitRadioButton" text="Office Visit"/>
+                <RadioButton fx:id="imagingServiceRadioButton" text="Imaging Service"/>
+            </HBox>
+            <HBox spacing="10">
+                <ComboBox fx:id="timeSlotComboBox" promptText="Select Time Slot"/>
+                <ComboBox fx:id="providerComboBox" promptText="Select Provider"/>
+                <ComboBox fx:id="imagingServiceComboBox" promptText="Select Imaging Service"/>
+                <ComboBox fx:id="npiComboBox" promptText="Select NPI"/>
+                <TextField fx:id="nipField" promptText="Enter NPI"/>
+            </HBox>
+            <HBox spacing="10">
+                <Button text="Print By Appointment" fx:id="printByAppointmentButton" onAction="#printByAppointment"/>
+                <Button text="Print By Patient" fx:id="printByPatientButton" onAction="#printByPatient"/>
+                <Button text="Print By Location" fx:id="printByLocationButton" onAction="#printByLocation"/>
+            </HBox>
+            <HBox spacing="10">
+                <Button text="Print Office Appointments" fx:id="printOfficeAppointmentsButton" onAction="#printOfficeAppointments"/>
+                <Button text="Print Imaging Appointments" fx:id="printImagingAppointmentsButton" onAction="#printImagingAppointments"/>
+                <Button text="Print Expected Credit" fx:id="printExpectedCreditButton" onAction="#printExpectedCredit"/>
+            </HBox>
+            <HBox spacing="10">
+                <Button text="Print Billing Statement" fx:id="printBillingStatementButton" onAction="#printBillingStatement"/>
+            </HBox>
+        </VBox>
     </bottom>
 </BorderPane>
+
+        <?xml version="1.0" encoding="UTF-8"?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project3.ClinicManagerController">
+<top>
+    <GridPane>
+        <!-- Add your TextFields, Buttons, and RadioButtons here -->
+    </GridPane>
+</top>
+<center>
+    <TabPane>
+        <Tab text="Tab 1">
+            <VBox>
+                <TextArea fx:id="textArea" />
+                <TableView fx:id="tableView">
+                    <!-- Define your TableView columns here -->
+                </TableView>
+            </VBox>
+        </Tab>
+        <Tab text="Tab 2">
+            <!-- Additional content for another tab -->
+        </Tab>
+    </TabPane>
+</center>
+<bottom>
+    <Button text="Submit" />
+</bottom>
+</BorderPane>
+
